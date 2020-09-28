@@ -1,0 +1,239 @@
+﻿<#@ template language="C#" HostSpecific="True" Debug="True" #>
+<#@ output extension="tsx" #>
+<#@ assembly name="System.Core" #>
+<#@ import namespace="System" #>
+<#@ import namespace="System.IO" #>
+<#@ import namespace="System.Linq" #>
+<#@ import namespace="System.Collections" #>
+<#@ import namespace="System.Collections.Generic" #>
+<#@ import namespace="System.Text" #>
+<#@ import namespace="CS2REACTJS" #>
+<#@ import namespace="CS2REACTJS.Model" #>
+<#@ import namespace="CS2REACTJS.Model.Serializable" #>
+<#@ parameter type="CS2REACTJS.Model.Serializable.ModelViewSerializable" name="Model" #>
+<#@ parameter type="CS2REACTJS.Model.Serializable.DbContextSerializable" name="Context" #>
+<#
+
+    
+    string tablePaginationDataModelFolder               = "00230-table-pagination.tsx";
+    string tablePaginationDataModelClassName            = GetModelClassName(Model, tablePaginationDataModelFolder);
+
+    string tablePaginationStateDataModelFolder          = "00228-table-pagination-state.interface.tsx";
+    string tablePaginationStateDataModelClassName       = GetModelInterfaceName(Model, tablePaginationStateDataModelFolder);
+
+    string tablePaginationPropsDataModelFolder          = "00229-table-pagination-props.interface.tsx";
+    string tablePaginationPropsDataModelClassName       = GetModelInterfaceName(Model, tablePaginationPropsDataModelFolder);
+
+#>
+
+import React, { Component } from 'react';
+import { Stack,  FontIcon, Label, IComboBoxOption, IComboBox, ComboBox, TooltipHost, IconButton }  from '@fluentui/react';
+import <#= tablePaginationStateDataModelClassName #> from "<#= GetFolderName(Model, tablePaginationStateDataModelFolder, tablePaginationDataModelFolder) #>";
+import <#= tablePaginationPropsDataModelClassName #> from "<#= GetFolderName(Model, tablePaginationPropsDataModelFolder, tablePaginationDataModelFolder) #>";
+
+// import { initializeIcons }  from '@fluentui/react';
+// initializeIcons();
+
+
+export default class <#= tablePaginationDataModelClassName #>  extends Component<<#= tablePaginationPropsDataModelClassName #>, <#= tablePaginationStateDataModelClassName #>> {
+    constructor(props: <#= tablePaginationPropsDataModelClassName #>) {
+        super(props);
+        this.state = {
+            rowsPerPageOptions: [],
+            rowsPerPage: 0,
+            count: 0,
+            page: 0,
+            rowsPerPageCaption: 'Rows per page',
+            backIconButtonName: 'ChevronLeftMed',
+            nextIconButtonName: 'ChevronRightMed',
+            backIconButtonText: 'Previous page',
+            nextIconButtonText: 'Next page',
+        }
+        this.handleComboBoxChange = this.handleComboBoxChange.bind(this);
+        this.handleChangePage = this.handleChangePage.bind(this);
+    }
+    static getDerivedStateFromProps(nwprps: <#= tablePaginationPropsDataModelClassName #>, oldstt: <#= tablePaginationStateDataModelClassName #>): any {
+        let rslt: { [key: string]: any; } = {};
+        if (nwprps.rowsPerPageOptions) rslt['rowsPerPageOptions'] = nwprps.rowsPerPageOptions; else rslt['rowsPerPageOptions'] = [];
+        if (nwprps.rowsPerPage) rslt['rowsPerPage'] = nwprps.rowsPerPage; else rslt['rowsPerPage'] = 0;
+        if (nwprps.count) rslt['count'] = nwprps.count; else rslt['count'] = 0;
+        if (nwprps.page) rslt['page'] = nwprps.page; else rslt['page'] = 0;
+        if (nwprps.rowsPerPageCaption) rslt['rowsPerPageCaption'] = nwprps.rowsPerPageCaption; else rslt['rowsPerPageCaption'] = 'rows per page';
+        if (nwprps.backIconButtonName) rslt['backIconButtonName'] = nwprps.backIconButtonName; else rslt['backIconButtonName'] = 'ChevronLeftMed';
+        if (nwprps.nextIconButtonName) rslt['nextIconButtonName'] = nwprps.nextIconButtonName; else rslt['nextIconButtonName'] = 'ChevronRightMed';
+        if (nwprps.backIconButtonText) rslt['backIconButtonText'] = nwprps.backIconButtonText; else rslt['backIconButtonText'] = 'Previous page';
+        if (nwprps.nextIconButtonText) rslt['nextIconButtonText'] = nwprps.nextIconButtonText; else rslt['nextIconButtonText'] = 'Next page';
+        return  rslt;
+    }
+    handleComboBoxChange(ev: React.FormEvent<IComboBox>, option?: IComboBoxOption) {
+        if(option) {
+            if(this.props.onChangeRowsPerPage) this.props.onChangeRowsPerPage(this, parseInt(option.key as string));
+        }
+    };
+    handleChangePage(v:number) {
+        if(this.props.onChangePage) this.props.onChangePage(this, this.state.page+v);
+    }
+
+    render () {
+        const fromCnt: number = this.state.page * this.state.rowsPerPage + 1;
+        let toCnt: number = this.state.page * this.state.rowsPerPage + this.state.rowsPerPage;
+        if(toCnt > this.state.count) toCnt = this.state.count;
+        return (
+            <Stack horizontal tokens={{childrenGap:10}} >
+              <Stack.Item >
+                <Label>{this.state.rowsPerPageCaption}</Label>
+              </Stack.Item>
+              <Stack.Item >
+                  <ComboBox style={{width:'96px'}}
+                    onChange={this.handleComboBoxChange}
+                    selectedKey={this.state.rowsPerPage.toString()}
+                    options={ this.state.rowsPerPageOptions.map( (f,i) => { return { key: f.toString(), text: f.toString() }} ) }
+                  />
+              </Stack.Item>
+              <Stack.Item >
+                  <Label> {fromCnt}-{toCnt} of {this.state.count}</Label>
+              </Stack.Item>
+              <Stack.Item >
+                        <TooltipHost content={this.state.backIconButtonText}>
+                             <IconButton disabled={this.state.page < 1} onClick={()=> this.handleChangePage(-1)} >
+                                <FontIcon iconName= {this.state.backIconButtonName}  ></FontIcon>
+                             </IconButton>
+                         </TooltipHost>
+              </Stack.Item>
+              <Stack.Item >
+                        <TooltipHost content={this.state.nextIconButtonText}> 
+                             <IconButton disabled={toCnt >= this.state.count} onClick={()=> this.handleChangePage(1)} >
+                                <FontIcon iconName= {this.state.nextIconButtonName}></FontIcon>
+                             </IconButton>
+                         </TooltipHost>
+              </Stack.Item>
+            </Stack>
+        );
+    }
+}
+
+
+
+<#+
+    string GetModelInterfaceName(ModelViewSerializable model, string fileType) {
+        string result="";
+        if ((model == null) || string.IsNullOrEmpty(fileType)) {
+            return result;
+        }
+        if (model.CommonStaffs == null) {
+            return result;
+        }
+        CommonStaffSerializable refItem= 
+            model.CommonStaffs.Where(c => c.FileType == fileType).FirstOrDefault();
+        if (refItem == null) {
+            return result;
+        }
+        if(string.IsNullOrEmpty(refItem.FileName)) {
+            return result;
+        }
+        string fn = refItem.FileName.Replace(".interface","-interface");
+        StringBuilder sb = new StringBuilder();
+        bool toUpper = true;
+        foreach (char c in fn)
+        {
+            if( c == '-' )
+            {
+                toUpper = true;
+            } else
+            {
+                if (toUpper)
+                {
+                    sb.Append(Char.ToUpper(c));
+                    toUpper = false;
+                }
+                else
+                {
+                    sb.Append(c);
+                }
+            }
+                
+        }
+        return "I"+sb.ToString();
+    }
+    string GetModelClassName(ModelViewSerializable model, string fileType) {
+        string result="";
+        if ((model == null) || string.IsNullOrEmpty(fileType)) {
+            return result;
+        }
+        if (model.CommonStaffs == null) {
+            return result;
+        }
+        CommonStaffSerializable refItem= 
+            model.CommonStaffs.Where(c => c.FileType == fileType).FirstOrDefault();
+        if (refItem == null) {
+            return result;
+        }
+        if(string.IsNullOrEmpty(refItem.FileName)) {
+            return result;
+        }
+        string fn = refItem.FileName;
+        StringBuilder sb = new StringBuilder();
+        bool toUpper = true;
+        foreach (char c in fn)
+        {
+            if( c == '-' )
+            {
+                toUpper = true;
+            } else
+            {
+                if (toUpper)
+                {
+                    sb.Append(Char.ToUpper(c));
+                    toUpper = false;
+                }
+                else
+                {
+                    sb.Append(c);
+                }
+            }
+                
+        }
+        return sb.ToString();
+    }
+    string GetFolderName(ModelViewSerializable model, string refFolder, string currFolder) {
+        string result="./";
+        if ((model == null) || string.IsNullOrEmpty(refFolder) || string.IsNullOrEmpty(currFolder)) {
+            return result;
+        }
+        if (model.CommonStaffs == null) {
+            return result;
+        }
+        CommonStaffSerializable refItem= 
+            model.CommonStaffs.Where(c => c.FileType == refFolder).FirstOrDefault();
+        CommonStaffSerializable curItem= 
+            model.CommonStaffs.Where(c => c.FileType == currFolder).FirstOrDefault();
+        if ((refItem == null) || (curItem == null)) {
+            return result;
+        }
+        string[] refFolders  = new string[] {};
+        if(!string.IsNullOrEmpty(refItem.FileFolder)) {
+            refFolders  = refItem.FileFolder.Split(new string[] { "\\" }, StringSplitOptions.None);
+        }
+        string[] currFolders = new string[]{};
+        if(!string.IsNullOrEmpty(curItem.FileFolder)) {
+            currFolders  = curItem.FileFolder.Split(new string[] { "\\" }, StringSplitOptions.None);
+        }
+        int refLen = refFolders.Length;
+        int currLen = currFolders.Length;
+        int minLen = refLen < currLen ? refLen : currLen;
+        int cnt= 0;
+        for(int i = 0; i < minLen; i++) {
+            if ( !refFolders[i].Equals(currFolders[i], StringComparison.OrdinalIgnoreCase) ) break;
+            cnt++;
+        }
+        if(currLen > cnt) {
+            result += string.Join("", Enumerable.Repeat("../", currLen - cnt));
+        }
+        if(refLen > cnt) {
+            result += string.Join("/", refFolders, cnt, refLen - cnt) + "/";
+        }
+        result += refItem.FileName;
+        return result;
+    }
+
+#>

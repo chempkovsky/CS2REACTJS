@@ -1,0 +1,73 @@
+{
+  "Description": [
+    "",
+    "                                BEFORE YOU START !!!",
+    "1.",
+    "Please make sure that you have already run the following scripts for the current ViewModel",
+    "                                01100-.interface.ts",
+    "                                01200-Page.interface.ts",
+    "                                01300-Filter.interface.ts",
+    "                                01400-.service.ts",
+    "                                01420-Sform.component.ts",
+    "                                01440-Sdlg.component.ts",
+    "                                01500-Eform.component.ts",
+    "                                01520-Edlg.component.ts",
+    "                                01600-Lform.component.ts",
+    "                                01620-Ldlg.component.ts",
+    "",
+    "                                AND",
+    "",
+    "Please make sure that you have already run the following scripts for all DETAIL ViewModels",
+    " exception is securitypermission-view",
+    "                                01100-.interface.ts",
+    "                                01200-Page.interface.ts",
+    "                                01300-Filter.interface.ts",
+    "                                01400-.service.ts",
+    "                                01420-Sform.component.ts",
+    "                                01440-Sdlg.component.ts",
+    "                                01500-Eform.component.ts",
+    "                                01520-Edlg.component.ts",
+    "                                01600-Lform.component.ts",
+    "                                01620-Ldlg.component.ts",
+    "",
+    "                                AND",
+    "",
+    "Please make sure that you have already run the following batch for securitypermission-view",
+    "                                12215-Securitylform.json",
+    "",
+    "2.",
+    " 12220-SecurityO2m.json batch must be run for: ",
+    "     securityrole-view",
+    "",
+    "3.",
+    " do NOT run this batch for: ",
+    "     securitypermission-view",
+    "     securitymodel-view",
+    "     securitydashboard-view",
+    "     securityuser-view",
+    "     securityuser2role-view",
+    "",
+    "2.",
+    "Please make sure that you selected src\\components\\your-view-model-name folder",
+    "  where [your-view-model-name] is a name of currently selected ViewModel",
+    "",
+    ""
+  ],
+  "BatchItems": [
+    {
+      "DestinationFolder": "interfaces",
+      "GeneratorType": "01698-O2m-state.interface.tsx",
+      "GeneratorSript": "O2m-state.interface.tsx.t4"
+    },
+    {
+      "DestinationFolder": "interfaces",
+      "GeneratorType": "01699-O2m-props.interface.tsx",
+      "GeneratorSript": "O2m-props.interface.tsx.t4"
+    },
+    {
+      "DestinationFolder": "o2m",
+      "GeneratorType": "01700-O2m.component.tsx",
+      "GeneratorSript": "O2m.component.tsx.t4"
+    }
+  ]
+}

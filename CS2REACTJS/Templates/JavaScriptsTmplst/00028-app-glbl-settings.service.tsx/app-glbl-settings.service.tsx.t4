@@ -1,0 +1,305 @@
+﻿<#@ template language="C#" HostSpecific="True" Debug="True" #>
+<#@ output extension="tsx" #>
+<#@ assembly name="System.Core" #>
+<#@ import namespace="System" #>
+<#@ import namespace="System.IO" #>
+<#@ import namespace="System.Linq" #>
+<#@ import namespace="System.Collections" #>
+<#@ import namespace="System.Collections.Generic" #>
+<#@ import namespace="System.Text" #>
+<#@ import namespace="CS2REACTJS" #>
+<#@ import namespace="CS2REACTJS.Model" #>
+<#@ import namespace="CS2REACTJS.Model.Serializable" #>
+<#@ parameter type="CS2REACTJS.Model.Serializable.ModelViewSerializable" name="Model" #>
+<#@ parameter type="CS2REACTJS.Model.Serializable.DbContextSerializable" name="Context" #>
+<#
+
+    string appGlblSettingsServiceFolder         = "00028-app-glbl-settings.service.tsx";
+    string appGlblSettingsServiceClassName      = GetServiceClassName(Model, appGlblSettingsServiceFolder);
+
+    string appGlblHttpHlpDataModelFolder        = "00027-app-glbl-http-hlp.interface.tsx";
+    string appGlblHttpHlpDataModelClassName     = GetModelInterfaceName(Model, appGlblHttpHlpDataModelFolder);
+    string getAuthInfoHeaderMethodName          = "getAuthInfoHeader";
+    string getAuthInfoMethodName                = "getAuthInfo";
+    string setAuthInfoMethodName                = "setAuthInfo";
+    string getWebApiPrefixMethodName            = "getWebApiPrefix";
+    string getSecurityWebApiPrefixMethodName    = "getSecurityWebApiPrefix";
+    string ShowErrorMethodName                  = "showError";
+
+#>
+
+import <#= appGlblHttpHlpDataModelClassName #> from "<#= GetFolderName(Model, appGlblHttpHlpDataModelFolder, appGlblSettingsServiceFolder) #>";
+
+export type NotifyMethodType = (msg: string) => void;
+
+export default class <#= appGlblSettingsServiceClassName #> implements <#= appGlblHttpHlpDataModelClassName #> {
+    public static filterHeightAddition: number = -0.3;
+    public static filterHeightFactor: number = 4;
+    public static tableHeightAddition: number = 0;
+    public static tableHeightFactor: number = 31;
+
+
+    protected messageMethod: NotifyMethodType | null = null;
+    public setMessageMethod(m: NotifyMethodType | null) {
+        if (m) {
+            this.messageMethod = m
+        } else {
+            this.messageMethod = null;
+        }
+    }
+    protected userMethod: NotifyMethodType | null = null;
+    public setUserMethod(m: NotifyMethodType | null) {
+        if (m) {
+            this.userMethod = m
+        } else {
+            this.userMethod = null;
+        }
+    }
+
+    public <#= ShowErrorMethodName #>(errTp: string, errorStruct: any) {
+        let text: string = 'Error :';
+        if(!(typeof errTp === 'undefined')) {
+            if(!(errTp === null)) {
+                text = 'Error of type ' + errTp + ': ';
+            }
+        }
+        if(!(typeof errorStruct === 'undefined')) {
+            if(!(errorStruct === null)) {
+                if(!(typeof errorStruct.message === 'undefined')) {
+                    if(!(errorStruct.message === null)) {
+                        text = text + ' ' +  errorStruct.message;
+                    }
+                }
+                if(!(typeof errorStruct.statusText === 'undefined')) {
+                    if(!(errorStruct.statusText === null)) {
+                        text = text + ' ' +  errorStruct.statusText;
+                    }
+                }
+                if(!(typeof errorStruct.error === 'undefined')) {
+                  if(!(errorStruct.error === null)) {
+                    if(!(typeof errorStruct.error.ModelState === 'undefined')) {
+                      if(Array.isArray( errorStruct.error.ModelState[''] )) {
+                        errorStruct.error.ModelState[''].forEach(element => {
+                          text = text + ' ' +  element;
+                        });
+                      }
+                    }
+                  }
+                }
+            }
+        }
+        // console.log(text);
+        if(this.messageMethod) this.messageMethod(text);
+    }
+
+    public static getDialogWidth(vwNm: string): string {
+        let rslt: string = 'md';
+        if(!(vwNm === null)) {
+            if(!(vwNm === null)) {
+                //
+                // here: set dialog width for the given ViewName
+                //
+                return 'lg';        
+            }
+        }
+        return rslt;
+    }
+
+    public <#= getWebApiPrefixMethodName #>(vwNm: string): string {
+        let reslt: string = '';
+        if(!(vwNm === null)) {
+            if(!(vwNm === null)) {
+                reslt = 'http://localhost:50819/';
+            }
+        }
+        return reslt;
+    } 
+    public <#= getSecurityWebApiPrefixMethodName #>(): string {
+        return 'http://localhost:50819/';
+    } 
+
+    protected authInfo: any = null;
+    public <#= getAuthInfoMethodName #>(): any {
+        return this.authInfo;
+    };
+    public <#= setAuthInfoMethodName #>(info: any): void {
+        if(typeof info === 'undefined') {
+            this.authInfo = null;
+        } else {
+            this.authInfo = info;
+        }
+    }
+    protected userName: string|null = null;
+    public get UserName(): string|null {
+        return this.userName;
+    }
+    public set UserName(val: string|null) {
+        if(val)
+            this.userName = val;
+        else 
+            this.userName = null;
+        if(this.userMethod) this.userMethod(this.userName ? this.userName : '');
+    }
+    <#= getAuthInfoHeaderMethodName #> (): {[k: string]: any} {
+        let rslt: {[k: string]: any} = { 'content-type': 'application/json', 'accept': 'application/json, text/plain, */*' };
+        if(this.authInfo) {
+            if(this.authInfo.token_type) {
+                rslt['Authorization']= this.authInfo.token_type + ' ' +  this.authInfo.access_token;
+            }
+        }
+        return rslt;
+    }
+
+    public perms: number[] = [0,0,0,0,  0,0,0,0,  0,0,0,0,  0,0,  1,0,0];
+    public vwModels:  { [key: string]: number } = {
+        /*        
+                'LitAuthorView': 0,
+                'LitBookView': 1,
+                'LitCountryView':2,
+                'LitDialectView':3,
+                'LitEditionView':4,
+                'LitGenreView':5,
+                'LitLanguageView':6,
+                'LitManuscriptView':7,
+                'LitPublisherView':8,
+        */
+    };
+
+    getViewModelMask(vwModel: string): number {
+      return 15; // delete this line when vwModels is ready
+      let pk = this.vwModels[vwModel];
+      if(typeof pk === 'undefined') return 0;
+      let rid: number = Math.floor(pk/7);
+      if(rid >= (this.perms.length-3))  return 0; 
+      let sft: number = (pk - rid * 7) * 4;
+      let rslt = this.perms[rid];
+      if(sft > 0) {
+        rslt = this.perms[rid] >> sft;
+      }
+      return rslt; 
+    }
+
+}
+
+<#+
+    string GetServiceClassName(ModelViewSerializable model, string fileType) {
+        string result="";
+        if ((model == null) || string.IsNullOrEmpty(fileType) ) {
+            return result;
+        }
+        if (model.CommonStaffs == null) {
+            return result;
+        }
+        CommonStaffSerializable refItem= 
+            model.CommonStaffs.Where(c => c.FileType == fileType).FirstOrDefault();
+        if (refItem == null) {
+            return result;
+        }
+        if(string.IsNullOrEmpty(refItem.FileName)) {
+            return result;
+        }
+        string fn = refItem.FileName.Replace(".service","Service");
+        StringBuilder sb = new StringBuilder();
+        bool toUpper = true;
+        foreach (char c in fn)
+        {
+            if( c == '-' )
+            {
+                toUpper = true;
+            } else
+            {
+                if (toUpper)
+                {
+                    sb.Append(Char.ToUpper(c));
+                    toUpper = false;
+                }
+                else
+                {
+                    sb.Append(c);
+                }
+            }
+        }
+        return sb.ToString();
+    }
+    string GetModelInterfaceName(ModelViewSerializable model, string fileType) {
+        string result="";
+        if ((model == null) || string.IsNullOrEmpty(fileType)) {
+            return result;
+        }
+        if (model.CommonStaffs == null) {
+            return result;
+        }
+        CommonStaffSerializable refItem= 
+            model.CommonStaffs.Where(c => c.FileType == fileType).FirstOrDefault();
+        if (refItem == null) {
+            return result;
+        }
+        if(string.IsNullOrEmpty(refItem.FileName)) {
+            return result;
+        }
+        string fn = refItem.FileName.Replace(".interface","-interface");
+        StringBuilder sb = new StringBuilder();
+        bool toUpper = true;
+        foreach (char c in fn)
+        {
+            if( c == '-' )
+            {
+                toUpper = true;
+            } else
+            {
+                if (toUpper)
+                {
+                    sb.Append(Char.ToUpper(c));
+                    toUpper = false;
+                }
+                else
+                {
+                    sb.Append(c);
+                }
+            }
+                
+        }
+        return "I"+sb.ToString();
+    }
+    string GetFolderName(ModelViewSerializable model, string refFolder, string currFolder) {
+        string result="./";
+        if ((model == null) || string.IsNullOrEmpty(refFolder) || string.IsNullOrEmpty(currFolder)) {
+            return result;
+        }
+        if (model.CommonStaffs == null) {
+            return result;
+        }
+        CommonStaffSerializable refItem= 
+            model.CommonStaffs.Where(c => c.FileType == refFolder).FirstOrDefault();
+        CommonStaffSerializable curItem= 
+            model.CommonStaffs.Where(c => c.FileType == currFolder).FirstOrDefault();
+        if ((refItem == null) || (curItem == null)) {
+            return result;
+        }
+        string[] refFolders  = new string[] {};
+        if(!string.IsNullOrEmpty(refItem.FileFolder)) {
+            refFolders  = refItem.FileFolder.Split(new string[] { "\\" }, StringSplitOptions.None);
+        }
+        string[] currFolders = new string[]{};
+        if(!string.IsNullOrEmpty(curItem.FileFolder)) {
+            currFolders  = curItem.FileFolder.Split(new string[] { "\\" }, StringSplitOptions.None);
+        }
+        int refLen = refFolders.Length;
+        int currLen = currFolders.Length;
+        int minLen = refLen < currLen ? refLen : currLen;
+        int cnt= 0;
+        for(int i = 0; i < minLen; i++) {
+            if ( !refFolders[i].Equals(currFolders[i], StringComparison.OrdinalIgnoreCase) ) break;
+            cnt++;
+        }
+        if(currLen > cnt) {
+            result += string.Join("", Enumerable.Repeat("../", currLen - cnt));
+        }
+        if(refLen > cnt) {
+            result += string.Join("/", refFolders, cnt, refLen - cnt) + "/";
+        }
+        result += refItem.FileName;
+        return result;
+    }
+
+#>

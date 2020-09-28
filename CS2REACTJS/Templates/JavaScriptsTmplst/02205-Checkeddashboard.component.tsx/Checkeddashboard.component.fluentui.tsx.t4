@@ -1,0 +1,1323 @@
+﻿<#@ template language="C#" HostSpecific="True" Debug="True" #>
+<#@ output extension="tsx" #>
+<#@ assembly name="System.Core" #>
+<#@ import namespace="System" #>
+<#@ import namespace="System.IO" #>
+<#@ import namespace="System.Linq" #>
+<#@ import namespace="System.Collections" #>
+<#@ import namespace="System.Collections.Generic" #>
+<#@ import namespace="System.Text" #>
+<#@ import namespace="CS2REACTJS" #>
+<#@ import namespace="CS2REACTJS.Model" #>
+<#@ import namespace="CS2REACTJS.Model.Serializable" #>
+<#@ parameter type="CS2REACTJS.Model.Serializable.ModelViewSerializable" name="Model" #>
+<#@ parameter type="CS2REACTJS.Model.Serializable.DbContextSerializable" name="Context" #>
+<#
+
+    string checkeddashboardComponentDataModelFolder     = "02205-Checkeddashboard.component.tsx";
+    string checkeddashboardComponentDataModelClassName  = GetModelComponentClassName(Model, checkeddashboardComponentDataModelFolder);
+
+    string checkeddashboardComponentCssClassFolder      = "02205-Checkeddashboard.component.css";
+    string checkeddashboardComponentCssClassName        = GetModelCssClassName(Model, checkeddashboardComponentCssClassFolder);
+
+    string checkeddashboardPropsDataModelFolder         = "02204-Checkeddashboard-props.interface.tsx";
+    string checkeddashboardPropsDataModelClassName      = GetModelInterfaceName(Model, checkeddashboardPropsDataModelFolder);
+
+    string checkeddashboardStateDataModelFolder         = "02203-Checkeddashboard-state.interface.tsx";
+    string checkeddashboardStateDataModelClassName      = GetModelInterfaceName(Model, checkeddashboardStateDataModelFolder);
+
+    string appGlblSettingsServiceFolder                 = "00028-app-glbl-settings.service.tsx";
+    string appGlblSettingsServiceClassName              = GetContextServiceClassName(Context, appGlblSettingsServiceFolder);
+
+    string appTblDefDataModelFolder                     = "00026-app-tbl-def.interface.tsx";
+    string appTblDefDataModelClassName                  = GetContextInterfaceName(Context, appTblDefDataModelFolder);
+
+    string appGlblSettingsContextFolder                 = "00029-app-glbl-settings.context.tsx";
+    string appGlblSettingsContextClassName              = GetContextContextName(Context, appGlblSettingsContextFolder);
+
+    string webServiceFilterDefDataModelFolder           = "00050-web-service-filter-def.interface.tsx";
+    string webServiceFilterDefDataModelClassName        = GetContextInterfaceName(Context, webServiceFilterDefDataModelFolder);
+
+    string webServiceFilterEventDataModelFolder         = "00062-web-service-filter-event.interface.tsx";
+    string webServiceFilterEventDataModelClassName      = GetContextInterfaceName(Context, webServiceFilterEventDataModelFolder);
+
+    string webServiceFilterMenuDataModelFolder          = "00063-web-service-filter-menu.interface.tsx";
+    string webServiceFilterMenuDataModelClassName       = GetContextInterfaceName(Context, webServiceFilterMenuDataModelFolder);
+
+
+
+    string webServiceFilterDataModelFolder              = "00070-web-service-filter.tsx";
+    string webServiceFilterDataModelClassName           = GetContextClassName(Context, webServiceFilterDataModelFolder);
+
+    string columnSelectorItemDataModelFolder            = "00080-column-selector-item.interface.tsx";
+    string columnSelectorItemDataModelClassName         = GetContextInterfaceName(Context, columnSelectorItemDataModelFolder);
+
+    string columnSelectorDlgDataModelFolder             = "00099-column-selector-dlg.tsx";
+    string columnSelectorDlgDataModelClassName          = GetContextClassName(Context, columnSelectorDlgDataModelFolder);
+
+    string tablePaginationDataModelFolder               = "00230-table-pagination.tsx";
+    string tablePaginationDataModelClassName            = GetContextClassName(Context, tablePaginationDataModelFolder);
+
+    string tableheadCellDataModelFolder                 = "00240-table-head-cell.tsx";
+    string tableheadCellDataModelClassName              = GetContextClassName(Context, tableheadCellDataModelFolder);
+
+    string tablebodyCellDataModelFolder                 = "00250-table-body-cell.tsx";
+    string tablebodyCellDataModelClassName              = GetContextClassName(Context, tablebodyCellDataModelFolder);
+
+    string sformPropsDataModelFolder                    = "01419-Sform-props.interface.tsx";
+    string sformPropsDataModelClassName                 = GetModelInterfaceName(Model, sformPropsDataModelFolder);
+    string sformStateDataModelFolder                    = "01418-Sform-state.interface.tsx";
+    string sformStateDataModelClassName                 = GetModelInterfaceName(Model, sformStateDataModelFolder);
+
+
+    string webServiceFilterRsltDataModelFolder          = "00052-web-service-filter-rslt.interface.tsx";
+    string webServiceFilterRsltDataModelClassName       = GetContextInterfaceName(Context, webServiceFilterRsltDataModelFolder);
+
+    string viewInterfaceFolder                          = "01100-.interface.tsx";
+    string viewInterfacePageFolder                      = "01200-Page.interface.tsx";
+    string viewInterfaceFltFolder                       = "01300-Filter.interface.tsx";
+    string viewServiceFolder                            = "01400-.service.tsx";
+    string viewServiceClassName                         = GetServiceClassName(Model, viewServiceFolder);
+
+    string DisplayLabelProperty         = "Name";
+    string DisplayHintProperty      	= "Prompt";
+    string ShortNameLabelProperty       = "ShortName";
+    string currentRowPropName           = "currentRow";                                                  
+    string applyFilterPropName          = "applyFilter";
+    string MatPaginatorPageSize         = "10";
+    string MatPaginatorPageSizeOptions  = "[10, 25, 50, 100]";
+
+    string OperatorSufix        	    = "Oprtr";
+    string formRootService          	= "frmRootSrv";
+    string ShowErrorMethodName          = "showError";
+    string AppSettingServicePropName    = "appGlblSettings";
+
+
+    string GetAllMethodName         	= "getall";
+    string GetWithFilterMethodName  	= "getwithfilter";
+    string GetOneMethodName         	= "getone";
+    string UpdateOneMethodName      	= "updateone";
+    string AddOneMethodName         	= "addone";
+    string DeleteOneMethodName      	= "deleteone";
+    string src2destMethodName       	= "src2dest";
+
+    string selectedRowPropName          = "selectedRow";
+    string DisplayedColumnsProperty     = "displayedColumns";
+
+    string tblColName                   = "colNm";
+    string tblColTitle                  = "colTtl";
+    string tblColSort                   = "colSrt";
+    string tblColFormat                 = "colFrmt";
+    string HiddenFilterPropName         = "hiddenFilter";
+    string ContMenuItemsPropName        = "contMenuItems";
+    string CaptionPropName              = "caption";
+    string OnTableMenuItemMethodName    = "onTableMenuItem";
+
+    string onCheckedMethodName          = "onChecked";
+    string PermissionsPropName          = "permissions";
+    string OnPermissionsMethodName      = "onPermissions";
+    string IsDisabledPropName           = "isDisabled";
+    string MaxHeightPropName            = "maxHeight";
+    string FilterMaxHeightPropName      = "filterMaxHeight";
+    string ShowAddFltItemPropName       = "showAddFltItem";
+    string ShowFilterPropName           = "showFilter";
+    string OnContMenuItemMethodName     = "onContMenuItem";
+
+    string addPrmPropName               = "addPrm";
+    string updPrmPropName               = "updPrm";
+    string delPrmPropName               = "delPrm";
+    string selPrmPropName               = "selPrm";
+    string authorizedPropName           = "authorized";
+
+#>
+
+import React, { Component,CSSProperties } from 'react';
+import {  ProgressIndicator, Checkbox, getTheme }  from '@fluentui/react';
+
+import <#= checkeddashboardPropsDataModelClassName #>  from '<#= GetFolderName(Model, checkeddashboardPropsDataModelFolder, checkeddashboardComponentDataModelFolder)#>';
+import <#= checkeddashboardStateDataModelClassName #>, { <#= GetPermInterfaceName(Model) #> }  from '<#= GetFolderName(Model, checkeddashboardStateDataModelFolder, checkeddashboardComponentDataModelFolder)#>';
+import <#= webServiceFilterRsltDataModelClassName #> from "<#= GetCommonFolderName(Model, Context, webServiceFilterRsltDataModelFolder, checkeddashboardComponentDataModelFolder) #>";
+import <#= viewServiceClassName #>  from '<#= GetFolderName(Model, viewServiceFolder, checkeddashboardComponentDataModelFolder)#>';
+import <#= webServiceFilterDataModelClassName #>  from '<#= GetCommonFolderName(Model, Context, webServiceFilterDataModelFolder, checkeddashboardComponentDataModelFolder) #>';
+import <#= webServiceFilterDefDataModelClassName #> from "<#= GetCommonFolderName(Model, Context, webServiceFilterDefDataModelFolder, checkeddashboardComponentDataModelFolder) #>";
+import <#= GetInterfaceName(Model) #>  from '<#= GetFolderName(Model, viewInterfaceFolder, checkeddashboardComponentDataModelFolder) #>';
+import <#= GetInterfacePageName(Model) #>  from '<#= GetFolderName(Model, viewInterfacePageFolder, checkeddashboardComponentDataModelFolder) #>';
+import <#= GetInterfaceFilterName(Model) #>  from '<#= GetFolderName(Model, viewInterfaceFltFolder, checkeddashboardComponentDataModelFolder) #>';
+import <#= appGlblSettingsContextClassName #> from '<#= GetCommonFolderName(Model, Context, appGlblSettingsContextFolder, checkeddashboardComponentDataModelFolder) #>';
+import <#= appTblDefDataModelClassName #> from "<#= GetCommonFolderName(Model, Context, appTblDefDataModelFolder, checkeddashboardComponentDataModelFolder) #>";
+import <#= webServiceFilterMenuDataModelClassName #> from "<#= GetCommonFolderName(Model, Context, webServiceFilterMenuDataModelFolder, checkeddashboardComponentDataModelFolder) #>";
+import '<#= GetFolderName(Model, checkeddashboardComponentCssClassFolder, checkeddashboardComponentDataModelFolder)#>.css';
+import <#= appGlblSettingsServiceClassName #> from "<#= GetCommonFolderName(Model, Context, appGlblSettingsServiceFolder, checkeddashboardComponentDataModelFolder) #>";
+
+import <#= tableheadCellDataModelClassName #> from "<#= GetCommonFolderName(Model, Context, tableheadCellDataModelFolder, sformComponentDataModelFolder) #>";
+import <#= tablebodyCellDataModelClassName #> from "<#= GetCommonFolderName(Model, Context, tablebodyCellDataModelFolder, sformComponentDataModelFolder) #>";
+import <#= tablePaginationDataModelClassName #> from "<#= GetCommonFolderName(Model, Context, tablePaginationDataModelFolder, sformComponentDataModelFolder) #>";
+
+const scheme = getTheme();
+
+
+export default class <#= checkeddashboardComponentDataModelClassName #> extends Component<<#= checkeddashboardPropsDataModelClassName #>, <#= checkeddashboardStateDataModelClassName #>> {
+    static contextType = <#= appGlblSettingsContextClassName #>;
+    visuallyHidden = {
+      border: 0,
+      clip: 'rect(0 0 0 0)',
+      height: 1,
+      margin: -1,
+      overflow: 'hidden',
+      padding: 0,
+      position: 'absolute',
+      top: 20,
+      width: 1,
+    };
+    colDefs: Array<<#= appTblDefDataModelClassName #>> = [
+<#
+    {
+        bool isNotFirst = false;
+        foreach(ModelViewUIListPropertySerializable modelViewUIListPropertySerializable in Model.UIListProperties) {
+            if (!modelViewUIListPropertySerializable.IsShownInView) {
+                continue;
+            }
+#>
+           <# if (isNotFirst) { #>, <# } #> {
+            <#= tblColName #>: '<#= GetTypeScriptPropertyNameEx2(modelViewUIListPropertySerializable, Model) #>', 
+            <#= tblColTitle #>: '<#= GetDisplayAttributeValueString2(modelViewUIListPropertySerializable, Model, ShortNameLabelProperty) #>',  
+            <#= tblColSort #>: <#= matSortHeaderIfNeeded(modelViewUIListPropertySerializable, Model) #>, 
+            <#= tblColFormat #>: '<#= GetDataPipeEx2(modelViewUIListPropertySerializable, Model) #>' }
+<#
+           isNotFirst = true;
+        }
+    }
+#>
+    ];
+    public static defaultFltrs: Array<<#= webServiceFilterDefDataModelClassName #>> = [
+<#
+    {
+        bool isNotFirst = false;
+        foreach(ModelViewPropertyOfVwSerializable modelViewPropertyOfVwSerializable in Model.ScalarProperties) {
+            if (modelViewPropertyOfVwSerializable.IsUsedByfilter) {
+#>
+           <# if (isNotFirst) { #>, <# } #> {fltrName: '<#= GetTypeScriptPropertyName(modelViewPropertyOfVwSerializable, Model) #>', fltrCaption: '<#= GetDisplayAttributeValueString(modelViewPropertyOfVwSerializable, Model, DisplayLabelProperty) #>',  fltrDataType: '<#= GetCCharpDatatype(modelViewPropertyOfVwSerializable, Model) #>', fltrMaxLen: <#= GetMaxLen(modelViewPropertyOfVwSerializable, Model) #>, fltrMin: <#= GetMinVal(modelViewPropertyOfVwSerializable, Model) #>, fltrMax: <#= GetMaxVal(modelViewPropertyOfVwSerializable, Model) #> }
+<#
+                isNotFirst = true;
+            }
+        }
+    }
+#>
+        ];
+
+    public static getFilterDefs(hiddenFlt: Array<<#= webServiceFilterRsltDataModelClassName #>>|null|undefined) : Array<<#= webServiceFilterDefDataModelClassName #>> {
+        if(typeof hiddenFlt === 'undefined')
+            return <#= checkeddashboardComponentDataModelClassName #>.defaultFltrs;
+        if(hiddenFlt === null)
+            return <#= checkeddashboardComponentDataModelClassName #>.defaultFltrs;
+        if(hiddenFlt.length < 1)
+            return <#= checkeddashboardComponentDataModelClassName #>.defaultFltrs;
+        let rslt: Array<<#= webServiceFilterDefDataModelClassName #>> = [];
+<#
+        foreach(ModelViewPropertyOfVwSerializable modelViewPropertyOfVwSerializable in Model.ScalarProperties) {
+            if (modelViewPropertyOfVwSerializable.IsUsedByfilter &&  string.IsNullOrEmpty(modelViewPropertyOfVwSerializable.ForeignKeyNameChain)) {
+#>
+        if( ! hiddenFlt.some(v => v.fltrName === '<#= GetTypeScriptPropertyName(modelViewPropertyOfVwSerializable, Model) #>') ) {
+            rslt.push( {fltrName: '<#= GetTypeScriptPropertyName(modelViewPropertyOfVwSerializable, Model)#>', fltrCaption: '<#= GetDisplayAttributeValueString(modelViewPropertyOfVwSerializable, Model, DisplayLabelProperty) #>',  fltrDataType: '<#= GetCCharpDatatype(modelViewPropertyOfVwSerializable, Model) #>', fltrMaxLen: <#= GetMaxLen(modelViewPropertyOfVwSerializable, Model) #>, fltrMin: <#= GetMinVal(modelViewPropertyOfVwSerializable, Model) #>, fltrMax: <#= GetMaxVal(modelViewPropertyOfVwSerializable, Model) #> } );
+        }
+<#
+            }
+        }
+#>
+
+<#
+    {
+        bool hasForeignKeys = Model.ForeignKeys != null;
+        bool isNotDescl = true;
+        if(hasForeignKeys) {
+            hasForeignKeys = Model.ForeignKeys.Count > 0;
+        }
+        if (hasForeignKeys) {
+            foreach(ModelViewForeignKeySerializable modelViewForeignKeySerializable in Model.ForeignKeys) {
+                List<ModelViewPropertyOfVwSerializable> fKprops = GetPropsByForeignKey(Model, modelViewForeignKeySerializable);
+                if (fKprops.Count < 1) {
+                    foreach(ModelViewPropertyOfVwSerializable modelViewPropertyOfVwSerializable in Model.ScalarProperties) {
+                        if (modelViewPropertyOfVwSerializable.IsUsedByfilter &&  (!string.IsNullOrEmpty(modelViewPropertyOfVwSerializable.ForeignKeyNameChain))) {
+                            if ( modelViewPropertyOfVwSerializable.ForeignKeyNameChain.StartsWith(modelViewForeignKeySerializable.NavigationName + ".") || 
+                                (modelViewPropertyOfVwSerializable.ForeignKeyNameChain == modelViewForeignKeySerializable.NavigationName) ) {
+#>
+        if( ! hiddenFlt.some(v => v.fltrName === '<#= GetTypeScriptPropertyName(modelViewPropertyOfVwSerializable, Model) #>') ) {
+            rslt.push({fltrName: '<#= GetTypeScriptPropertyName(modelViewPropertyOfVwSerializable, Model)#>', fltrCaption: '<#= GetDisplayAttributeValueString(modelViewPropertyOfVwSerializable, Model, DisplayLabelProperty) #>',  fltrDataType: '<#= GetCCharpDatatype(modelViewPropertyOfVwSerializable, Model) #>', fltrMaxLen: <#= GetMaxLen(modelViewPropertyOfVwSerializable, Model) #>, fltrMin: <#= GetMinVal(modelViewPropertyOfVwSerializable, Model) #>, fltrMax: <#= GetMaxVal(modelViewPropertyOfVwSerializable, Model) #> });
+        }
+<#
+                            }
+                        }
+                    }
+                } else {
+                    if(isNotDescl) {
+#>
+        let isDsbl: boolean = true;
+<#
+                        isNotDescl = false;
+                    } else {
+#>
+        isDsbl = true;
+<#
+                    }
+                    foreach(ModelViewPropertyOfVwSerializable fKprop in fKprops) {
+#>
+        isDsbl = isDsbl && hiddenFlt.some(v => v.fltrName === '<#= GetTypeScriptPropertyName(fKprop, Model) #>');
+<#
+                    }
+#>
+        if(!isDsbl) {
+<#
+                    foreach(ModelViewPropertyOfVwSerializable modelViewPropertyOfVwSerializable in Model.ScalarProperties) {
+                        if (modelViewPropertyOfVwSerializable.IsUsedByfilter &&  (!string.IsNullOrEmpty(modelViewPropertyOfVwSerializable.ForeignKeyNameChain))) {
+                            if ( modelViewPropertyOfVwSerializable.ForeignKeyNameChain.StartsWith(modelViewForeignKeySerializable.NavigationName + ".") || 
+                                (modelViewPropertyOfVwSerializable.ForeignKeyNameChain == modelViewForeignKeySerializable.NavigationName) ) {
+#>
+            if( ! hiddenFlt.some(v => v.fltrName === '<#= GetTypeScriptPropertyName(modelViewPropertyOfVwSerializable, Model) #>') ) {
+                rslt.push({fltrName: '<#= GetTypeScriptPropertyName(modelViewPropertyOfVwSerializable, Model)#>', fltrCaption: '<#= GetDisplayAttributeValueString(modelViewPropertyOfVwSerializable, Model, DisplayLabelProperty) #>',  fltrDataType: '<#= GetCCharpDatatype(modelViewPropertyOfVwSerializable, Model) #>', fltrMaxLen: <#= GetMaxLen(modelViewPropertyOfVwSerializable, Model) #>, fltrMin: <#= GetMinVal(modelViewPropertyOfVwSerializable, Model) #>, fltrMax: <#= GetMaxVal(modelViewPropertyOfVwSerializable, Model) #> });
+            }
+<#
+                            }
+                        }
+                    }
+#>
+
+        }
+<#
+                }
+            }
+        } 
+    }
+#>
+        return rslt;
+    }
+
+    constructor(props: <#= checkeddashboardPropsDataModelClassName #>) {
+        super(props);
+        this.state = {
+            inQuery: true,
+
+            matPaginatorLen: 0, 
+            matPaginatorPageSize: <#= MatPaginatorPageSize #>, 
+            matPaginatorCurrentPage: 0,
+
+            currentSortColumn: null,
+            currentSortdirection: 'asc',
+            dataSource: [],
+            <#= DisplayedColumnsProperty #>: [ <#= GetDisplayedColumns(Model) #>],
+            colToSel: [
+<#
+    {
+        bool isNotFirst = false;
+        bool isNotBreaking = true;
+        foreach(ModelViewUIListPropertySerializable modelViewUIListPropertySerializable in Model.UIListProperties) {
+            if (modelViewUIListPropertySerializable.IsShownInView) {
+                if (modelViewUIListPropertySerializable.IsNewLineAfter) {
+                    isNotBreaking = false;
+                }
+#>
+           <# if (isNotFirst) { #>, <# } #> { name: '<#= GetTypeScriptPropertyNameEx2(modelViewUIListPropertySerializable, Model) #>', caption: '<#= GetDisplayAttributeValueString2(modelViewUIListPropertySerializable, Model, ShortNameLabelProperty) #>',  checked: <#= isNotBreaking ? "true" : "false" #> }
+<#
+                isNotFirst = true; 
+            }
+        }
+    }
+#>
+            ],
+            filterDefs: <#= checkeddashboardComponentDataModelClassName #>.getFilterDefs(null),
+            currentFilter: [],
+            cachedhiddenFlt: [],
+            <#= PermissionsPropName #>: [],
+        }
+        this.onApplyFilterClicked=this.onApplyFilterClicked.bind(this);
+        this.handleChangeRowsPerPage = this.handleChangeRowsPerPage.bind(this);
+        this.handleChangePage = this.handleChangePage.bind(this);
+        this.onFilter = this.onFilter.bind(this);
+        this.onSort = this.onSort.bind(this);
+        this.<#= onCheckedMethodName #> = this.<#= onCheckedMethodName #>.bind(this);
+        
+    }
+    static getDerivedStateFromProps(nwprps: <#= checkeddashboardPropsDataModelClassName #>, oldstt: <#= checkeddashboardStateDataModelClassName #>): any {
+        let cPermissions: Array<number> = [];
+        if(nwprps.<#= PermissionsPropName #>) cPermissions = nwprps.<#= PermissionsPropName #>;
+
+        let chiddenFlt: Array<<#= webServiceFilterRsltDataModelClassName #>> = [];
+        if(nwprps.<#= HiddenFilterPropName #>)  chiddenFlt = nwprps.<#= HiddenFilterPropName #>;
+        let cflt: boolean = (chiddenFlt !== oldstt.cachedhiddenFlt) && (oldstt.cachedhiddenFlt.length > 0);
+        cflt = cflt ? cflt : oldstt.cachedhiddenFlt.length !== chiddenFlt.length;
+        if (!cflt) {
+            const eq: boolean = <#= checkeddashboardComponentDataModelClassName #>.cmpPerms(oldstt.<#= PermissionsPropName #>, cPermissions);
+            if(!eq) {
+                return  {
+                    <#= PermissionsPropName #>: cPermissions,
+                    dataSource: <#= checkeddashboardComponentDataModelClassName #>.updatePermissions(oldstt.dataSource, cPermissions),
+                }
+            }
+            return null;
+        }
+        return  {
+            inQuery: true,
+            currentFilter: chiddenFlt,
+            matPaginatorCurrentPage: 0,
+            dataSource: [],
+            filterDefs: <#= checkeddashboardComponentDataModelClassName #>.getFilterDefs(chiddenFlt),
+            cachedhiddenFlt: chiddenFlt,
+            <#= PermissionsPropName #>: cPermissions,
+        }
+    }
+    static cmpPerms(perms1: Array<number>, perms2: Array<number>): boolean {
+        if(perms1) {
+            if(perms2) {
+                if(Array.isArray(perms1) && Array.isArray(perms2)) {    
+                    let l: number = perms1.length;
+                    if(l === perms2.length) {
+                        for (var i = 0; i < l; i++) {
+                            if(perms1[i] !== perms2[i]) return false;
+                        }
+                        return true;
+                    }
+                }
+            }
+        }
+        return false;
+    }
+    static updatePermissions(ds: Array<<#= GetInterfaceName(Model) #>>, perms: Array<number>): Array<<#= GetPermInterfaceName(Model) #>> {
+        let r: Array<<#= GetPermInterfaceName(Model) #>> = [];
+        if(ds) {
+            if(perms) {
+                if(Array.isArray(ds) && Array.isArray(perms)) {
+                    let lng: number = perms.length;
+                    ds.forEach(e => {
+                        let rid: number = Math.floor(e.dashboardPk/31);
+                        if(rid < lng-14) {
+                            let sft: number = (e.dashboardPk - rid * 31);
+                            let rslt = (perms[rid+14]) >> sft;
+                            r.push({ ...e, <#= authorizedPropName #>: ((rslt & 1) === 1) });
+                        } else {
+                            r.push({ ...e, <#= authorizedPropName #>: false });
+                        }
+                    });
+                }
+            }
+        }
+        return r;
+    }
+    componentDidMount() {
+        if (this.state.inQuery) this.onFilter();
+    }
+    componentDidUpdate() {
+        if (this.state.inQuery) this.onFilter();
+    }
+    onApplyFilterClicked(r: Array<<#= webServiceFilterRsltDataModelClassName #>>): void {
+        this.setState( { currentFilter: r, inQuery: true } );
+    }
+
+
+    onFilter() {
+        let flt: <#= GetInterfaceFilterName(Model) #> = { page: this.state.matPaginatorCurrentPage, pagesize: this.state.matPaginatorPageSize };
+        if (!(typeof this.state.currentSortColumn === 'undefined')) {
+            if (!(this.state.currentSortColumn === null)) {
+                if(!(this.state.currentSortColumn === '')) {
+                    flt.orderby = [];
+                    let asc: string = '';
+                    if (!(typeof this.state.currentSortdirection === 'undefined')) {
+                        if (!(this.state.currentSortdirection === null)) {
+                            if(this.state.currentSortdirection === 'desc') {
+                                asc = '-';
+                            }
+                        }
+                    }
+                    flt.orderby.push(asc + this.state.currentSortColumn);
+                }
+            }
+        }
+        if (Array.isArray(this.state.currentFilter)) {
+            this.state.currentFilter.forEach(e => {
+                let opNm =  e.fltrName + '<#= OperatorSufix #>';
+                // @ts-ignore
+                if(typeof flt[e.fltrName] === 'undefined') {
+                    // @ts-ignore
+                    flt[e.fltrName] = [];
+                    // @ts-ignore
+                    flt[opNm] = [];
+                }
+                // @ts-ignore
+                flt[e.fltrName].push(e.fltrValue);
+                // @ts-ignore
+                flt[opNm].push(e.fltrOperator);
+            });
+        }
+        
+        <#= viewServiceClassName #>.<#= GetWithFilterMethodName #>(this.context, flt)
+            .then((res: any) => res.json())
+            .then((v: <#= GetInterfacePageName(Model) #>) => {
+                let pl: number = 0;
+                if (!(typeof v.total === 'undefined')) {
+                    if(!(v.total === null)) {
+                        pl = v.total;
+                    }
+                }
+                let rslt: Array<<#= GetInterfaceName(Model) #>> = [];
+                if (!(typeof v.items === 'undefined')) {
+                    if(!(v.items === null)) {
+                        rslt = v.items;
+                    }
+                }
+                let pg: number = 0;
+                if (!(typeof v.page === 'undefined')) {
+                    if(!(v.page === null)) {
+                        pg = v.page;
+                    }
+                }
+                let rsltEx: Array<<#= GetPermInterfaceName(Model) #>> = <#= checkeddashboardComponentDataModelClassName #>.updatePermissions(rslt, this.state.<#= PermissionsPropName #>);
+                this.setState( { inQuery: false, dataSource: rsltEx, matPaginatorLen: pl, matPaginatorCurrentPage: pg } );
+            },
+            (error: any) => {
+                this.setState( { inQuery: false } );
+                this.context.<#= ShowErrorMethodName #>('http', error)
+            });
+    }
+    handleChangeRowsPerPage = (event: any, rows: number) => {
+        this.setState( { matPaginatorCurrentPage: 0, inQuery: true,  matPaginatorPageSize: rows } );
+    };
+    handleChangePage = (event: any, newPage: number) => {
+        this.setState( { inQuery: true,  matPaginatorCurrentPage: newPage } );
+    };
+    onSort(clNm: string, newSortDir: string) {
+        this.setState( { inQuery: true,  currentSortdirection: newSortDir, currentSortColumn: clNm} );
+    }
+
+    <#= onCheckedMethodName #>(v: React.FormEvent<HTMLElement>, newVal: boolean, dashboardPk: number) {
+        let rid: number = Math.floor(dashboardPk/31);
+        let perms = this.state.<#= PermissionsPropName #>.slice(0);
+        let lng: number = perms.length;
+        if(rid < lng-14) {
+            let sft: number = (dashboardPk - rid * 31);
+            if(newVal) {
+                perms[rid+14] = perms[rid+14] | (1 << sft)
+            } else {
+                perms[rid+14] = ~((~(perms[rid+14])) | (1 << sft));
+            }
+            if(this.props.<#= OnPermissionsMethodName #>) this.props.<#= OnPermissionsMethodName #>(perms);
+        } 
+    }
+
+
+    render () {
+        let contMnItms: Array<<#= webServiceFilterMenuDataModelClassName #>> = [];
+        if (this.props.<#= ContMenuItemsPropName #>) {
+            contMnItms = this.props.<#= ContMenuItemsPropName #> as Array<<#= webServiceFilterMenuDataModelClassName #>>;
+        }
+        let stl:  {[k: string]: any} = {};
+        if (this.props.maxHeight) {
+            let mht: number = 
+                this.props.maxHeight * <#= appGlblSettingsServiceClassName #>.tableHeightFactor + <#= appGlblSettingsServiceClassName #>.tableHeightAddition;
+            stl['maxHeight'] = mht + 'px';
+            stl['overflow'] = 'auto';
+        }
+
+        return (
+        <div>
+
+            <<#= webServiceFilterDataModelClassName #>
+                filterMaxHeight={this.props.<#= FilterMaxHeightPropName #>}
+                fltrs={this.state.filterDefs}
+                caption={this.props.<#= CaptionPropName #>}
+                showBackBtn={false}
+                // onBackBtn={this.props.onBackBtn}
+                showAddFltItem={this.props.<#= ShowAddFltItemPropName #>}
+                showFilter={this.props.<#= ShowFilterPropName #>}
+                <#= HiddenFilterPropName #>={this.props.<#= HiddenFilterPropName #>}
+                contMenuItems={contMnItms}
+                onContMenuItem={this.props.<#= OnContMenuItemMethodName #>}
+                onApplyFilterClicked={this.onApplyFilterClicked}
+            />
+            <div style={{visibility: this.state.inQuery ? 'visible': 'hidden'}} >
+                <ProgressIndicator barHeight={3} />
+            </div>
+            <div className="ngb-tbl-outer-container">  
+                <div  className="ngb-tbl-container" style={stl as CSSProperties}> 
+                    <table className="tblwidthclss" style={{border:'1px solid', borderColor: scheme.semanticColors.variantBorder, borderCollapse: 'collapse'}}>
+                        <thead style={{border:'inherit', borderCollapse: 'inherit'}}>
+                            <tr style={{border:'inherit', borderCollapse: 'inherit'}}>
+                                    {
+                                        this.state.<#= DisplayedColumnsProperty #>.map( (c) => {
+                                            const i: number = this.colDefs.findIndex(cd => cd.<#= tblColName #> === c);
+                                            if(this.colDefs[i].<#= tblColSort #>) {
+                                                return (
+                                                    <<#= tableheadCellDataModelClassName #> className="stickytopclss" colkey={c} key={c} 
+                                                        sortDir={this.state.currentSortColumn === c ? this.state.currentSortdirection as string : ''} 
+                                                        sortable={this.colDefs[i].<#= tblColSort #>}
+                                                        onSort={(s, k, sd)=>this.onSort(k, sd)} >
+                                                        { this.colDefs[i].<#= tblColTitle #> }
+                                                    </<#= tableheadCellDataModelClassName #>>
+                                                )
+                                            } 
+                                            return (
+                                                <<#= tableheadCellDataModelClassName #> className="stickytopclss" key={c}>
+                                                    { this.colDefs[i].<#= tblColTitle #> }
+                                                </<#= tableheadCellDataModelClassName #>>
+                                            )
+                                        })
+                                    }
+                                    <<#= tableheadCellDataModelClassName #> className="stickylasttopclss">Authorized</<#= tableheadCellDataModelClassName #>>
+                            </tr>
+                        </thead>
+                        <tbody style={{border:'inherit', borderCollapse: 'inherit'}} >
+                            {this.state.dataSource.map((row, i) => (
+                                <tr key={i} style={{border:'inherit', borderCollapse: 'inherit'}}>
+                                <TableRow key={i}>
+                                    {
+                                        this.state.<#= DisplayedColumnsProperty #>.map(c => {
+                                            // @ts-ignore
+                                            return (<<#= tablebodyCellDataModelClassName #> key={c}>{row[c]}</<#= tablebodyCellDataModelClassName #>>)
+                                        })
+                                    }
+                                    <<#= tablebodyCellDataModelClassName #> className="stickylastclss">
+                                        <Checkbox label='' checked={ row.<#= authorizedPropName #> } disabled={ this.props.<#= IsDisabledPropName #> } 
+                                                  onChange={ (event, checked)=>this.<#= onCheckedMethodName #>(event, checked, row.dashboardPk) }/>
+                                    </<#= tablebodyCellDataModelClassName #>>
+                                </tr>
+                            ))}                    
+                        </tbody>
+                    </table>
+                </div> 
+            </div> 
+            <div style={{margin:5}}>
+                        <<#= tablePaginationDataModelClassName #>
+                          rowsPerPageOptions={<#= MatPaginatorPageSizeOptions #>}
+                          count={this.state.matPaginatorLen}
+                          rowsPerPage={this.state.matPaginatorPageSize}
+                          page={this.state.matPaginatorCurrentPage}
+                          rowsPerPageCaption='Rows per page'
+                          onChangePage={ this.handleChangePage }
+                          onChangeRowsPerPage={ this.handleChangeRowsPerPage }
+                          backIconButtonText='Previous page'
+                          nextIconButtonText='Next page'
+                        />
+            </div>
+        </div>
+        );
+    }
+}
+
+
+
+<#+
+
+
+    string GetInterfaceName(ModelViewSerializable model) {
+        return "I"+model.ViewName;
+    }
+    string GetPermInterfaceName(ModelViewSerializable model) {
+        return "Iperm"+model.ViewName;
+    }
+    string GetInterfacePageName(ModelViewSerializable model) {
+        return "I"+model.PageViewName;
+    }
+    string GetInterfaceFilterName(ModelViewSerializable model) {
+        return "I"+model.ViewName + "Filter";
+    }
+
+    string GetContextContextName(DbContextSerializable context, string fileType) {
+        string result="";
+        if ((context == null) || string.IsNullOrEmpty(fileType)) {
+            return result;
+        }
+        if (context.CommonStaffs == null) {
+            return result;
+        }
+        CommonStaffSerializable refItem= 
+            context.CommonStaffs.Where(c => c.FileType == fileType).FirstOrDefault();
+        if (refItem == null) {
+            return result;
+        }
+        if(string.IsNullOrEmpty(refItem.FileName)) {
+            return result;
+        }
+        string fn = refItem.FileName.Replace(".context","-context");
+        StringBuilder sb = new StringBuilder();
+        bool toUpper = true;
+        foreach (char c in fn)
+        {
+            if( c == '-' )
+            {
+                toUpper = true;
+            } else
+            {
+                if (toUpper)
+                {
+                    sb.Append(Char.ToUpper(c));
+                    toUpper = false;
+                }
+                else
+                {
+                    sb.Append(c);
+                }
+            }
+                
+        }
+        return sb.ToString();
+    }
+
+    string GetCommonFolderName(ModelViewSerializable model, DbContextSerializable context,  string refFolder, string currFolder) {
+        string result="./";
+        if ((model == null) || (context == null) || string.IsNullOrEmpty(refFolder) || string.IsNullOrEmpty(currFolder)) {
+            return result;
+        }
+        if ((model.CommonStaffs == null) || (context.CommonStaffs == null)) {
+            return result;
+        }
+        CommonStaffSerializable refItem= 
+            context.CommonStaffs.Where(c => c.FileType == refFolder).FirstOrDefault();
+        CommonStaffSerializable curItem= 
+            model.CommonStaffs.Where(c => c.FileType == currFolder).FirstOrDefault();
+        if ((refItem == null) || (curItem == null)) {
+            return result;
+        }
+        string[] refFolders  = new string[] {};
+        if(!string.IsNullOrEmpty(refItem.FileFolder)) {
+            refFolders  = refItem.FileFolder.Split(new string[] { "\\" }, StringSplitOptions.None);
+        }
+        string[] currFolders = new string[]{};
+        if(!string.IsNullOrEmpty(curItem.FileFolder)) {
+            currFolders  = curItem.FileFolder.Split(new string[] { "\\" }, StringSplitOptions.None);
+        }
+        int refLen = refFolders.Length;
+        int currLen = currFolders.Length;
+        int minLen = refLen < currLen ? refLen : currLen;
+        int cnt= 0;
+        for(int i = 0; i < minLen; i++) {
+            if ( !refFolders[i].Equals(currFolders[i], StringComparison.OrdinalIgnoreCase) ) break;
+            cnt++;
+        }
+        if(currLen > cnt) {
+            result += string.Join("",Enumerable.Repeat("../", currLen - cnt));
+        }
+        if(refLen > cnt) {
+            result += string.Join("/", refFolders, cnt, refLen - cnt) + "/";
+        }
+        result += refItem.FileName;
+        return result;
+    }
+
+    string GetServiceClassName(ModelViewSerializable model, string fileType) {
+        string result="";
+        if ((model == null) || string.IsNullOrEmpty(fileType) ) {
+            return result;
+        }
+        if (model.CommonStaffs == null) {
+            return result;
+        }
+        CommonStaffSerializable refItem= 
+            model.CommonStaffs.Where(c => c.FileType == fileType).FirstOrDefault();
+        if (refItem == null) {
+            return result;
+        }
+        if(string.IsNullOrEmpty(refItem.FileName)) {
+            return result;
+        }
+        string fn = refItem.FileName.Replace(".service","-service");
+        StringBuilder sb = new StringBuilder();
+        bool toUpper = true;
+        foreach (char c in fn)
+        {
+            if( c == '-' )
+            {
+                toUpper = true;
+            } else
+            {
+                if (toUpper)
+                {
+                    sb.Append(Char.ToUpper(c));
+                    toUpper = false;
+                }
+                else
+                {
+                    sb.Append(c);
+                }
+            }
+        }
+        return sb.ToString();
+    }
+    string GetContextServiceClassName(DbContextSerializable context, string fileType) {
+        string result="";
+        if ((context == null) || string.IsNullOrEmpty(fileType) ) {
+            return result;
+        }
+        if (context.CommonStaffs == null) {
+            return result;
+        }
+        CommonStaffSerializable refItem= 
+            context.CommonStaffs.Where(c => c.FileType == fileType).FirstOrDefault();
+        if (refItem == null) {
+            return result;
+        }
+        if(string.IsNullOrEmpty(refItem.FileName)) {
+            return result;
+        }
+        string fn = refItem.FileName.Replace(".service","-service");
+        StringBuilder sb = new StringBuilder();
+        bool toUpper = true;
+        foreach (char c in fn)
+        {
+            if( c == '-' )
+            {
+                toUpper = true;
+            } else
+            {
+                if (toUpper)
+                {
+                    sb.Append(Char.ToUpper(c));
+                    toUpper = false;
+                }
+                else
+                {
+                    sb.Append(c);
+                }
+            }
+        }
+        return sb.ToString();
+    }
+
+    string GetModelInterfaceName(ModelViewSerializable model, string fileType) {
+        string result="";
+        if ((model == null) || string.IsNullOrEmpty(fileType)) {
+            return result;
+        }
+        if (model.CommonStaffs == null) {
+            return result;
+        }
+        CommonStaffSerializable refItem= 
+            model.CommonStaffs.Where(c => c.FileType == fileType).FirstOrDefault();
+        if (refItem == null) {
+            return result;
+        }
+        if(string.IsNullOrEmpty(refItem.FileName)) {
+            return result;
+        }
+        string fn = refItem.FileName.Replace(".interface","-interface");
+        StringBuilder sb = new StringBuilder();
+        bool toUpper = true;
+        foreach (char c in fn)
+        {
+            if( c == '-' )
+            {
+                toUpper = true;
+            } else
+            {
+                if (toUpper)
+                {
+                    sb.Append(Char.ToUpper(c));
+                    toUpper = false;
+                }
+                else
+                {
+                    sb.Append(c);
+                }
+            }
+                
+        }
+        return "I"+sb.ToString();
+    }
+    string GetModelComponentClassName(ModelViewSerializable model, string fileType) {
+        string result="";
+        if ((model == null) || string.IsNullOrEmpty(fileType) ) {
+            return result;
+        }
+        if (model.CommonStaffs == null) {
+            return result;
+        }
+        CommonStaffSerializable refItem= 
+            model.CommonStaffs.Where(c => c.FileType == fileType).FirstOrDefault();
+        if (refItem == null) {
+            return result;
+        }
+        if(string.IsNullOrEmpty(refItem.FileName)) {
+            return result;
+        }
+        string fn = refItem.FileName.Replace(".component","-component");
+        StringBuilder sb = new StringBuilder();
+        bool toUpper = true;
+        foreach (char c in fn)
+        {
+            if( c == '-' )
+            {
+                toUpper = true;
+            } else
+            {
+                if (toUpper)
+                {
+                    sb.Append(Char.ToUpper(c));
+                    toUpper = false;
+                }
+                else
+                {
+                    sb.Append(c);
+                }
+            }
+        }
+        return sb.ToString();
+    }
+    string GetFolderName(ModelViewSerializable model, string refFolder, string currFolder) {
+        string result="./";
+        if ((model == null) || string.IsNullOrEmpty(refFolder) || string.IsNullOrEmpty(currFolder)) {
+            return result;
+        }
+        if (model.CommonStaffs == null) {
+            return result;
+        }
+        CommonStaffSerializable refItem= 
+            model.CommonStaffs.Where(c => c.FileType == refFolder).FirstOrDefault();
+        CommonStaffSerializable curItem= 
+            model.CommonStaffs.Where(c => c.FileType == currFolder).FirstOrDefault();
+        if ((refItem == null) || (curItem == null)) {
+            return result;
+        }
+        string[] refFolders  = new string[] {};
+        if(!string.IsNullOrEmpty(refItem.FileFolder)) {
+            refFolders  = refItem.FileFolder.Split(new string[] { "\\" }, StringSplitOptions.None);
+        }
+        string[] currFolders = new string[]{};
+        if(!string.IsNullOrEmpty(curItem.FileFolder)) {
+            currFolders  = curItem.FileFolder.Split(new string[] { "\\" }, StringSplitOptions.None);
+        }
+        int refLen = refFolders.Length;
+        int currLen = currFolders.Length;
+        int minLen = refLen < currLen ? refLen : currLen;
+        int cnt= 0;
+        for(int i = 0; i < minLen; i++) {
+            if ( !refFolders[i].Equals(currFolders[i], StringComparison.OrdinalIgnoreCase) ) break;
+            cnt++;
+        }
+        if(currLen > cnt) {
+            result += string.Join("",Enumerable.Repeat("../", currLen - cnt));
+        }
+        if(refLen > cnt) {
+            result += string.Join("/", refFolders, cnt, refLen - cnt) + "/";
+        }
+        result += refItem.FileName;
+        return result;
+    }
+    string GetContextInterfaceName(DbContextSerializable context, string fileType) {
+        string result="";
+        if ((context == null) || string.IsNullOrEmpty(fileType)) {
+            return result;
+        }
+        if (context.CommonStaffs == null) {
+            return result;
+        }
+        CommonStaffSerializable refItem= 
+            context.CommonStaffs.Where(c => c.FileType == fileType).FirstOrDefault();
+        if (refItem == null) {
+            return result;
+        }
+        if(string.IsNullOrEmpty(refItem.FileName)) {
+            return result;
+        }
+        string fn = refItem.FileName.Replace(".interface","-interface");
+        StringBuilder sb = new StringBuilder();
+        bool toUpper = true;
+        foreach (char c in fn)
+        {
+            if( c == '-' )
+            {
+                toUpper = true;
+            } else
+            {
+                if (toUpper)
+                {
+                    sb.Append(Char.ToUpper(c));
+                    toUpper = false;
+                }
+                else
+                {
+                    sb.Append(c);
+                }
+            }
+                
+        }
+        return "I"+sb.ToString();
+    }
+    string GetContextClassName(DbContextSerializable context, string fileType) {
+        string result="";
+        if ((context == null) || string.IsNullOrEmpty(fileType)) {
+            return result;
+        }
+        if (context.CommonStaffs == null) {
+            return result;
+        }
+        CommonStaffSerializable refItem= 
+            context.CommonStaffs.Where(c => c.FileType == fileType).FirstOrDefault();
+        if (refItem == null) {
+            return result;
+        }
+        if(string.IsNullOrEmpty(refItem.FileName)) {
+            return result;
+        }
+        string fn = refItem.FileName;
+        StringBuilder sb = new StringBuilder();
+        bool toUpper = true;
+        foreach (char c in fn)
+        {
+            if( c == '-' )
+            {
+                toUpper = true;
+            } else
+            {
+                if (toUpper)
+                {
+                    sb.Append(Char.ToUpper(c));
+                    toUpper = false;
+                }
+                else
+                {
+                    sb.Append(c);
+                }
+            }
+                
+        }
+        return sb.ToString();
+    }
+    public string FirstLetterToLower(string str)
+    {
+        if (str == null)
+            return null;
+        if (str.Length > 1)
+            return char.ToLower(str[0]) + str.Substring(1);
+        return str.ToUpper();
+    }
+    string GetTypeScriptPropertyName(ModelViewPropertyOfVwSerializable prop, ModelViewSerializable model) {
+        if (model.GenerateJSonAttribute) {
+            return prop.JsonPropertyName;
+        } else {
+            return FirstLetterToLower(prop.ViewPropertyName);
+        }
+    }
+    string GetTypeScriptPropertyNameEx2(ModelViewUIListPropertySerializable prop, ModelViewSerializable model) {
+        ModelViewPropertyOfVwSerializable sclrProp = model.ScalarProperties.Where(p => p.ViewPropertyName == prop.ViewPropertyName).FirstOrDefault();
+        return GetTypeScriptPropertyName(sclrProp, model);
+    }
+    string GetDisplayedColumns(ModelViewSerializable model) {
+        string result= "";
+        if (model == null) {
+            return result; 
+        }
+        if ((model.UIListProperties == null) || (model.ScalarProperties == null)) {
+            return result; 
+        }
+        foreach(ModelViewUIListPropertySerializable modelViewUIListPropertySerializable in model.UIListProperties) {
+            if (modelViewUIListPropertySerializable.IsShownInView) {
+                if (result == "") {
+                    result = "'" + GetTypeScriptPropertyNameEx2(modelViewUIListPropertySerializable, model) + "'";
+                } else {
+                    result += ", '" + GetTypeScriptPropertyNameEx2(modelViewUIListPropertySerializable, model) + "'";
+                }
+                if (modelViewUIListPropertySerializable.IsNewLineAfter) {
+                    break;
+                }
+            }
+        }
+        return result;
+    }
+    string GetDisplayAttributeValueString(ModelViewPropertyOfVwSerializable prop, ModelViewSerializable model, string propName) {
+            if (prop == null)
+            {
+                return "";
+            }
+            if(prop.Attributes == null)
+            {
+                return prop.ViewPropertyName;
+            }
+            ModelViewAttributeSerializable attr =
+                prop.Attributes.Where(a => a.AttrName == "Display").FirstOrDefault();
+            if (attr == null)
+            {
+                return prop.ViewPropertyName;
+            }
+            if (attr.VaueProperties == null)
+            {
+                return prop.ViewPropertyName;
+            }
+            ModelViewAttributePropertySerializable attrProp = 
+                attr.VaueProperties.Where(v => v.PropName == propName).FirstOrDefault();
+            if (attrProp == null)
+            {
+                return prop.ViewPropertyName;
+            }
+            if (string.IsNullOrEmpty( attrProp.PropValue ) )
+            {
+                return prop.ViewPropertyName;
+            } else
+            {
+                char[] charsToTrim = { '"', ' '};
+                return attrProp.PropValue.Trim(charsToTrim);
+            }
+    }
+    string GetCCharpDatatype(ModelViewPropertyOfVwSerializable prop, ModelViewSerializable model) {
+        if ((prop == null) || (model == null)) return "";
+        return prop.UnderlyingTypeName.ToLower().Replace("system.", "");
+    }
+    string GetUnNamedAtributeValue(ModelViewPropertyOfVwSerializable sclrProp, string attrName) {
+        if(sclrProp != null) {
+            if (sclrProp.Attributes != null) {
+                ModelViewAttributeSerializable modelViewAttributeSerializable =
+                    sclrProp.Attributes.Where(a => a.AttrName == attrName).FirstOrDefault();
+                if(modelViewAttributeSerializable != null) {
+                    if (modelViewAttributeSerializable.VaueProperties != null) {
+                    
+                        ModelViewAttributePropertySerializable modelViewAttributePropertySerializable =
+                            modelViewAttributeSerializable.VaueProperties.Where(p => (string.IsNullOrEmpty(p.PropName) || (p.PropName == "..."))).FirstOrDefault();
+                        if (modelViewAttributePropertySerializable != null) {
+                            return modelViewAttributePropertySerializable.PropValue;
+                        }
+                    }
+                }
+            }
+        }
+        return null;                
+    }
+    string GetMaxLen(ModelViewPropertyOfVwSerializable prop, ModelViewSerializable model) {
+        if ((prop == null) || (model == null)) return "null";
+        if( prop.UnderlyingTypeName.ToLower() == "system.string" ) {
+            string propValue = GetUnNamedAtributeValue(prop, "StringLength");
+            if(!string.IsNullOrEmpty(propValue)) {
+                propValue = propValue.Replace("\"", "");
+                if(!string.IsNullOrEmpty(propValue)) {
+                    return propValue;
+                }
+            }
+            propValue = GetUnNamedAtributeValue(prop, "MaxLength");
+            if(!string.IsNullOrEmpty(propValue)) {
+                propValue = propValue.Replace("\"", "");
+                if(!string.IsNullOrEmpty(propValue)) {
+                    return propValue;
+                }
+            }
+        }
+        return "null";
+    }
+    string GetAtributeValueByNo(ModelViewPropertyOfVwSerializable sclrProp, string attrName, int itemNo) {
+        if(itemNo > -1) {
+            if(sclrProp != null) {
+                if (sclrProp.Attributes != null) {
+                    ModelViewAttributeSerializable modelViewAttributeSerializable =
+                        sclrProp.Attributes.Where(a => a.AttrName == attrName).FirstOrDefault();
+                    if(modelViewAttributeSerializable != null) {
+                        if (modelViewAttributeSerializable.VaueProperties != null) {
+                            if(modelViewAttributeSerializable.VaueProperties.Count > itemNo) {
+                                return modelViewAttributeSerializable.VaueProperties[itemNo].PropValue;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        return null;                
+    }
+    string GetMinVal(ModelViewPropertyOfVwSerializable prop, ModelViewSerializable model) {
+        if ((prop == null) || (model == null)) return "null";
+        string propValue = GetAtributeValueByNo(prop, "IntegerValidator", 0);
+        if(!string.IsNullOrEmpty(propValue)) {
+            propValue = propValue.Replace("\"", "");
+            if(!string.IsNullOrEmpty(propValue)) {
+                return propValue;
+            }
+        }
+        if (prop.UnderlyingTypeName.ToLower() == "system.datetime") {
+            propValue = GetAtributeValueByNo(prop, "Range", 1);
+            if(!string.IsNullOrEmpty(propValue)) {
+                propValue = propValue.Replace("\"", "");
+                if(!string.IsNullOrEmpty(propValue)) {
+                    return "new Date('" + propValue + "')";
+                }
+            }
+        } else {
+            propValue = GetAtributeValueByNo(prop, "Range", 0);
+            if(!string.IsNullOrEmpty(propValue)) {
+                propValue = propValue.Replace("\"", "");
+                if(!string.IsNullOrEmpty(propValue)) {
+                    return propValue;
+                }
+            }
+        }
+        return "null";
+    }
+    string GetMaxVal(ModelViewPropertyOfVwSerializable prop, ModelViewSerializable model) {
+        if ((prop == null) || (model == null)) return "null";
+        string propValue = GetAtributeValueByNo(prop, "IntegerValidator", 1);
+        if(!string.IsNullOrEmpty(propValue)) {
+            propValue = propValue.Replace("\"", "");
+            if(!string.IsNullOrEmpty(propValue)) {
+                return propValue;
+            }
+        }
+        if (prop.UnderlyingTypeName.ToLower() == "system.datetime") {
+            propValue = GetAtributeValueByNo(prop, "Range", 2);
+            if(!string.IsNullOrEmpty(propValue)) {
+                propValue = propValue.Replace("\"", "");
+                if(!string.IsNullOrEmpty(propValue)) {
+                    return "new Date('" + propValue + "')";
+                }
+            }
+        } else {
+            propValue = GetAtributeValueByNo(prop, "Range", 1);
+            if(!string.IsNullOrEmpty(propValue)) {
+                propValue = propValue.Replace("\"", "");
+                if(!string.IsNullOrEmpty(propValue)) {
+                    return propValue;
+                }
+            }
+        }
+        return "null";
+    }
+    string GetDisplayAttributeValueString2(ModelViewUIListPropertySerializable prop, ModelViewSerializable model, string propName) {
+            ModelViewPropertyOfVwSerializable sclrProp = model.ScalarProperties.Where(p => p.ViewPropertyName == prop.ViewPropertyName).FirstOrDefault();
+            if (sclrProp == null)
+            {
+                return prop.ViewPropertyName;
+            }
+            if(sclrProp.Attributes == null)
+            {
+                return prop.ViewPropertyName;
+            }
+            ModelViewAttributeSerializable attr =
+                sclrProp.Attributes.Where(a => a.AttrName == "Display").FirstOrDefault();
+            if (attr == null)
+            {
+                return prop.ViewPropertyName;
+            }
+            if (attr.VaueProperties == null)
+            {
+                return prop.ViewPropertyName;
+            }
+            ModelViewAttributePropertySerializable attrProp = 
+                attr.VaueProperties.Where(v => v.PropName == propName).FirstOrDefault();
+            if (attrProp == null)
+            {
+                return prop.ViewPropertyName;
+            }
+            if (string.IsNullOrEmpty( attrProp.PropValue ) )
+            {
+                return prop.ViewPropertyName;
+            } else
+            {
+                char[] charsToTrim = { '"', ' '};
+                return attrProp.PropValue.Trim(charsToTrim);
+            }
+    }
+    string matSortHeaderIfNeeded(ModelViewUIListPropertySerializable modelViewUIListPropertySerializable, ModelViewSerializable model) {
+        if(hasMatSortHeader(modelViewUIListPropertySerializable, model)) {
+            return "true";
+        }
+        return "false";
+    }
+    string GetDataPipe(ModelViewPropertyOfVwSerializable prop, ModelViewSerializable model) {
+        string result= "";
+        if ((prop == null) || (model == null)) {
+            return result;
+        }
+        string attrVal = GetAtributeUnNamedValue(prop, "DataType");
+        if(string.IsNullOrEmpty(attrVal)) {
+            return result;
+        }
+        attrVal = attrVal.ToLower();
+        if(attrVal.Contains("currency")) {
+            return result;
+            //return "|currency";
+        }
+        if(attrVal.Contains("datetime")) {
+            return result;
+            //return "|date:'medium'";
+        }
+        if(attrVal.Contains("date")) {
+            return result;
+            //return "|date: 'mediumDate'";
+        }
+        if(attrVal.Contains("time")) {
+            return result;
+            //return "|date:'shortTime'";
+        }
+        return result;
+    }
+    string GetDataPipeEx2(ModelViewUIListPropertySerializable prop, ModelViewSerializable model) {
+        if((model == null) ||(prop==null)) return "";
+        ModelViewPropertyOfVwSerializable sclrProp = model.ScalarProperties.Where(p => p.ViewPropertyName == prop.ViewPropertyName).FirstOrDefault();
+        return GetDataPipe(sclrProp, model);
+    }
+    bool hasMatSortHeader(ModelViewUIListPropertySerializable modelViewUIListPropertySerializable, ModelViewSerializable model) {
+        if ((model == null) || (modelViewUIListPropertySerializable == null)) {
+            return false;
+        }
+        if ((model.UIListProperties == null) || (model.ScalarProperties == null)) {
+            return false;
+        }
+        return model.ScalarProperties.Any(s => s.ViewPropertyName == modelViewUIListPropertySerializable.ViewPropertyName && s.IsUsedBySorting);
+    }
+    string GetAtributeUnNamedValue(ModelViewPropertyOfVwSerializable sclrProp, string attrName) {
+        if(sclrProp != null) {
+            if (sclrProp.Attributes != null) {
+                ModelViewAttributeSerializable modelViewAttributeSerializable =
+                    sclrProp.Attributes.Where(a => a.AttrName == attrName).FirstOrDefault();
+                if(modelViewAttributeSerializable != null) {
+                    if (modelViewAttributeSerializable.VaueProperties != null) {
+                    
+                        ModelViewAttributePropertySerializable modelViewAttributePropertySerializable =
+                            modelViewAttributeSerializable.VaueProperties.Where(p => (string.IsNullOrEmpty(p.PropName) || (p.PropName == "..."))).FirstOrDefault();
+                        if (modelViewAttributePropertySerializable != null) {
+                            return modelViewAttributePropertySerializable.PropValue;
+                        }
+                    }
+                }
+            }
+        }
+        return null;                
+    }
+    string GetModelCssClassName(ModelViewSerializable model, string fileType) {
+        string result="";
+        if ((model == null) || string.IsNullOrEmpty(fileType)) {
+            return result;
+        }
+        if (model.CommonStaffs == null) {
+            return result;
+        }
+        CommonStaffSerializable refItem= 
+            model.CommonStaffs.Where(c => c.FileType == fileType).FirstOrDefault();
+        if (refItem == null) {
+            return result;
+        }
+        if(string.IsNullOrEmpty(refItem.FileName)) {
+            return result;
+        }
+        return refItem.FileName;
+    }
+    List<ModelViewPropertyOfVwSerializable> GetPropsByForeignKey(ModelViewSerializable model, ModelViewForeignKeySerializable foreignKey) {
+        List<ModelViewPropertyOfVwSerializable> result= new List<ModelViewPropertyOfVwSerializable>();
+        if ((model == null) || (foreignKey == null)) {
+            return result;
+        }
+        if (foreignKey.PrincipalKeyProps == null || foreignKey.ForeignKeyProps == null || model.ScalarProperties == null) {
+            return result;
+        }
+        if ((foreignKey.PrincipalKeyProps.Count != foreignKey.ForeignKeyProps.Count) || (foreignKey.ForeignKeyProps.Count < 1)) {
+            return result;
+        }
+        foreach(ModelViewKeyPropertySerializable fkProp in foreignKey.PrincipalKeyProps) {
+            ModelViewPropertyOfVwSerializable prop = 
+                model.ScalarProperties.Where(p => (p.OriginalPropertyName == fkProp.OriginalPropertyName) && (foreignKey.NavigationName == p.ForeignKeyNameChain)).FirstOrDefault();
+            if (prop != null) {
+                result.Add(prop);
+            }
+        }
+        foreach(ModelViewKeyPropertySerializable fkProp in foreignKey.ForeignKeyProps) {
+            ModelViewPropertyOfVwSerializable prop = 
+                model.ScalarProperties.Where(p => (p.OriginalPropertyName == fkProp.OriginalPropertyName) && string.IsNullOrEmpty(p.ForeignKeyNameChain)).FirstOrDefault();
+            if (prop != null) {
+                result.Add(prop);
+            }
+        }
+        return result;
+    }
+
+
+
+#>

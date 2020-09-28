@@ -1,0 +1,62 @@
+{
+  "Description": [
+    "",
+    "                                BEFORE YOU START !!!",
+    "1.",
+    "Please make sure that you have already run the following scripts for the current ViewModel",
+    "                                01100-.interface.tsx",
+    "                                01200-Page.interface.tsx",
+    "                                01300-Filter.interface.tsx",
+    "                                01400-.service.tsx",
+    "",
+    "                                AND",
+    "",
+    "Please make sure that you have already run the following scripts for all MASTER ViewModels",
+    "                                01100-.interface.tsx",
+    "                                01200-Page.interface.tsx",
+    "                                01300-Filter.interface.tsx",
+    "                                01400-.service.tsx",
+    "                                01420-Sform.component.tsx",
+    "                                01440-Sdlg.component.tsx",
+    "",
+    "2.",
+    "Please make sure that you selected src\\components\\your-view-model-name folder",
+    "  where [your-view-model-name] is a name of currently selected ViewModel",
+    "",
+    "",
+    ""
+  ],
+  "BatchItems": [
+    {
+      "DestinationFolder": "interfaces",
+      "GeneratorType": "01498-Eform-state.interface.tsx",
+      "GeneratorSript": "Eform-state.interface.fluentui.tsx.t4"
+    },
+    {
+      "DestinationFolder": "interfaces",
+      "GeneratorType": "01499-Eform-props.interface.tsx",
+      "GeneratorSript": "Eform-props.interface.tsx.t4"
+    },
+    {
+      "DestinationFolder": "components\\eform",
+      "GeneratorType": "01500-Eform.component.tsx",
+      "GeneratorSript": "Eform.component.fluentui.tsx.t4"
+    },
+    {
+      "DestinationFolder": "interfaces",
+      "GeneratorType": "01518-Edlg-state.interface.tsx",
+      "GeneratorSript": "Edlg-state.interface.tsx.t4"
+    },
+    {
+      "DestinationFolder": "interfaces",
+      "GeneratorType": "01519-Edlg-props.interface.tsx",
+      "GeneratorSript": "Edlg-props.interface.tsx.t4"
+    },
+    {
+      "DestinationFolder": "components\\edlg",
+      "GeneratorType": "01520-Edlg.component.tsx",
+      "GeneratorSript": "Edlg.component.fluentui.tsx.t4"
+    }
+  ]
+
+}

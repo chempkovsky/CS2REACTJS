@@ -1,0 +1,244 @@
+﻿<#@ template language="C#" HostSpecific="True" Debug="True" #>
+<#@ output extension="tsx" #>
+<#@ assembly name="System.Core" #>
+<#@ import namespace="System" #>
+<#@ import namespace="System.IO" #>
+<#@ import namespace="System.Linq" #>
+<#@ import namespace="System.Collections" #>
+<#@ import namespace="System.Collections.Generic" #>
+<#@ import namespace="System.Text" #>
+<#@ import namespace="CS2REACTJS" #>
+<#@ import namespace="CS2REACTJS.Model" #>
+<#@ import namespace="CS2REACTJS.Model.Serializable" #>
+<#@ parameter type="CS2REACTJS.Model.Serializable.ModelViewSerializable" name="Model" #>
+<#@ parameter type="CS2REACTJS.Model.Serializable.DbContextSerializable" name="Context" #>
+<#
+
+    
+    string autocompleteDataModelFolder                 = "00260-autocomplete.tsx";
+    string autocompleteDataModelClassName              = GetModelClassName(Model, autocompleteDataModelFolder);
+
+
+#>
+
+import { IBasePickerProps, IBasePickerStyleProps, IBasePickerStyles, BasePicker, styled }  from '@fluentui/react';
+import { getStyles } from 'office-ui-fabric-react/lib/components/pickers/BasePicker.styles';
+
+
+class <#= autocompleteDataModelClassName + "Base" #> extends BasePicker<any, IBasePickerProps<any>>  {}
+export const <#= autocompleteDataModelClassName #> = styled<IBasePickerProps<any>, IBasePickerStyleProps, IBasePickerStyles>(
+  <#= autocompleteDataModelClassName + "Base" #>,
+  getStyles,
+  undefined,
+  {
+    scope: 'Autocomplete',
+  },
+);
+
+/*
+//
+// How to use:
+//
+
+import React from 'react';
+import { IconButton, TagItemSuggestion, IPickerItemProps, ISuggestionItemProps }  from '@fluentui/react';
+import { <#= autocompleteDataModelClassName #> } from '<#= GetFolderName(Model, autocompleteDataModelFolder, autocompleteDataModelFolder) #>'
+
+// import { initializeIcons } from '@fluentui/react';
+// initializeIcons();
+
+interface AppState  {
+    selectedItems: any[];
+}
+
+export default class App extends React.Component <any, AppState> {
+  constructor(props: any) {
+    super(props);
+    this.state = {
+        selectedItems:[],
+    }
+    this.onResolveSuggestionsImp=this.onResolveSuggestionsImp.bind(this);
+    this.onRenderSuggestionsItemImp=this.onRenderSuggestionsItemImp.bind(this);
+    this.onRenderItemImp=this.onRenderItemImp.bind(this);
+    this.onChangeImp=this.onChangeImp.bind(this);
+  }
+
+
+  async onResolveSuggestionsImp(filter: string, selectedItems?: any[]) {
+     //
+     // any code to define the list of items to return
+     //
+     return  [
+            {myFld1:'myFld1Val1', myFld2:'myFld2Val1', myFld3:'myFld3Val1', myFld4:'myFld4Val1'},
+            {myFld1:'myFld1Val2', myFld2:'myFld2Val2', myFld3:'myFld3Val2', myFld4:'myFld4Val2'},
+            {myFld1:'myFld1Val3', myFld2:'myFld2Val3', myFld3:'myFld3Val3', myFld4:'myFld4Val3'},
+        ];
+  }
+  onRenderSuggestionsItemImp(props: any, itemProps: ISuggestionItemProps<any>): JSX.Element {
+    //
+    // suppose you need to display myFld2 and myFld4 fields
+    //
+    return (
+      <TagItemSuggestion>{props.myFld2 + ' --- ' + props.myFld4}</TagItemSuggestion>
+    )
+  }
+  onRenderItemImp(props: IPickerItemProps<any>): JSX.Element {
+    //
+    // suppose you need to display myFld2 and myFld4 fields
+    //
+    return (
+      <div>
+        {props.item.myFld2 + ' --- ' + props.item.myFld4} 
+        <IconButton iconProps={{iconName:'Cancel', styles: { root: { fontSize: '12px' } }}} onClick={props.onRemoveItem}></IconButton>  
+      </div>
+    )
+  };
+  onChangeImp(items?: any[]): void {
+    if (items) {
+      this.setState({selectedItems:items})
+    } else {
+      this.setState({selectedItems:[]})
+    }
+  }
+
+  render() {
+    return ( 
+      <div > 
+        <Autocomplete
+          resolveDelay={300}
+          itemLimit={1}
+          onResolveSuggestions={this.onResolveSuggestionsImp}
+          onRenderSuggestionsItem={this.onRenderSuggestionsItemImp}
+          onRenderItem={this.onRenderItemImp}
+          onChange={this.onChangeImp}
+          selectedItems={this.state.selectedItems}
+       />
+      </div>
+    )};
+}
+
+*/
+
+<#+
+    string GetModelInterfaceName(ModelViewSerializable model, string fileType) {
+        string result="";
+        if ((model == null) || string.IsNullOrEmpty(fileType)) {
+            return result;
+        }
+        if (model.CommonStaffs == null) {
+            return result;
+        }
+        CommonStaffSerializable refItem= 
+            model.CommonStaffs.Where(c => c.FileType == fileType).FirstOrDefault();
+        if (refItem == null) {
+            return result;
+        }
+        if(string.IsNullOrEmpty(refItem.FileName)) {
+            return result;
+        }
+        string fn = refItem.FileName.Replace(".interface","-interface");
+        StringBuilder sb = new StringBuilder();
+        bool toUpper = true;
+        foreach (char c in fn)
+        {
+            if( c == '-' )
+            {
+                toUpper = true;
+            } else
+            {
+                if (toUpper)
+                {
+                    sb.Append(Char.ToUpper(c));
+                    toUpper = false;
+                }
+                else
+                {
+                    sb.Append(c);
+                }
+            }
+                
+        }
+        return "I"+sb.ToString();
+    }
+    string GetModelClassName(ModelViewSerializable model, string fileType) {
+        string result="";
+        if ((model == null) || string.IsNullOrEmpty(fileType)) {
+            return result;
+        }
+        if (model.CommonStaffs == null) {
+            return result;
+        }
+        CommonStaffSerializable refItem= 
+            model.CommonStaffs.Where(c => c.FileType == fileType).FirstOrDefault();
+        if (refItem == null) {
+            return result;
+        }
+        if(string.IsNullOrEmpty(refItem.FileName)) {
+            return result;
+        }
+        string fn = refItem.FileName;
+        StringBuilder sb = new StringBuilder();
+        bool toUpper = true;
+        foreach (char c in fn)
+        {
+            if( c == '-' )
+            {
+                toUpper = true;
+            } else
+            {
+                if (toUpper)
+                {
+                    sb.Append(Char.ToUpper(c));
+                    toUpper = false;
+                }
+                else
+                {
+                    sb.Append(c);
+                }
+            }
+                
+        }
+        return sb.ToString();
+    }
+    string GetFolderName(ModelViewSerializable model, string refFolder, string currFolder) {
+        string result="./";
+        if ((model == null) || string.IsNullOrEmpty(refFolder) || string.IsNullOrEmpty(currFolder)) {
+            return result;
+        }
+        if (model.CommonStaffs == null) {
+            return result;
+        }
+        CommonStaffSerializable refItem= 
+            model.CommonStaffs.Where(c => c.FileType == refFolder).FirstOrDefault();
+        CommonStaffSerializable curItem= 
+            model.CommonStaffs.Where(c => c.FileType == currFolder).FirstOrDefault();
+        if ((refItem == null) || (curItem == null)) {
+            return result;
+        }
+        string[] refFolders  = new string[] {};
+        if(!string.IsNullOrEmpty(refItem.FileFolder)) {
+            refFolders  = refItem.FileFolder.Split(new string[] { "\\" }, StringSplitOptions.None);
+        }
+        string[] currFolders = new string[]{};
+        if(!string.IsNullOrEmpty(curItem.FileFolder)) {
+            currFolders  = curItem.FileFolder.Split(new string[] { "\\" }, StringSplitOptions.None);
+        }
+        int refLen = refFolders.Length;
+        int currLen = currFolders.Length;
+        int minLen = refLen < currLen ? refLen : currLen;
+        int cnt= 0;
+        for(int i = 0; i < minLen; i++) {
+            if ( !refFolders[i].Equals(currFolders[i], StringComparison.OrdinalIgnoreCase) ) break;
+            cnt++;
+        }
+        if(currLen > cnt) {
+            result += string.Join("", Enumerable.Repeat("../", currLen - cnt));
+        }
+        if(refLen > cnt) {
+            result += string.Join("/", refFolders, cnt, refLen - cnt) + "/";
+        }
+        result += refItem.FileName;
+        return result;
+    }
+
+#>

@@ -1,0 +1,55 @@
+{
+  "Description": [
+    "",
+    "                                BEFORE YOU START !!!",
+    "1.",
+    "Please make sure that you have already run the following batch for the current ViewModel",
+    "                                13100-AspNetInterfasesBatch.json",
+    "                                13401-AspNetWebApiService.json (NOT 13400 !!!!)",
+    "",
+    "2.",
+    "Please make sure that you have already run the following batch for aspnetmodel-view",
+    "                                14200-AspNetChkMform.json",
+    "",
+    "3.",
+    "Please make sure that you have already run the following batch for aspnetdashboard-view",
+    "                                14205-AspNetChkDform.json",
+    "",
+    "4.",
+    "Please make sure that you selected src\\components\\your-view-model-name folder",
+    "  where [your-view-model-name] is a name of currently selected ViewModel",
+    "",
+    "5.",
+    " 14215-AspNetlform.json batch must be run for: ",
+    "     aspnetusermask-view",
+    "",
+    "6.",
+    " do NOT run this batch for: ",
+    "     aspnetdashboard-view",
+    "     aspnetmodel-view",
+    "     aspnetrole-view",
+    "     aspnetrolemask-view",
+    "     aspnetuser-view",
+    "     aspnetuserroles-view",
+    "",
+    "",
+    ""
+  ],
+  "BatchItems": [
+    {
+      "DestinationFolder": "interfaces",
+      "GeneratorType": "01598-Lform-state.interface.tsx",
+      "GeneratorSript": "SecLform-state.interface.tsx.t4"
+    },
+    {
+      "DestinationFolder": "interfaces",
+      "GeneratorType": "01599-Lform-props.interface.tsx",
+      "GeneratorSript": "Lform-props.interface.tsx.t4"
+    },
+    {
+      "DestinationFolder": "lform",
+      "GeneratorType": "01600-Lform.component.tsx",
+      "GeneratorSript": "SecLform.component.tsx.t4"
+    }
+  ]
+}

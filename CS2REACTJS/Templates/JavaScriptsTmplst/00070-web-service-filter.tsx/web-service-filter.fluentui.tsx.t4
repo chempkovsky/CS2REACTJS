@@ -1,0 +1,503 @@
+﻿<#@ template language="C#" HostSpecific="True" Debug="True" #>
+<#@ output extension="tsx" #>
+<#@ assembly name="System.Core" #>
+<#@ import namespace="System" #>
+<#@ import namespace="System.IO" #>
+<#@ import namespace="System.Linq" #>
+<#@ import namespace="System.Collections" #>
+<#@ import namespace="System.Collections.Generic" #>
+<#@ import namespace="System.Text" #>
+<#@ import namespace="CS2REACTJS" #>
+<#@ import namespace="CS2REACTJS.Model" #>
+<#@ import namespace="CS2REACTJS.Model.Serializable" #>
+<#@ parameter type="CS2REACTJS.Model.Serializable.ModelViewSerializable" name="Model" #>
+<#@ parameter type="CS2REACTJS.Model.Serializable.DbContextSerializable" name="Context" #>
+<#
+
+    string webServiceFilterDataModelFolder              = "00070-web-service-filter.tsx";
+    string webServiceFilterDataModelClassName           = GetModelClassName(Model, webServiceFilterDataModelFolder);
+
+    string appGlblSettingsServiceFolder                 = "00028-app-glbl-settings.service.tsx";
+    string appGlblSettingsServiceClassName              = GetServiceClassName(Model, appGlblSettingsServiceFolder);
+
+    string fxFlexBaseRowCssClassFolder                  = "00030-fx-flex-base-row.css";
+    string fxFlexBaseRowCssClassName                    = GetModelCssClassName(Model, fxFlexBaseRowCssClassFolder);
+    string webServiceFilterPropsDataModelFolder         = "00065-web-service-filter-props.interface.tsx";
+    string webServiceFilterPropsDataModelClassName      = GetModelInterfaceName(Model, webServiceFilterPropsDataModelFolder);
+    string webServiceFilterStateDataModelFolder         = "00064-web-service-filter-state.interface.tsx";
+    string webServiceFilterStateDataModelClassName      = GetModelInterfaceName(Model, webServiceFilterStateDataModelFolder);
+    string webServiceFilterOperatorDataModelFolder      = "00051-web-service-filter-operator.interface.tsx";
+    string webServiceFilterOperatorDataModelClassName   = GetModelInterfaceName(Model, webServiceFilterOperatorDataModelFolder);
+    string webServiceFilterDefDataModelFolder           = "00050-web-service-filter-def.interface.tsx";
+    string webServiceFilterDefDataModelClassName        = GetModelInterfaceName(Model, webServiceFilterDefDataModelFolder);
+    string webServiceFilterRsltDataModelFolder          = "00052-web-service-filter-rslt.interface.tsx";
+    string webServiceFilterRsltDataModelClassName       = GetModelInterfaceName(Model, webServiceFilterRsltDataModelFolder);
+    string webServiceFilterItemDataModelFolder          = "00060-web-service-filter-item.tsx";
+    string webServiceFilterItemDataModelClassName       = GetModelClassName(Model, webServiceFilterItemDataModelFolder);
+    string webServiceFilterMenuDataModelFolder          = "00063-web-service-filter-menu.interface.tsx";
+    string webServiceFilterMenuDataModelClassName       = GetModelInterfaceName(Model, webServiceFilterMenuDataModelFolder);
+    string colFlexFunctionFolder                        = "00040-col-flex.tsx";
+    string colFlexFunctionName                          = GetModelFunctionName(Model, colFlexFunctionFolder);
+    string rowFlexFunctionFolder                        = "00043-row-flex.tsx";
+    string rowFlexFunctionName                          = GetModelFunctionName(Model, rowFlexFunctionFolder);
+    string currFlexScreenFunctionFolder                 = "00044-curr-flex-screen.tsx";
+    string currFlexScreenFunctionName                   = GetModelFunctionName(Model, currFlexScreenFunctionFolder);
+
+    string HiddenFilterPropName                         = "hiddenFilter";
+
+#>
+
+import React, { Component,  CSSProperties, createRef } from 'react';
+import { IconButton, FontIcon, TooltipHost, getTheme } from '@fluentui/react';
+import '<#= GetFolderName(Model, fxFlexBaseRowCssClassFolder, webServiceFilterDataModelFolder) #>.css';
+import <#= appGlblSettingsServiceClassName #> from "<#= GetFolderName(Model, appGlblSettingsServiceFolder, webServiceFilterDataModelFolder) #>";
+import <#= webServiceFilterPropsDataModelClassName #> from "<#= GetFolderName(Model, webServiceFilterPropsDataModelFolder, webServiceFilterDataModelFolder) #>";
+import <#= webServiceFilterStateDataModelClassName #> from "<#= GetFolderName(Model, webServiceFilterStateDataModelFolder, webServiceFilterDataModelFolder) #>";
+import <#= webServiceFilterOperatorDataModelClassName #> from "<#= GetFolderName(Model, webServiceFilterOperatorDataModelFolder, webServiceFilterDataModelFolder) #>";
+import <#= webServiceFilterDefDataModelClassName #> from "<#= GetFolderName(Model, webServiceFilterDefDataModelFolder, webServiceFilterDataModelFolder) #>";
+import <#= webServiceFilterRsltDataModelClassName #> from "<#= GetFolderName(Model, webServiceFilterRsltDataModelFolder, webServiceFilterDataModelFolder) #>";
+import <#= webServiceFilterItemDataModelClassName #> from "<#= GetFolderName(Model, webServiceFilterItemDataModelFolder, webServiceFilterDataModelFolder) #>";
+import <#= webServiceFilterMenuDataModelClassName #> from "<#= GetFolderName(Model, webServiceFilterMenuDataModelFolder, webServiceFilterDataModelFolder) #>";
+import <#= currFlexScreenFunctionName #> from "<#= GetFolderName(Model, currFlexScreenFunctionFolder, webServiceFilterDataModelFolder) #>";
+import <#= colFlexFunctionName #> from "<#= GetFolderName(Model, colFlexFunctionFolder, webServiceFilterDataModelFolder) #>";
+import <#= rowFlexFunctionName #> from "<#= GetFolderName(Model, rowFlexFunctionFolder, webServiceFilterDataModelFolder) #>";
+
+// import { initializeIcons }  from '@fluentui/react';
+// initializeIcons();
+
+const scheme = getTheme()
+
+export default class <#= webServiceFilterDataModelClassName #> extends Component<<#= webServiceFilterPropsDataModelClassName #>, <#= webServiceFilterStateDataModelClassName #>> {
+    opers: Array<<#= webServiceFilterOperatorDataModelClassName #>> =  [
+        {oName: 'eq', oCaption: '=='},
+        {oName: 'gt', oCaption: '>='},
+        {oName: 'lt', oCaption: '=<'},
+        {oName: 'ne', oCaption: '<>'},
+        {oName: 'lk', oCaption: 'Like'}
+      ];
+    constructor(props: <#= webServiceFilterPropsDataModelClassName #>) {
+        super(props);
+        this.state =  {
+            nextItemId: 1,
+            scrn: <#= currFlexScreenFunctionName #>(),
+            fltitems:[],
+            filters:[],
+            cachedhiddenFlt: [],
+            cachedfltrs: []
+        }
+        this.handleResize = this.handleResize.bind(this);
+        this.handleBackBtn = this.handleBackBtn.bind(this);
+        this.removeAllFilters = this.removeAllFilters.bind(this);
+        this.addFltItem = this.addFltItem.bind(this);
+        this.handleContMenuItem = this.handleContMenuItem.bind(this);
+        this.handleOnRefresh = this.handleOnRefresh.bind(this);
+        this.onDelete =  this.onDelete.bind(this);
+    }
+    static getDerivedStateFromProps(nwprps: <#= webServiceFilterPropsDataModelClassName #>, oldstt: <#= webServiceFilterStateDataModelClassName #>): any {
+        let chiddenFlt: Array<<#= webServiceFilterRsltDataModelClassName #>> = [];
+        let cfltrs: Array<<#= webServiceFilterDefDataModelClassName #>> = [];
+        if(nwprps.<#= HiddenFilterPropName #>)  chiddenFlt = nwprps.<#= HiddenFilterPropName #>;
+        if(nwprps.fltrs)  cfltrs = nwprps.fltrs;
+        let cflt = (cfltrs !== oldstt.cachedfltrs) && (oldstt.cachedfltrs.length > 0);
+        cflt = cflt ? cflt : oldstt.cachedfltrs.length !== cfltrs.length;
+        if (!cflt) {
+            cflt = (chiddenFlt !== oldstt.cachedhiddenFlt) && (oldstt.cachedhiddenFlt.length > 0);
+            cflt = cflt ? cflt : oldstt.cachedhiddenFlt.length !== chiddenFlt.length;
+        }
+        if (!cflt) return null;
+        let filters: Array<<#= webServiceFilterDefDataModelClassName #>> = []
+        cfltrs.forEach(flt => {
+                if(! (chiddenFlt.some(v => v.fltrName === flt.fltrName))) {
+                    filters.push(flt);
+                }
+        }); 
+        return  {
+            cachedhiddenFlt: chiddenFlt,
+            cachedfltrs: cfltrs,
+            nextItemId: oldstt.nextItemId + 1,
+            filters: filters,
+            fltitems: [{ itmRef: createRef<<#= webServiceFilterItemDataModelClassName #>>(), itmId: oldstt.nextItemId  }] 
+        }
+    }
+    handleResize = () => {
+        const cfs: string = <#= currFlexScreenFunctionName #>();
+        if(this.state.scrn !== cfs) {
+          this.setState<'scrn'>( { scrn: cfs } );
+        }
+    }
+    componentDidMount() {
+        window.addEventListener('resize', this.handleResize);
+    }
+    componentWillUnmount() {
+        window.removeEventListener('resize', this.handleResize);
+    }
+    removeAllFilters() {
+        let nextItemId = this.state.nextItemId;
+        this.setState<'nextItemId'>( { nextItemId: nextItemId+1 } );
+        this.setState<'fltitems'>( { fltitems: [{ itmRef: createRef<<#= webServiceFilterItemDataModelClassName #>>(), itmId: nextItemId }] } );
+    }
+    addFltItem() {
+        let nextItemId = this.state.nextItemId;
+        this.setState<'nextItemId'>( { nextItemId: nextItemId+1 } );
+        this.state.fltitems.push({ itmRef: createRef<<#= webServiceFilterItemDataModelClassName #>>(), itmId: nextItemId });
+        this.setState<'fltitems'>( { fltitems: this.state.fltitems } );
+    }
+    onDelete(key: any) {
+        if(typeof key === 'undefined') return;
+        if(key === null) return;
+        if(this.state.fltitems) {
+            if(this.state.fltitems.length < 2) return;
+            const i = this.state.fltitems.findIndex(fi => fi.itmRef.current === key);
+            if(i > -1) {
+            this.state.fltitems.splice(i,1);
+            this.setState<'fltitems'>( { fltitems: this.state.fltitems } );
+            }
+        }
+    }
+    handleBackBtn() {
+        if(this.props.onBackBtn) this.props.onBackBtn();
+    }
+    handleContMenuItem(cmi: <#= webServiceFilterMenuDataModelClassName #>) {
+        if(this.props.onContMenuItem) {
+            this.props.onContMenuItem( {id: cmi.id, sender: this, value: null} );
+        }
+    }
+    handleOnRefresh() {
+        if(this.props.onApplyFilterClicked) {
+            let result: Array<<#= webServiceFilterRsltDataModelClassName #>> = [];
+            if(this.props.<#= HiddenFilterPropName #>) {
+                this.props.<#= HiddenFilterPropName #>?.forEach(i => {
+                    result.push(i);
+                });
+            }
+            if(this.state.fltitems) {
+                this.state.fltitems.forEach(fi => {
+                    if(fi.itmRef.current) {
+                        if(fi.itmRef.current.state.fltrName) {
+                            if (!((fi.itmRef.current.state.fltrName === '') || fi.itmRef.current.hasErr())) {
+                                result.push({fltrName: fi.itmRef.current.state.fltrName, fltrDataType: fi.itmRef.current.state.fltrDataType, 
+                                            fltrOperator: fi.itmRef.current.state.fltrOperator, fltrValue: fi.itmRef.current.state.fltrValue});
+                            }
+                        }
+                    }
+                });
+            }
+            this.props.onApplyFilterClicked(result);
+        }
+    }
+    render() {
+        let htmlitems = [];
+        let cptnsitems = []; 
+        let hstl: CSSProperties = <#= rowFlexFunctionName #>() as CSSProperties;
+        let lstl: CSSProperties = { marginRight: 'auto', marginLeft:'20%' };
+        let stl3:  CSSProperties = <#= colFlexFunctionName #>({ dflt: '3%' })  as  CSSProperties;
+        let stl1:  CSSProperties = <#= colFlexFunctionName #>({ dflt: '1%' })  as  CSSProperties;
+        hstl.justifyContent = 'flex-end'; 
+        if(this.props.caption) { 
+            cptnsitems.push(<label key={1} style={lstl}>{this.props.caption}</label>);
+            cptnsitems.push(<span key={2} style={stl3}></span>);
+        }
+        if(this.props.showBackBtn) {
+            cptnsitems.push(
+                <TooltipHost key={3} content="Go back">
+                    <IconButton key={3}  onClick={this.handleBackBtn}>
+                        <FontIcon style={{ color: scheme.semanticColors.menuIcon }} iconName='Back'></FontIcon> 
+                    </IconButton>
+                </TooltipHost>
+            );
+            cptnsitems.push(<span key={4} style={stl3}></span>)
+        }
+        if( this.props.showFilter && this.props.showAddFltItem ) {
+            cptnsitems.push(
+                <TooltipHost key={5} content="Add filter Item">
+                    <IconButton key={5} onClick={this.addFltItem}>
+                        <FontIcon style={{ color: scheme.semanticColors.menuIcon }} iconName='Filter'></FontIcon> 
+                    </IconButton>
+                </TooltipHost>
+            );
+        }
+        if( this.props.showFilter && this.props.showAddFltItem ) {
+            cptnsitems.push(<span key={6} style={stl1}></span>)
+            cptnsitems.push(
+                <TooltipHost key={7} content="Remove All Filters">
+                    <IconButton key={7} onClick={this.removeAllFilters}>
+                        <FontIcon style={{ color: scheme.semanticColors.errorIcon }} iconName='ClearFilter'></FontIcon> 
+                    </IconButton>
+                </TooltipHost>
+            );
+        }
+        cptnsitems.push(<span key={8} style={stl1}></span>);
+        cptnsitems.push(
+            <TooltipHost key={9} content="Refresh">
+                <IconButton key={9}   onClick={this.handleOnRefresh}>
+                    <FontIcon style={{ color: scheme.semanticColors.menuIcon }} iconName='Refresh' ></FontIcon> 
+                </IconButton>
+            </TooltipHost>
+        );
+        cptnsitems.push(<span key={10} style={stl3}></span>)
+        if(this.props.contMenuItems) {
+            let ii: number = 1000;
+            this.props.contMenuItems?.forEach(cmi => {
+                ii++;
+                cptnsitems.push(
+                    <TooltipHost key={ii} content={cmi.caption}>
+                        <IconButton key={ii}  onClick={() => this.handleContMenuItem(cmi)}>
+                            <FontIcon  style={{ color: cmi.iconColor }} iconName={cmi.iconName} ></FontIcon> 
+                        </IconButton>
+                    </TooltipHost>
+                )
+            });
+        }
+        cptnsitems.push(<span key={11} style={stl1}></span>)
+        htmlitems.push(
+            <div key={12} className="fx-flex-base-row" style={hstl}>
+                { cptnsitems }
+            </div>
+        );
+        if (this.props.showFilter) {
+            const htmlsubitems = this.state.fltitems.map(fi =>
+                <<#= webServiceFilterItemDataModelClassName #> key={fi.itmId} scrn={this.state.scrn}  ref={fi.itmRef} fltrs={this.state.filters} opers={this.opers} onDelete={this.onDelete}></<#= webServiceFilterItemDataModelClassName #>>
+            );
+            let stl:  {[k: string]: any} = {};
+            if (this.props.filterMaxHeight) {
+                let mxHt =  this.props.filterMaxHeight * <#= appGlblSettingsServiceClassName #>.filterHeightFactor + <#= appGlblSettingsServiceClassName #>.filterHeightAddition;
+                stl['maxHeight'] = mxHt + 'em';
+                stl['overflow'] = 'auto';
+            }
+            htmlitems.push(
+                <div key={13}  style={stl as CSSProperties}>
+                    { htmlsubitems }
+                </div>
+            );
+        }
+        return (
+          <div>
+              { htmlitems }
+          </div>
+        );
+    }
+
+}
+
+
+
+<#+
+    string GetModelInterfaceName(ModelViewSerializable model, string fileType) {
+        string result="";
+        if ((model == null) || string.IsNullOrEmpty(fileType)) {
+            return result;
+        }
+        if (model.CommonStaffs == null) {
+            return result;
+        }
+        CommonStaffSerializable refItem= 
+            model.CommonStaffs.Where(c => c.FileType == fileType).FirstOrDefault();
+        if (refItem == null) {
+            return result;
+        }
+        if(string.IsNullOrEmpty(refItem.FileName)) {
+            return result;
+        }
+        string fn = refItem.FileName.Replace(".interface","-interface");
+        StringBuilder sb = new StringBuilder();
+        bool toUpper = true;
+        foreach (char c in fn)
+        {
+            if( c == '-' )
+            {
+                toUpper = true;
+            } else
+            {
+                if (toUpper)
+                {
+                    sb.Append(Char.ToUpper(c));
+                    toUpper = false;
+                }
+                else
+                {
+                    sb.Append(c);
+                }
+            }
+                
+        }
+        return "I"+sb.ToString();
+    }
+    string GetModelClassName(ModelViewSerializable model, string fileType) {
+        string result="";
+        if ((model == null) || string.IsNullOrEmpty(fileType)) {
+            return result;
+        }
+        if (model.CommonStaffs == null) {
+            return result;
+        }
+        CommonStaffSerializable refItem= 
+            model.CommonStaffs.Where(c => c.FileType == fileType).FirstOrDefault();
+        if (refItem == null) {
+            return result;
+        }
+        if(string.IsNullOrEmpty(refItem.FileName)) {
+            return result;
+        }
+        string fn = refItem.FileName;
+        StringBuilder sb = new StringBuilder();
+        bool toUpper = true;
+        foreach (char c in fn)
+        {
+            if( c == '-' )
+            {
+                toUpper = true;
+            } else
+            {
+                if (toUpper)
+                {
+                    sb.Append(Char.ToUpper(c));
+                    toUpper = false;
+                }
+                else
+                {
+                    sb.Append(c);
+                }
+            }
+                
+        }
+        return sb.ToString();
+    }
+    string GetModelCssClassName(ModelViewSerializable model, string fileType) {
+        string result="";
+        if ((model == null) || string.IsNullOrEmpty(fileType)) {
+            return result;
+        }
+        if (model.CommonStaffs == null) {
+            return result;
+        }
+        CommonStaffSerializable refItem= 
+            model.CommonStaffs.Where(c => c.FileType == fileType).FirstOrDefault();
+        if (refItem == null) {
+            return result;
+        }
+        if(string.IsNullOrEmpty(refItem.FileName)) {
+            return result;
+        }
+        return refItem.FileName;
+    }
+    string GetModelFunctionName(ModelViewSerializable model, string fileType) {
+        string result="";
+        if ((model == null) || string.IsNullOrEmpty(fileType)) {
+            return result;
+        }
+        if (model.CommonStaffs == null) {
+            return result;
+        }
+        CommonStaffSerializable refItem= 
+            model.CommonStaffs.Where(c => c.FileType == fileType).FirstOrDefault();
+        if (refItem == null) {
+            return result;
+        }
+        if(string.IsNullOrEmpty(refItem.FileName)) {
+            return result;
+        }
+        string fn = refItem.FileName;
+        StringBuilder sb = new StringBuilder();
+        bool toUpper = true;
+        foreach (char c in fn)
+        {
+            if( c == '-' )
+            {
+                toUpper = true;
+            } else
+            {
+                if (toUpper)
+                {
+                    sb.Append(Char.ToUpper(c));
+                    toUpper = false;
+                }
+                else
+                {
+                    sb.Append(c);
+                }
+            }
+                
+        }
+        return sb.ToString();
+    }
+    string GetFolderName(ModelViewSerializable model, string refFolder, string currFolder) {
+        string result="./";
+        if ((model == null) || string.IsNullOrEmpty(refFolder) || string.IsNullOrEmpty(currFolder)) {
+            return result;
+        }
+        if (model.CommonStaffs == null) {
+            return result;
+        }
+        CommonStaffSerializable refItem= 
+            model.CommonStaffs.Where(c => c.FileType == refFolder).FirstOrDefault();
+        CommonStaffSerializable curItem= 
+            model.CommonStaffs.Where(c => c.FileType == currFolder).FirstOrDefault();
+        if ((refItem == null) || (curItem == null)) {
+            return result;
+        }
+        string[] refFolders  = new string[] {};
+        if(!string.IsNullOrEmpty(refItem.FileFolder)) {
+            refFolders  = refItem.FileFolder.Split(new string[] { "\\" }, StringSplitOptions.None);
+        }
+        string[] currFolders = new string[]{};
+        if(!string.IsNullOrEmpty(curItem.FileFolder)) {
+            currFolders  = curItem.FileFolder.Split(new string[] { "\\" }, StringSplitOptions.None);
+        }
+        int refLen = refFolders.Length;
+        int currLen = currFolders.Length;
+        int minLen = refLen < currLen ? refLen : currLen;
+        int cnt= 0;
+        for(int i = 0; i < minLen; i++) {
+            if ( !refFolders[i].Equals(currFolders[i], StringComparison.OrdinalIgnoreCase) ) break;
+            cnt++;
+        }
+        if(currLen > cnt) {
+            result += string.Join("", Enumerable.Repeat("../", currLen - cnt));
+        }
+        if(refLen > cnt) {
+            result += string.Join("/", refFolders, cnt, refLen - cnt) + "/";
+        }
+        result += refItem.FileName;
+        return result;
+    }
+    string GetServiceClassName(ModelViewSerializable model, string fileType) {
+        string result="";
+        if ((model == null) || string.IsNullOrEmpty(fileType) ) {
+            return result;
+        }
+        if (model.CommonStaffs == null) {
+            return result;
+        }
+        CommonStaffSerializable refItem= 
+            model.CommonStaffs.Where(c => c.FileType == fileType).FirstOrDefault();
+        if (refItem == null) {
+            return result;
+        }
+        if(string.IsNullOrEmpty(refItem.FileName)) {
+            return result;
+        }
+        string fn = refItem.FileName.Replace(".service","Service");
+        StringBuilder sb = new StringBuilder();
+        bool toUpper = true;
+        foreach (char c in fn)
+        {
+            if( c == '-' )
+            {
+                toUpper = true;
+            } else
+            {
+                if (toUpper)
+                {
+                    sb.Append(Char.ToUpper(c));
+                    toUpper = false;
+                }
+                else
+                {
+                    sb.Append(c);
+                }
+            }
+        }
+        return sb.ToString();
+    }
+
+#>

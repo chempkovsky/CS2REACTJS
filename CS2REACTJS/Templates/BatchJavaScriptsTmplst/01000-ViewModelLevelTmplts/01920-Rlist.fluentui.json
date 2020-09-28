@@ -1,0 +1,54 @@
+{
+  "Description": [
+    "",
+    "                                BEFORE YOU START !!!",
+    "1.",
+    "Please make sure that you have already run the following scripts for the current ViewModel",
+    "                                01100-.interface.tsx",
+    "                                01200-Page.interface.tsx",
+    "                                01300-Filter.interface.tsx",
+    "                                01400-.service.tsx",
+    "                                01420-Sform.component.tsx",
+    "                                01440-Sdlg.component.tsx",
+    "                                01820-Redit.component.tsx",
+    "",
+    "                                AND",
+    "",
+    "Please make sure that you have already run the following scripts for all MASTER ViewModels",
+    "                                01100-.interface.tsx",
+    "                                01200-Page.interface.tsx",
+    "                                01300-Filter.interface.tsx",
+    "                                01400-.service.tsx",
+    "                                01420-Sform.component.tsx",
+    "                                01440-Sdlg.component.tsx",
+    "",
+    "2.",
+    "Please make sure that you selected src\\components\\your-view-model-name folder",
+    "  where [your-view-model-name] is a name of currently selected ViewModel",
+    "",
+    "",
+    ""
+  ],
+  "BatchItems": [
+    {
+      "DestinationFolder": "interfaces",
+      "GeneratorType": "01596-List-state.interface.tsx",
+      "GeneratorSript": "List-state.interface.tsx.t4"
+    },
+    {
+      "DestinationFolder": "interfaces",
+      "GeneratorType": "01918-Rlist-state.interface.tsx",
+      "GeneratorSript": "Rlist-state.interface.tsx.t4"
+    },
+    {
+      "DestinationFolder": "interfaces",
+      "GeneratorType": "01919-Rlist-props.interface.tsx",
+      "GeneratorSript": "Rlist-props.interface.tsx.t4"
+    },
+    {
+      "DestinationFolder": "components\\rlist",
+      "GeneratorType": "01920-Rlist.component.tsx",
+      "GeneratorSript": "Rlist.component.fluentui.tsx.t4"
+    }
+  ]
+}

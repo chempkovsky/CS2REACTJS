@@ -1,0 +1,54 @@
+{
+  "Description": [
+    "",
+    "                                BEFORE YOU START !!!",
+    "",
+    "1.",
+    "Please make sure that you selected [src] folder",
+    "  where [your-view-model-name] is a name of currently selected ViewModel",
+    ""
+  ],
+  "BatchItems": [
+    {
+      "DestinationFolder": "shared\\interfaces",
+      "GeneratorType": "00116-app-glbl-chngpswd.interface.tsx",
+      "GeneratorSript": "app-glbl-chngpswd.interface.tsx.t4"
+    },
+    {
+      "DestinationFolder": "shared\\interfaces",
+      "GeneratorType": "00118-app-glbl-register.interface.tsx",
+      "GeneratorSript": "app-glbl-register.interface.tsx.t4"
+    },
+    {
+      "DestinationFolder": "shared\\components\\app-glbl-register",
+      "GeneratorType": "00135-app-glbl-register.tsx",
+      "GeneratorSript": "app-glbl-register.fluentui.tsx.t4"
+    },
+    {
+      "DestinationFolder": "shared\\components\\app-glbl-login",
+      "GeneratorType": "00140-app-glbl-login.tsx",
+      "GeneratorSript": "app-glbl-login.fluentui.tsx.t4"
+    },
+    {
+      "DestinationFolder": "shared\\components\\app-glbl-logout",
+      "GeneratorType": "00142-app-glbl-logout.tsx",
+      "GeneratorSript": "app-glbl-logout.fluentui.tsx.t4"
+    },
+    {
+      "DestinationFolder": "shared\\components\\app-glbl-chngpswd",
+      "GeneratorType": "00144-app-glbl-chngpswd.tsx",
+      "GeneratorSript": "app-glbl-chngpswd.fluentui.tsx.t4"
+    },
+    {
+      "DestinationFolder": "shared\\components\\app-glbl-home",
+      "GeneratorType": "00180-app-glbl-home.tsx",
+      "GeneratorSript": "app-glbl-home.fluentui.tsx.t4"
+    },
+    {
+      "DestinationFolder": "shared\\components\\app-glbl-pagenotfound",
+      "GeneratorType": "00185-app-glbl-pagenotfound.tsx",
+      "GeneratorSript": "app-glbl-pagenotfound.fluentui.tsx.t4"
+    }
+  ]
+
+}

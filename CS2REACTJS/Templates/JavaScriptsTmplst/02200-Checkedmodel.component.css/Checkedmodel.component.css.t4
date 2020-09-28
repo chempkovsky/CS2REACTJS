@@ -1,0 +1,67 @@
+﻿<#@ template language="C#" HostSpecific="True" Debug="True" #>
+<#@ output extension="css" #>
+<#@ assembly name="System.Core" #>
+<#@ import namespace="System" #>
+<#@ import namespace="System.IO" #>
+<#@ import namespace="System.Linq" #>
+<#@ import namespace="System.Collections" #>
+<#@ import namespace="System.Collections.Generic" #>
+<#@ import namespace="System.Text" #>
+<#@ import namespace="CS2REACTJS" #>
+<#@ import namespace="CS2REACTJS.Model" #>
+<#@ import namespace="CS2REACTJS.Model.Serializable" #>
+<#@ parameter type="CS2REACTJS.Model.Serializable.ModelViewSerializable" name="Model" #>
+<#@ parameter type="CS2REACTJS.Model.Serializable.DbContextSerializable" name="Context" #>
+
+  .stickyfirstclss {
+    position:sticky;
+    left:0;
+    z-index:1;
+    background-color: white;  
+  }
+  .stickylastclss {
+    position:sticky;
+    right:0;
+    z-index:1;
+    background-color: white; 
+  }
+  .stickytopclss {
+    white-space: nowrap;
+    position:sticky;
+    background-color: white;
+    z-index:1;
+    top:0;
+  }
+  .stickyfirsttopclss {
+    position:sticky;
+    background-color: white;
+    z-index: 2;
+    top:0;
+    left:0;
+    width:20px;
+  }
+  .stickylasttopclss {
+    position:sticky;
+    background-color: white;
+    z-index: 2;
+    top:0;
+    right:0;
+    width:20px;
+  }
+  .tblwidthclss {
+    width:100%;
+  }
+  .tblrowclss {
+    height: 15px !important;
+  } 
+
+  .ngb-tbl-outer-container {
+    display: flex; 
+    flex-wrap: wrap;
+  }
+ .ngb-tbl-container {
+    flex:1;
+    overflow-x: auto;
+    min-width: 0px;
+ }
+

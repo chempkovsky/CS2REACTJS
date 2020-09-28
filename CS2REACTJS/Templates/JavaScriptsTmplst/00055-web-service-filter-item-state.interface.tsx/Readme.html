@@ -1,0 +1,255 @@
+﻿<!DOCTYPE html>
+
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="utf-8" />
+    <title>Readme for 00055-web-service-filter-item-state.interface.tsx</title>
+</head>
+<body>
+    <h3>(Context level) Readme for 00055-web-service-filter-item-state.interface.tsx</h3>
+
+    <table cellspacing="5" border="1">
+        <tr>
+            <td>
+                Type
+            </td>
+            <td>
+                ReactJs interface
+            </td>
+        </tr>
+        <tr>
+            <td>
+                Status
+            </td>
+            <td>
+                <strong style="color:green">Active.</strong>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                Recomended folder
+            </td>
+            <td>
+                /src/shared/interfaces
+            </td>
+        </tr>
+        <tr>
+            <td>
+                Generator group
+            </td>
+            <td>
+                Context level
+            </td>
+        </tr>
+        <tr>
+            <td>
+                Material UI script
+            </td>
+            <td>
+                web-service-filter-item-state.interface.tsx.t4
+            </td>
+        </tr>
+        <tr>
+            <td>
+                Fluent UI script
+            </td>
+            <td>
+                web-service-filter-item-state.interface.fluentui.tsx.t4
+            </td>
+        </tr>
+    </table>
+
+
+    <h4>
+        <strong>
+            <u>Remark</u>
+        </strong>
+    </h4>
+    Please generate the following list of css classes, interfaces and componeents to implement filter UI component for tabled data forms:
+
+    <table cellspacing="5" border="1">
+        <tr>
+            <td>
+                Interface
+            </td>
+            <td>
+                00050-web-service-filter-def.interface.tsx
+            </td>
+        </tr>
+        <tr>
+            <td>
+                Interface
+            </td>
+            <td>
+                00051-web-service-filter-operator.interface.tsx
+            </td>
+        </tr>
+        <tr>
+            <td>
+                Interface
+            </td>
+            <td>
+                00052-web-service-filter-rslt.interface.tsx
+            </td>
+        </tr>
+        <tr>
+            <td>
+                Interface
+            </td>
+            <td>
+                00055-web-service-filter-item-state.interface.tsx
+            </td>
+        </tr>
+        <tr>
+            <td>
+                Interface
+            </td>
+            <td>
+                00056-web-service-filter-item-props.interface.tsx
+            </td>
+        </tr>
+        <tr>
+            <td>
+                Component
+            </td>
+            <td>
+                00060-web-service-filter-item.tsx
+            </td>
+        </tr>
+        <tr>
+            <td>
+                Interface
+            </td>
+            <td>
+                00062-web-service-filter-event.interface.tsx
+            </td>
+        </tr>
+        <tr>
+            <td>
+                Interface
+            </td>
+            <td>
+                00063-web-service-filter-menu.interface.tsx
+            </td>
+        </tr>
+        <tr>
+            <td>
+                Interface
+            </td>
+            <td>
+                00064-web-service-filter-state.interface.tsx
+            </td>
+        </tr>
+        <tr>
+            <td>
+                Interface
+            </td>
+            <td>
+                00065-web-service-filter-props.interface.tsx
+            </td>
+        </tr>
+        <tr>
+            <td>
+                Component
+            </td>
+            <td>
+                00070-web-service-filter.tsx
+            </td>
+        </tr>
+    </table>
+    <h4>
+        Here is a sample:
+    </h4>
+
+    <code>
+        <pre>
+
+    interface AppState {
+      scrn: string;
+      opers: Array<IWebServiceFilterOperatorInterface>;
+      fltrs: Array<IWebServiceFilterDefInterface>;
+      ut: {r: RefObject<WebServiceFilterItem>, id: number}[];
+      mid: IWebServiceFilterMenuInterface[];
+      hf: Array<IWebServiceFilterRsltInterface>;
+    }
+
+    interface AppProps {}
+
+
+    class App extends React.Component<AppProps, AppState> {
+      constructor(props: AppProps) {
+        super(props);
+        this.state =  {
+          scrn: CurrFlexScreen(),
+          opers:  [
+            {oName: 'eq', oCaption: '=='},
+            {oName: 'gt', oCaption: '>='},
+            {oName: 'lt', oCaption: '=<'},
+            {oName: 'ne', oCaption: '<>'},
+            {oName: 'lk', oCaption: 'Like'}
+          ],
+          fltrs:  [
+            {fltrName: 'int32', fltrCaption: '--int32--',  fltrDataType: 'int32', fltrMaxLen: null, fltrMin: 3, fltrMax: 7 },
+            {fltrName: 'double', fltrCaption: '--double--',  fltrDataType: 'double', fltrMaxLen: null, fltrMin: 1.5, fltrMax: 2.8 },
+            {fltrName: 'string', fltrCaption: '--string--',  fltrDataType: 'string', fltrMaxLen: 5, fltrMin: null, fltrMax: null },
+            {fltrName: 'datetime', fltrCaption: '--datetime--',  fltrDataType: 'date', fltrMaxLen: null, fltrMin: '1967-01-10', fltrMax: '1967-01-31' }
+          ],
+          ut: [ 
+            {r: createRef<WebServiceFilterItem>(), id: 1},
+            {r: createRef<WebServiceFilterItem>(), id: 2},
+            {r: createRef<WebServiceFilterItem>(), id: 3},
+            {r: createRef<WebServiceFilterItem>(), id: 4}
+          ] ,  
+          mid: [
+            {id: '1', caption: 'caption1',iconName: 'delete_forever',iconColor: 'secondary', enabled: true, data: null      }, 
+            {id: '2', caption: 'caption2',iconName: 'delete_forever',iconColor: 'primary',  enabled: true, data: null      }, 
+            {id: '3', caption: 'caption3',iconName: 'delete_forever',iconColor: 'secondary', enabled: true, data: null      }, 
+          ],
+          hf:[
+            {fltrName: 'int32', fltrDataType: 'int32', fltrOperator: 'eq', fltrValue: 1 },
+            {fltrName: 'double', fltrDataType: 'double', fltrOperator:'eq', fltrValue: 2 }
+          ]
+
+        };    
+        this.onApplyFilterClicked = this.onApplyFilterClicked.bind(this);
+        this.onContMenuItem = this.onContMenuItem.bind(this);
+        this.onBackBtn = this.onBackBtn.bind(this);
+      }
+
+
+      onApplyFilterClicked(r: Array<IWebServiceFilterRsltInterface>) {
+        console.log(r);
+      }
+      onContMenuItem(v: IWebServiceFilterEventInterface) {
+        console.log(v);
+      }
+      onBackBtn() {
+        console.log('onBackBtn');
+      }
+
+      render() {
+        return (
+            &lt;div&gt;
+                &lt;div&gt;
+                    &lt;WebServiceFilter fltrs={this.state.fltrs}
+                                      showAddFltItem={true}
+                                      showFilter={true}
+                                      maxHeight={2}
+                                      showBackBtn={true}
+                                      caption='This is caption'
+                                      contMenuItems={this.state.mid}
+                                      onApplyFilterClicked={this.onApplyFilterClicked}
+                                      hiddenFlt={this.state.hf}
+                                      onContMenuItem={this.onContMenuItem}
+                                      onBackBtn={this.onBackBtn} /&gt;
+              &lt;/div&gt;
+          &lt;/div&gt;
+        )};
+
+
+    </pre>
+    </code>
+
+
+</body>
+</html>

@@ -1,0 +1,556 @@
+﻿<#@ template language="C#" HostSpecific="True" Debug="True" #>
+<#@ output extension="tsx" #>
+<#@ assembly name="System.Core" #>
+<#@ import namespace="System" #>
+<#@ import namespace="System.IO" #>
+<#@ import namespace="System.Linq" #>
+<#@ import namespace="System.Collections" #>
+<#@ import namespace="System.Collections.Generic" #>
+<#@ import namespace="System.Text" #>
+<#@ import namespace="CS2REACTJS" #>
+<#@ import namespace="CS2REACTJS.Model" #>
+<#@ import namespace="CS2REACTJS.Model.Serializable" #>
+<#@ parameter type="CS2REACTJS.Model.Serializable.ModelViewSerializable" name="Model" #>
+<#@ parameter type="CS2REACTJS.Model.Serializable.DbContextSerializable" name="Context" #>
+<#
+
+    string appGlblChngpswdDataModelFolder               = "00144-app-glbl-chngpswd.tsx";
+    string appGlblChngpswdDataModelClassName            = GetModelClassName(Model, appGlblChngpswdDataModelFolder);
+
+    string appLoginServiceFolder                        = "00130-app-glbl-login.service.tsx";
+    string appLoginServiceClassName                     = GetServiceClassName(Model, appLoginServiceFolder);
+
+    string appGlblSettingsServiceFolder                 = "00028-app-glbl-settings.service.tsx";
+    string appGlblSettingsServiceClassName              = GetServiceClassName(Model, appGlblSettingsServiceFolder);
+
+    string appGlblSettingsContextFolder                 = "00029-app-glbl-settings.context.tsx";
+    string appGlblSettingsContextClassName              = GetContextName(Model, appGlblSettingsContextFolder);
+
+    string validatorsFolder                             = "00048-validators.tsx";
+    string validatorsClassName                          = GetModelClassName(Model, validatorsFolder);
+
+    string formControlValueFolder                       = "00049-form-control-value.tsx";
+    string formControlValueClassName                    = GetModelClassName(Model, formControlValueFolder);
+
+    string formControlStateFolder                       = "00110-form-control-state.tsx";
+    string formControlStateClassName                    = GetModelInterfaceName(Model, formControlStateFolder);
+
+    string appRegisterInterfaceDataModelFolder          = "00118-app-glbl-register.interface.tsx";
+    string appRegisterInterfaceDataModelClassName       = GetModelInterfaceName(Model, appRegisterInterfaceDataModelFolder);
+
+    string appChngpswdInterfaceDataModelFolder          = "00116-app-glbl-chngpswd.interface.tsx";
+    string appChngpswdInterfaceDataModelClassName       = GetModelInterfaceName(Model, appChngpswdInterfaceDataModelFolder);
+
+
+    string onCancel                                     = "onCancel";
+    string doSubmit                                     = "doSubmit";
+    string onOldHide                                    = "onOldHide";
+    string onPwdHide                                    = "onPwdHide";
+    string onCnfHide                                    = "onCnfHide";
+    string ShowErrorMethodName                          = "showError";
+    string setAuthInfoMethodName                        = "setAuthInfo";
+
+#>
+
+import React from 'react';
+import { DefaultButton, FontIcon, IconButton, PrimaryButton, Stack, StackItem, TextField } from '@fluentui/react';
+import Card from '@uifabric/react-cards/lib/components/Card/Card';
+
+
+import <#= appGlblSettingsContextClassName #> from '<#= GetFolderName(Model, appGlblSettingsContextFolder, appGlblChngpswdDataModelFolder) #>';
+import <#= formControlStateClassName #> from "<#= GetFolderName(Model, formControlStateFolder, appGlblChngpswdDataModelFolder) #>";
+import <#= formControlValueClassName #> from "<#= GetFolderName(Model, formControlValueFolder, appGlblChngpswdDataModelFolder) #>";
+import <#= validatorsClassName #> from "<#= GetFolderName(Model, validatorsFolder, appGlblChngpswdDataModelFolder) #>";
+import <#= appLoginServiceClassName #> from "<#= GetFolderName(Model, appLoginServiceFolder, appGlblChngpswdDataModelFolder) #>";
+import <#= appChngpswdInterfaceDataModelClassName #> from "<#= GetFolderName(Model, appChngpswdInterfaceDataModelFolder, appGlblChngpswdDataModelFolder) #>";
+
+interface <#= appGlblChngpswdDataModelClassName + "State" #> {
+    oldhide: boolean;
+    pwdhide: boolean;
+    cnfhide: boolean;
+    oldpassword: <#= formControlStateClassName #>;
+    password: <#= formControlStateClassName #>;
+    confirmpassword: <#= formControlStateClassName #>;
+}
+
+export default class <#= appGlblChngpswdDataModelClassName #> extends React.Component<any, <#= appGlblChngpswdDataModelClassName + "State" #>>  {
+    static contextType = <#= appGlblSettingsContextClassName #>;
+    public oldpassword: <#= formControlValueClassName #> = new <#= formControlValueClassName #>(null, false, [ <#= validatorsClassName + ".required" #>, <#= validatorsClassName + ".minLength(6)" #>, <#= validatorsClassName + ".maxLength(127)" #> ]);
+    public password: <#= formControlValueClassName #> = new <#= formControlValueClassName #>(null, false, [ <#= validatorsClassName + ".required"#>, <#= validatorsClassName + ".minLength(6)" #>, <#= validatorsClassName + ".maxLength(127)" #> ]);
+    public confirmpassword: <#= formControlValueClassName #> = new <#= formControlValueClassName #>(null, false, [ <#= validatorsClassName + ".required"#>, <#= validatorsClassName + ".minLength(6)" #>, <#= validatorsClassName + ".maxLength(127)" #> ]);
+    constructor(props: any) {
+        super(props);
+        this.state = {
+            oldhide: true,
+            pwdhide: true,
+            cnfhide: true,
+            oldpassword: {Value: '', Disabled: false, Invalid: false, Errors: {}},
+            password: {Value: '', Disabled: false, Invalid: false, Errors: {}},
+            confirmpassword: {Value: '', Disabled: false, Invalid: false, Errors: {}},
+        };
+        this.ValForInput = this.ValForInput.bind(this);
+        this.getErrorMessage = this.getErrorMessage.bind(this);
+        this.<#= onCancel #> = this.<#= onCancel #>.bind(this);
+        this.<#= doSubmit #> = this.<#= doSubmit #>.bind(this);
+        this.<#= onOldHide #> = this.<#= onOldHide #>.bind(this);
+        this.<#= onPwdHide #> = this.<#= onPwdHide #>.bind(this);
+        this.<#= onCnfHide #> = this.<#= onCnfHide #>.bind(this);
+        this.onPasswordChange = this.onPasswordChange.bind(this);
+        this.onOldPasswordChange = this.onOldPasswordChange.bind(this);
+        this.onConfirmPasswordChange = this.onConfirmPasswordChange.bind(this);
+        this.checkValid = this.checkValid.bind(this);
+        this.doLogIn = this.doLogIn.bind(this);
+    }
+    public ValForInput(value: any): any {
+        if(typeof value === 'undefined') return '';
+        if(value === null) return '';
+        return value;
+    }
+    getErrorMessage(fc: <#= formControlStateClassName #>): string {
+        if(fc)
+            return <#= formControlValueClassName #>.getValidationErrorMessageEx(fc.Errors);
+        else 
+            return 'Validation Error.';
+    } 
+    public checkValid(): boolean {
+        let rslt: boolean = true;
+        this.password.Validate();
+        this.password.Touched = true;
+        this.setState({password: { Errors: this.password.Errors,    
+                                   Invalid: this.password.InvalidEx,
+                                   Disabled: this.password.Disabled,
+                                   Value: this.password.Value }
+                                });
+        rslt = rslt &&  this.password.Valid;    
+
+        this.confirmpassword.Validate();
+        this.confirmpassword.Touched = true;
+        rslt = rslt && this.confirmpassword.Valid;    
+        if (rslt) {
+            if(this.password.Value !== this.confirmpassword.Value) {
+                this.confirmpassword.Errors = { 'mustbeequal': 'Password and Confirm password must be equal'}
+                rslt = false; 
+            }
+        }
+        this.setState({confirmpassword:   { Errors: this.confirmpassword.Errors,    
+                                            Invalid: this.confirmpassword.InvalidEx,
+                                            Disabled: this.confirmpassword.Disabled,
+                                            Value: this.confirmpassword.Value }
+                                          });
+
+
+
+        this.oldpassword.Validate();
+        this.oldpassword.Touched = true;
+        this.setState({oldpassword: { Errors: this.oldpassword.Errors,    
+                                   Invalid: this.oldpassword.InvalidEx,
+                                   Disabled: this.oldpassword.Disabled,
+                                   Value: this.oldpassword.Value }
+                                });
+        rslt = rslt &&  this.oldpassword.Valid;    
+        return rslt;
+    }
+    <#= onCancel #>() {
+      if(this.props.history) {
+        this.props.history.push('/');
+      }
+    }
+
+    doLogIn() {
+        let username: string = this.context.UserName;
+        <#= appLoginServiceClassName #>.login(this.context, username, this.password.Value)
+        .then((res: any) => res.json())
+        .then(
+            (respdata: any ) => {
+                this.context.<#= setAuthInfoMethodName #>(respdata);
+                this.<#= onCancel #>()
+            },
+            (error: any) => {
+                this.context.<#= ShowErrorMethodName #>('http', error);
+            }
+        );
+    }
+
+    <#= doSubmit #>() {
+        if(! this.checkValid() ) return;
+        let rqDt: <#= appChngpswdInterfaceDataModelClassName #> = {
+           OldPassword: this.oldpassword.Value,
+           NewPassword: this.password.Value,
+           ConfirmPassword: this.confirmpassword.Value
+        }
+
+        <#= appLoginServiceClassName #>.changePassword(this.context, rqDt)
+        // .then((res: any) => res.json())
+        .then(
+            (respdata: Response ) => {
+                if(respdata.ok) {
+                    // this.doLogIn();
+                    this.<#= onCancel #>()
+                } else {
+                   let msg = {
+                        message: 'Error status: ' + respdata.status + ' With Status Text: ' + respdata.statusText
+                    }
+                    this.context.showError('http',  msg);    
+                }
+            },
+            (error: any) => {
+                this.context.<#= ShowErrorMethodName #>('http', error);
+            }
+        );
+    }
+    <#= onPwdHide #>() {
+        this.setState({pwdhide: !(this.state.pwdhide)})
+    }
+    <#= onCnfHide #>() {
+        this.setState({cnfhide: !(this.state.cnfhide)})
+    }
+    <#= onOldHide #>() {
+        this.setState({oldhide: !(this.state.oldhide)})
+    }
+
+    onPasswordChange(event: any, newValue?: string) {
+        this.password.Value = newValue;
+        this.password.Touched = true;
+        this.setState({password: { Errors: this.password.Errors,    
+                                   Invalid: this.password.InvalidEx,
+                                   Disabled: this.password.Disabled,
+                                   Value: this.password.Value }
+                                });
+    }
+    onConfirmPasswordChange(event: any, newValue?: string) {
+        this.confirmpassword.Value = newValue;
+        this.confirmpassword.Touched = true;
+        this.setState({confirmpassword: { Errors: this.confirmpassword.Errors,    
+                                          Invalid: this.confirmpassword.InvalidEx,
+                                          Disabled: this.confirmpassword.Disabled,
+                                          Value: this.confirmpassword.Value }
+                                });
+    }
+    onOldPasswordChange(event: any, newValue?: string) {
+        this.oldpassword.Value = newValue;
+        this.oldpassword.Touched = true;
+        this.setState({oldpassword: { Errors: this.oldpassword.Errors,    
+                                   Invalid: this.oldpassword.InvalidEx,
+                                   Disabled: this.oldpassword.Disabled,
+                                   Value: this.oldpassword.Value }
+                                });
+    }
+
+    render() {
+        return (
+            <Stack horizontal={false} verticalAlign="center" style={{  height:`calc(100% - 8px)` }}>
+                <StackItem align='center' >
+                    <Card tokens={{minWidth:380, childrenMargin: 16}}>
+                        <Card.Item>
+                                <h3>Change password</h3>
+                        </Card.Item>
+                        <Card.Section >
+                            <TextField label="Old password"
+                                onChange={ this.onOldPasswordChange }
+                                value={ this.ValForInput(this.state.oldpassword.Value) }
+                                errorMessage={ this.state.oldpassword.Invalid ? this.getErrorMessage(this.state.oldpassword) as string : undefined }
+                                description={ this.state.oldpassword.Invalid ? undefined : 'length of the oldpassword must be large than 5' }
+                                type = {this.state.oldhide ? 'password' : 'text'}
+                                onRenderSuffix={()=> { return(
+                                    <IconButton onClick={this.<#= onOldHide #>} style={{width:'12px'}}>
+                                        <FontIcon iconName= {this.state.oldhide ?'VisuallyImpaired' : 'RedEye'}  ></FontIcon>
+                                    </IconButton>
+                                  )}}
+                            />
+                            <TextField label="Password"
+                                onChange={ this.onPasswordChange }
+                                value={ this.ValForInput(this.state.password.Value) }
+                                errorMessage={ this.state.password.Invalid ? this.getErrorMessage(this.state.password) as string : undefined }
+                                description={ this.state.password.Invalid ? undefined : 'length of the password must be large than 5' }
+                                type = {this.state.pwdhide ? 'password' : 'text'}
+                                onRenderSuffix={()=> { return(
+                                    <IconButton onClick={this.<#= onPwdHide #>} style={{width:'12px'}}>
+                                        <FontIcon iconName= {this.state.pwdhide ?'VisuallyImpaired' : 'RedEye'}  ></FontIcon>
+                                    </IconButton>
+                                  )}}
+                            />
+                            <TextField label="Confirm Password"
+                                onChange={ this.onConfirmPasswordChange }
+                                value={ this.ValForInput(this.state.confirmpassword.Value) }
+                                errorMessage={ this.state.confirmpassword.Invalid ? this.getErrorMessage(this.state.confirmpassword) as string : undefined }
+                                description={ this.state.confirmpassword.Invalid ? undefined : 'length of the confirmpassword must be large than 5' }
+                                type = {this.state.cnfhide ? 'password' : 'text'}
+                                onRenderSuffix={()=> { return(
+                                    <IconButton onClick={this.<#= onCnfHide #>} style={{width:'12px'}}>
+                                        <FontIcon iconName= {this.state.cnfhide ?'VisuallyImpaired' : 'RedEye'}  ></FontIcon>
+                                    </IconButton>
+                                  )}}
+                            />
+                       </Card.Section>
+                        <Card.Item>
+                            <DefaultButton onClick={ this.<#= onCancel #> }  text='Cancel' />
+                            <PrimaryButton onClick={ this.<#= doSubmit #> } text='Ok'  />
+                        </Card.Item>
+                    </Card>
+                </StackItem>
+            </Stack>
+        )};
+}
+
+
+
+<#+
+    string GetModelInterfaceName(ModelViewSerializable model, string fileType) {
+        string result="";
+        if ((model == null) || string.IsNullOrEmpty(fileType)) {
+            return result;
+        }
+        if (model.CommonStaffs == null) {
+            return result;
+        }
+        CommonStaffSerializable refItem= 
+            model.CommonStaffs.Where(c => c.FileType == fileType).FirstOrDefault();
+        if (refItem == null) {
+            return result;
+        }
+        if(string.IsNullOrEmpty(refItem.FileName)) {
+            return result;
+        }
+        string fn = refItem.FileName.Replace(".interface","-interface");
+        StringBuilder sb = new StringBuilder();
+        bool toUpper = true;
+        foreach (char c in fn)
+        {
+            if( c == '-' )
+            {
+                toUpper = true;
+            } else
+            {
+                if (toUpper)
+                {
+                    sb.Append(Char.ToUpper(c));
+                    toUpper = false;
+                }
+                else
+                {
+                    sb.Append(c);
+                }
+            }
+                
+        }
+        return "I"+sb.ToString();
+    }
+    string GetModelClassName(ModelViewSerializable model, string fileType) {
+        string result="";
+        if ((model == null) || string.IsNullOrEmpty(fileType)) {
+            return result;
+        }
+        if (model.CommonStaffs == null) {
+            return result;
+        }
+        CommonStaffSerializable refItem= 
+            model.CommonStaffs.Where(c => c.FileType == fileType).FirstOrDefault();
+        if (refItem == null) {
+            return result;
+        }
+        if(string.IsNullOrEmpty(refItem.FileName)) {
+            return result;
+        }
+        string fn = refItem.FileName;
+        StringBuilder sb = new StringBuilder();
+        bool toUpper = true;
+        foreach (char c in fn)
+        {
+            if( c == '-' )
+            {
+                toUpper = true;
+            } else
+            {
+                if (toUpper)
+                {
+                    sb.Append(Char.ToUpper(c));
+                    toUpper = false;
+                }
+                else
+                {
+                    sb.Append(c);
+                }
+            }
+                
+        }
+        return sb.ToString();
+    }
+    string GetModelCssClassName(ModelViewSerializable model, string fileType) {
+        string result="";
+        if ((model == null) || string.IsNullOrEmpty(fileType)) {
+            return result;
+        }
+        if (model.CommonStaffs == null) {
+            return result;
+        }
+        CommonStaffSerializable refItem= 
+            model.CommonStaffs.Where(c => c.FileType == fileType).FirstOrDefault();
+        if (refItem == null) {
+            return result;
+        }
+        if(string.IsNullOrEmpty(refItem.FileName)) {
+            return result;
+        }
+        return refItem.FileName;
+    }
+    string GetModelFunctionName(ModelViewSerializable model, string fileType) {
+        string result="";
+        if ((model == null) || string.IsNullOrEmpty(fileType)) {
+            return result;
+        }
+        if (model.CommonStaffs == null) {
+            return result;
+        }
+        CommonStaffSerializable refItem= 
+            model.CommonStaffs.Where(c => c.FileType == fileType).FirstOrDefault();
+        if (refItem == null) {
+            return result;
+        }
+        if(string.IsNullOrEmpty(refItem.FileName)) {
+            return result;
+        }
+        string fn = refItem.FileName;
+        StringBuilder sb = new StringBuilder();
+        bool toUpper = true;
+        foreach (char c in fn)
+        {
+            if( c == '-' )
+            {
+                toUpper = true;
+            } else
+            {
+                if (toUpper)
+                {
+                    sb.Append(Char.ToUpper(c));
+                    toUpper = false;
+                }
+                else
+                {
+                    sb.Append(c);
+                }
+            }
+                
+        }
+        return sb.ToString();
+    }
+    string GetFolderName(ModelViewSerializable model, string refFolder, string currFolder) {
+        string result="./";
+        if ((model == null) || string.IsNullOrEmpty(refFolder) || string.IsNullOrEmpty(currFolder)) {
+            return result;
+        }
+        if (model.CommonStaffs == null) {
+            return result;
+        }
+        CommonStaffSerializable refItem= 
+            model.CommonStaffs.Where(c => c.FileType == refFolder).FirstOrDefault();
+        CommonStaffSerializable curItem= 
+            model.CommonStaffs.Where(c => c.FileType == currFolder).FirstOrDefault();
+        if ((refItem == null) || (curItem == null)) {
+            return result;
+        }
+        string[] refFolders  = new string[] {};
+        if(!string.IsNullOrEmpty(refItem.FileFolder)) {
+            refFolders  = refItem.FileFolder.Split(new string[] { "\\" }, StringSplitOptions.None);
+        }
+        string[] currFolders = new string[]{};
+        if(!string.IsNullOrEmpty(curItem.FileFolder)) {
+            currFolders  = curItem.FileFolder.Split(new string[] { "\\" }, StringSplitOptions.None);
+        }
+        int refLen = refFolders.Length;
+        int currLen = currFolders.Length;
+        int minLen = refLen < currLen ? refLen : currLen;
+        int cnt= 0;
+        for(int i = 0; i < minLen; i++) {
+            if ( !refFolders[i].Equals(currFolders[i], StringComparison.OrdinalIgnoreCase) ) break;
+            cnt++;
+        }
+        if(currLen > cnt) {
+            result += string.Join("", Enumerable.Repeat("../", currLen - cnt));
+        }
+        if(refLen > cnt) {
+            result += string.Join("/", refFolders, cnt, refLen - cnt) + "/";
+        }
+        result += refItem.FileName;
+        return result;
+    }
+    string GetServiceClassName(ModelViewSerializable model, string fileType) {
+        string result="";
+        if ((model == null) || string.IsNullOrEmpty(fileType) ) {
+            return result;
+        }
+        if (model.CommonStaffs == null) {
+            return result;
+        }
+        CommonStaffSerializable refItem= 
+            model.CommonStaffs.Where(c => c.FileType == fileType).FirstOrDefault();
+        if (refItem == null) {
+            return result;
+        }
+        if(string.IsNullOrEmpty(refItem.FileName)) {
+            return result;
+        }
+        string fn = refItem.FileName.Replace(".service","Service");
+        StringBuilder sb = new StringBuilder();
+        bool toUpper = true;
+        foreach (char c in fn)
+        {
+            if( c == '-' )
+            {
+                toUpper = true;
+            } else
+            {
+                if (toUpper)
+                {
+                    sb.Append(Char.ToUpper(c));
+                    toUpper = false;
+                }
+                else
+                {
+                    sb.Append(c);
+                }
+            }
+        }
+        return sb.ToString();
+    }
+    string GetContextName(ModelViewSerializable model, string fileType) {
+        string result="";
+        if ((model == null) || string.IsNullOrEmpty(fileType)) {
+            return result;
+        }
+        if (model.CommonStaffs == null) {
+            return result;
+        }
+        CommonStaffSerializable refItem= 
+            model.CommonStaffs.Where(c => c.FileType == fileType).FirstOrDefault();
+        if (refItem == null) {
+            return result;
+        }
+        if(string.IsNullOrEmpty(refItem.FileName)) {
+            return result;
+        }
+        string fn = refItem.FileName.Replace(".context","-context");
+        StringBuilder sb = new StringBuilder();
+        bool toUpper = true;
+        foreach (char c in fn)
+        {
+            if( c == '-' )
+            {
+                toUpper = true;
+            } else
+            {
+                if (toUpper)
+                {
+                    sb.Append(Char.ToUpper(c));
+                    toUpper = false;
+                }
+                else
+                {
+                    sb.Append(c);
+                }
+            }
+                
+        }
+        return sb.ToString();
+    }
+
+#>

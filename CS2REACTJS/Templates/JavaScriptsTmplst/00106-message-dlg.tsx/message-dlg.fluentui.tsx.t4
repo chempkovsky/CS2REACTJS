@@ -1,0 +1,232 @@
+﻿<#@ template language="C#" HostSpecific="True" Debug="True" #>
+<#@ output extension="tsx" #>
+<#@ assembly name="System.Core" #>
+<#@ import namespace="System" #>
+<#@ import namespace="System.IO" #>
+<#@ import namespace="System.Linq" #>
+<#@ import namespace="System.Collections" #>
+<#@ import namespace="System.Collections.Generic" #>
+<#@ import namespace="System.Text" #>
+<#@ import namespace="CS2REACTJS" #>
+<#@ import namespace="CS2REACTJS.Model" #>
+<#@ import namespace="CS2REACTJS.Model.Serializable" #>
+<#@ parameter type="CS2REACTJS.Model.Serializable.ModelViewSerializable" name="Model" #>
+<#@ parameter type="CS2REACTJS.Model.Serializable.DbContextSerializable" name="Context" #>
+<#
+
+    string messageDlgDataModelFolder            = "00106-message-dlg.tsx";
+    string messageDlgDataModelClassName         = GetModelClassName(Model, messageDlgDataModelFolder);
+
+    string messageDlgStateDataModelFolder       = "00102-message-dlg-state.interface.tsx";
+    string messageDlgStateDataModelClassName    = GetModelInterfaceName(Model, messageDlgStateDataModelFolder);
+    string messageDlgPropsDataModelFolder       = "00104-message-dlg-props.interface.tsx";
+    string messageDlgPropsDataModelClassName    = GetModelInterfaceName(Model, messageDlgPropsDataModelFolder);
+
+#>
+
+import React, { Component } from 'react';
+import { Dialog, DialogType, PrimaryButton, DialogFooter, DefaultButton, getTheme, FontIcon, Label }  from '@fluentui/react';
+
+
+import <#= messageDlgStateDataModelClassName #> from "<#= GetFolderName(Model, messageDlgStateDataModelFolder, messageDlgDataModelFolder) #>";
+import <#= messageDlgPropsDataModelClassName #> from "<#= GetFolderName(Model, messageDlgPropsDataModelFolder, messageDlgDataModelFolder) #>";
+
+// import { initializeIcons }  from '@fluentui/react';
+// initializeIcons();
+
+const scheme = getTheme()
+
+
+export default class <#= messageDlgDataModelClassName #>  extends Component<<#= messageDlgPropsDataModelClassName #>, <#= messageDlgStateDataModelClassName #>> {
+
+    constructor(props: <#= messageDlgPropsDataModelClassName #>) {
+        super(props);
+        this.state = {
+            caption: '',
+            message: '',
+            iconname: '',
+            iconcolor: '',
+        }
+        this.handleClose = this.handleClose.bind(this)
+    }
+    static getDerivedStateFromProps(nwprps: <#= messageDlgPropsDataModelClassName #>, oldstt: <#= messageDlgStateDataModelClassName #>): any {
+        let isNotOpen = true;
+        if(nwprps.open) {
+            isNotOpen = false;
+        }
+        if (isNotOpen) {
+            if(oldstt.caption === '') {
+                return null;
+            } else {
+                return {
+                    title: '',
+                    message: '',
+                    iconname: '',
+                    iconcolor: '',
+                }
+            }
+        }
+        return  {
+            caption: nwprps.caption ? nwprps.caption : '',
+            message: nwprps.message ? nwprps.message : '',
+            iconname: nwprps.iconname ? nwprps.iconname : '',
+            iconcolor: nwprps.iconcolor ? nwprps.iconcolor : '',
+        }
+    }
+
+    handleClose(r: boolean) {
+        if (this.props.onClose) {
+            this.props.onClose(r)
+       }
+    }
+
+    render () {
+        let color: string= scheme.semanticColors.menuIcon;
+        if (!(this.state.iconcolor === '')) color = this.state.iconcolor;
+        let iconname: string="info";
+        if (!(this.state.iconname === '')) iconname = this.state.iconname;
+        return (
+            <Dialog
+                dialogContentProps={{type: DialogType.normal}}
+                maxWidth={'100vw'}
+                hidden={this.props.open ? false:true} 
+                title={this.state.caption}
+                onDismiss={() => this.handleClose(false)}>
+                <Label>
+                    <FontIcon iconName={iconname} style={{ fontSize: 24, color: color }}  ></FontIcon>
+                    <span>&nbsp;&nbsp;</span>
+                    {this.state.message}
+                </Label>
+                <DialogFooter>
+                  <DefaultButton  onClick={ ()=>this.handleClose(false) }  text='Cancel' />
+                  <PrimaryButton  onClick={ ()=>this.handleClose(true) }  text='Ok' />
+                </DialogFooter>
+            </Dialog>
+        );
+    }
+}
+
+
+<#+
+    string GetModelInterfaceName(ModelViewSerializable model, string fileType) {
+        string result="";
+        if ((model == null) || string.IsNullOrEmpty(fileType)) {
+            return result;
+        }
+        if (model.CommonStaffs == null) {
+            return result;
+        }
+        CommonStaffSerializable refItem= 
+            model.CommonStaffs.Where(c => c.FileType == fileType).FirstOrDefault();
+        if (refItem == null) {
+            return result;
+        }
+        if(string.IsNullOrEmpty(refItem.FileName)) {
+            return result;
+        }
+        string fn = refItem.FileName.Replace(".interface","-interface");
+        StringBuilder sb = new StringBuilder();
+        bool toUpper = true;
+        foreach (char c in fn)
+        {
+            if( c == '-' )
+            {
+                toUpper = true;
+            } else
+            {
+                if (toUpper)
+                {
+                    sb.Append(Char.ToUpper(c));
+                    toUpper = false;
+                }
+                else
+                {
+                    sb.Append(c);
+                }
+            }
+                
+        }
+        return "I"+sb.ToString();
+    }
+    string GetModelClassName(ModelViewSerializable model, string fileType) {
+        string result="";
+        if ((model == null) || string.IsNullOrEmpty(fileType)) {
+            return result;
+        }
+        if (model.CommonStaffs == null) {
+            return result;
+        }
+        CommonStaffSerializable refItem= 
+            model.CommonStaffs.Where(c => c.FileType == fileType).FirstOrDefault();
+        if (refItem == null) {
+            return result;
+        }
+        if(string.IsNullOrEmpty(refItem.FileName)) {
+            return result;
+        }
+        string fn = refItem.FileName;
+        StringBuilder sb = new StringBuilder();
+        bool toUpper = true;
+        foreach (char c in fn)
+        {
+            if( c == '-' )
+            {
+                toUpper = true;
+            } else
+            {
+                if (toUpper)
+                {
+                    sb.Append(Char.ToUpper(c));
+                    toUpper = false;
+                }
+                else
+                {
+                    sb.Append(c);
+                }
+            }
+                
+        }
+        return sb.ToString();
+    }
+    string GetFolderName(ModelViewSerializable model, string refFolder, string currFolder) {
+        string result="./";
+        if ((model == null) || string.IsNullOrEmpty(refFolder) || string.IsNullOrEmpty(currFolder)) {
+            return result;
+        }
+        if (model.CommonStaffs == null) {
+            return result;
+        }
+        CommonStaffSerializable refItem= 
+            model.CommonStaffs.Where(c => c.FileType == refFolder).FirstOrDefault();
+        CommonStaffSerializable curItem= 
+            model.CommonStaffs.Where(c => c.FileType == currFolder).FirstOrDefault();
+        if ((refItem == null) || (curItem == null)) {
+            return result;
+        }
+        string[] refFolders  = new string[] {};
+        if(!string.IsNullOrEmpty(refItem.FileFolder)) {
+            refFolders  = refItem.FileFolder.Split(new string[] { "\\" }, StringSplitOptions.None);
+        }
+        string[] currFolders = new string[]{};
+        if(!string.IsNullOrEmpty(curItem.FileFolder)) {
+            currFolders  = curItem.FileFolder.Split(new string[] { "\\" }, StringSplitOptions.None);
+        }
+        int refLen = refFolders.Length;
+        int currLen = currFolders.Length;
+        int minLen = refLen < currLen ? refLen : currLen;
+        int cnt= 0;
+        for(int i = 0; i < minLen; i++) {
+            if ( !refFolders[i].Equals(currFolders[i], StringComparison.OrdinalIgnoreCase) ) break;
+            cnt++;
+        }
+        if(currLen > cnt) {
+            result += string.Join("", Enumerable.Repeat("../", currLen - cnt));
+        }
+        if(refLen > cnt) {
+            result += string.Join("/", refFolders, cnt, refLen - cnt) + "/";
+        }
+        result += refItem.FileName;
+        return result;
+    }
+
+#>

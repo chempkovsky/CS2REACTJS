@@ -1,0 +1,594 @@
+﻿<#@ template language="C#" HostSpecific="True" Debug="True" #>
+<#@ output extension="tsx" #>
+<#@ assembly name="System.Core" #>
+<#@ import namespace="System" #>
+<#@ import namespace="System.IO" #>
+<#@ import namespace="System.Linq" #>
+<#@ import namespace="System.Collections" #>
+<#@ import namespace="System.Collections.Generic" #>
+<#@ import namespace="System.Text" #>
+<#@ import namespace="CS2REACTJS" #>
+<#@ import namespace="CS2REACTJS.Model" #>
+<#@ import namespace="CS2REACTJS.Model.Serializable" #>
+<#@ parameter type="CS2REACTJS.Model.Serializable.ModelViewSerializable" name="Model" #>
+<#@ parameter type="CS2REACTJS.Model.Serializable.DbContextSerializable" name="Context" #>
+<#
+
+    string appDataModelFolder                           = "00210-App.tsx";
+    string appDataModelClassName                        = GetModelClassName(Model, appDataModelFolder);
+
+    string appGlblSettingsServiceFolder                 = "00028-app-glbl-settings.service.tsx";
+    string appGlblSettingsServiceClassName              = GetServiceClassName(Model, appGlblSettingsServiceFolder);
+
+    string appGlblSettingsContextFolder                 = "00029-app-glbl-settings.context.tsx";
+    string appGlblSettingsContextClassName              = GetContextName(Model, appGlblSettingsContextFolder);
+
+    string appGlblHomeDataModelFolder                   = "00180-app-glbl-home.tsx";
+    string appGlblHomeDataModelClassName                = GetModelClassName(Model, appGlblHomeDataModelFolder);
+
+    string appGlblPagenotfoundDataModelFolder           = "00185-app-glbl-pagenotfound.tsx";
+    string appGlblPagenotfoundDataModelClassName        = GetModelClassName(Model, appGlblPagenotfoundDataModelFolder);
+
+    string appGlblRegisterDataModelFolder               = "00135-app-glbl-register.tsx";
+    string appGlblRegisterDataModelClassName            = GetModelClassName(Model, appGlblRegisterDataModelFolder);
+
+    string appGlblLoginDataModelFolder                  = "00140-app-glbl-login.tsx";
+    string appGlblLoginDataModelClassName               = GetModelClassName(Model, appGlblLoginDataModelFolder);
+
+    string appGlblLogoutDataModelFolder                 = "00142-app-glbl-logout.tsx";
+    string appGlblLogoutDataModelClassName              = GetModelClassName(Model, appGlblLogoutDataModelFolder);
+
+    string appGlblChngpswdDataModelFolder               = "00144-app-glbl-chngpswd.tsx";
+    string appGlblChngpswdDataModelClassName            = GetModelClassName(Model, appGlblChngpswdDataModelFolder);
+
+
+#>
+
+import React, { Suspense, lazy } from 'react';
+import AppBar from '@material-ui/core/AppBar';
+import CssBaseline from '@material-ui/core/CssBaseline';
+import Divider from '@material-ui/core/Divider';
+import Drawer from '@material-ui/core/Drawer';
+import Hidden from '@material-ui/core/Hidden';
+import IconButton from '@material-ui/core/IconButton';
+import List from '@material-ui/core/List';
+import ListItem from '@material-ui/core/ListItem';
+import ListItemIcon from '@material-ui/core/ListItemIcon';
+import ListItemText from '@material-ui/core/ListItemText';
+import Toolbar from '@material-ui/core/Toolbar';
+import Typography from '@material-ui/core/Typography';
+import { Theme, withTheme, withStyles } from '@material-ui/core/styles';
+import Icon from '@material-ui/core/Icon';
+import { Route, Switch,  withRouter, Redirect } from 'react-router-dom';
+import { MenuItem, Menu, Snackbar } from '@material-ui/core';
+
+import <#= appGlblSettingsContextClassName #> from '<#= GetFolderName(Model, appGlblSettingsContextFolder, appDataModelFolder) #>';
+
+const  <#= appGlblHomeDataModelClassName #> = lazy(() => import('<#= GetFolderName(Model, appGlblHomeDataModelFolder, appDataModelFolder) #>'));
+const  <#= appGlblPagenotfoundDataModelClassName #> = lazy(() => import('<#= GetFolderName(Model, appGlblPagenotfoundDataModelFolder, appDataModelFolder) #>'));
+const  <#= appGlblLoginDataModelClassName #> = lazy(() => import('<#= GetFolderName(Model, appGlblLoginDataModelFolder, appDataModelFolder) #>'));
+const  <#= appGlblLogoutDataModelClassName #> = lazy(() => import('<#= GetFolderName(Model, appGlblLogoutDataModelFolder, appDataModelFolder) #>'));
+const  <#= appGlblRegisterDataModelClassName #> = lazy(() => import('<#= GetFolderName(Model, appGlblRegisterDataModelFolder, appDataModelFolder) #>'));
+const  <#= appGlblChngpswdDataModelClassName #> = lazy(() => import('<#= GetFolderName(Model, appGlblChngpswdDataModelFolder, appDataModelFolder) #>'));
+
+
+const drawerWidth = 240;
+const styles = (theme: Theme) => ({  
+    root: {
+      display: 'flex',
+      height: '100vh',
+    },
+    drawer: {
+      [theme.breakpoints.up('md')]: {
+        width: drawerWidth,
+        flexShrink: 0,
+      },
+    },
+    appBar: {
+      [theme.breakpoints.up('md')]: {
+        width: `calc(100% - ${drawerWidth}px)`,
+        marginLeft: drawerWidth,
+      },
+    },
+    menuButton: {
+      marginRight: theme.spacing(2),
+      [theme.breakpoints.up('md')]: {
+        display: 'none',
+      },
+    },
+    // necessary for content to be below app bar
+    toolbar: theme.mixins.toolbar,
+    drawerPaper: {
+      width: drawerWidth,
+    },
+    content: {
+      flexGrow: 1,
+      // padding: theme.spacing(3),
+    },
+    title: {
+      flexGrow: 1,
+    },
+    routeChild: {
+      width: `calc(100%)`,
+      [theme.breakpoints.up('md')]: {
+        width: `calc(100% - ${drawerWidth}px)`,
+      },
+    },
+
+  });
+
+interface <#= appDataModelClassName + "State" #>  {
+    mobileOpen: boolean;
+    anchorEl: null | HTMLElement;
+    openSnackbar: boolean;
+    textSnackbar: string;
+}
+
+
+class <#= appDataModelClassName #> extends React.Component <any, <#= appDataModelClassName + "State" #>> {
+  static contextType = <#= appGlblSettingsContextClassName #>;
+  constructor(props: any) {
+    super(props);
+    this.state =  {
+        mobileOpen: false,
+        anchorEl: null,
+        openSnackbar: false,
+        textSnackbar: '',
+    };    
+    this.handleDrawerToggle = this.handleDrawerToggle.bind(this);
+    this.onMenuItemClick = this.onMenuItemClick.bind(this);
+    this.handleClose = this.handleClose.bind(this);
+    this.onAuthMenu = this.onAuthMenu.bind(this);
+    this.handleMenu = this.handleMenu.bind(this);
+    this.onSnackbarClose = this.onSnackbarClose.bind(this);
+    this.doNotifyMethod = this.doNotifyMethod.bind(this);
+  }
+  onSnackbarClose(e: any) {
+    this.setState({openSnackbar: false})
+  }
+  doNotifyMethod(text: string) {
+    this.setState({textSnackbar: text, openSnackbar: true})
+  }
+  componentDidMount() {
+    this.context.setMessageMethod(this.doNotifyMethod);
+  }
+  componentWillUnmount() {
+    this.context.setMessageMethod(null);
+  }
+  handleDrawerToggle = () => {
+    this.setState({ mobileOpen: !(this.state.mobileOpen)});
+  };
+  onMenuItemClick(path: string): void {
+    if(path) {
+      if(this.props.history) {
+        this.props.history.push(path)
+      }
+    }
+  }
+  handleMenu = (event: React.MouseEvent<HTMLElement>) => {
+    this.setState({anchorEl: event.currentTarget})
+  };
+  handleClose = () => {
+    this.setState({anchorEl: null})
+  };
+  onAuthMenu(path: string): void {
+    this.onMenuItemClick(path);
+    this.handleClose();
+  }
+
+  render() {
+    const { classes, theme } = this.props;
+    // @ts-ignore
+    const container = undefined;//this.props.window !== undefined ? () => this.props.window().document.body : undefined;
+    const drawer = (
+      <div>
+        <div className={classes.toolbar} />
+        <Divider />
+        <List dense>
+              <ListItem button onClick={ ()=> this.onMenuItemClick('/home') }>
+                <ListItemIcon> <Icon fontSize="small">home</Icon> </ListItemIcon> 
+                <ListItemText primary="Home" />
+              </ListItem>
+          {/* <Divider />
+              <ListItem button onClick={ ()=> this.onMenuItemClick('/YourComponent/lform') }>
+                <ListItemIcon> <Icon fontSize="small">fiber_manual_record_sharp</Icon> </ListItemIcon> 
+                <ListItemText primary="YourComponent (lform)" />
+              </ListItem> */}
+
+        </List>
+        <Divider />
+      </div>
+    );
+
+    return (
+      <div className={classes.root}> 
+        <CssBaseline />
+        <AppBar position="fixed" className={classes.appBar}>
+          <Toolbar>
+            <IconButton
+              color="inherit"
+              edge="start"
+              onClick={this.handleDrawerToggle}
+              className={classes.menuButton}>
+              <Icon fontSize="default">menu_Icon</Icon> 
+            </IconButton>
+            <Typography variant="h6" noWrap className={classes.title}>
+              App
+            </Typography>
+            <IconButton
+                aria-label="account of current user"
+                aria-controls="menu-appbar"
+                aria-haspopup="true"
+                onClick={this.handleMenu}
+                color="inherit">
+                  <Icon fontSize="default">account_circle</Icon> 
+             </IconButton>   
+             <Menu
+                id="menu-appbar"
+                anchorEl={this.state.anchorEl}
+                anchorOrigin={{
+                  vertical: 'top',
+                  horizontal: 'right',
+                }}
+                keepMounted
+                transformOrigin={{
+                  vertical: 'top',
+                  horizontal: 'right',
+                }}
+                open={Boolean(this.state.anchorEl)}
+                onClose={this.handleClose}>
+                    <MenuItem onClick={()=>this.onAuthMenu('/authentication/login')}>
+                      <ListItemIcon> <Icon fontSize="default">exit_to_app</Icon> </ListItemIcon>                  
+                      <Typography variant="inherit" noWrap>Sign in</Typography>                
+                    </MenuItem>
+                    <MenuItem onClick={()=>this.onAuthMenu('/authentication/logout')}>
+                      <ListItemIcon> <Icon fontSize="default">link_off</Icon> </ListItemIcon>                  
+                      <Typography variant="inherit" noWrap>Sign out</Typography>                
+                    </MenuItem>
+                    <MenuItem onClick={()=>this.onAuthMenu('/authentication/register')}>
+                      <ListItemIcon> <Icon fontSize="default">person_add</Icon> </ListItemIcon>                  
+                      <Typography variant="inherit" noWrap>Registration</Typography>                
+                    </MenuItem>
+                    <MenuItem onClick={()=>this.onAuthMenu('/authentication/changepassword')}>
+                      <ListItemIcon> <Icon fontSize="default">edit</Icon> </ListItemIcon>                  
+                      <Typography variant="inherit" noWrap>Change Password</Typography>                
+                    </MenuItem>
+              </Menu>
+          </Toolbar>
+        </AppBar>
+        <nav className={classes.drawer} >
+          {/* The implementation can be swapped with js to avoid SEO duplication of links. */}
+          <Hidden mdUp implementation="css">
+            <Drawer
+              container={container}
+              variant="temporary"
+              anchor={theme.direction === 'rtl' ? 'right' : 'left'}
+              open={this.state.mobileOpen}
+              onClose={this.handleDrawerToggle}
+              classes={{
+                paper: classes.drawerPaper,
+              }}
+              ModalProps={{
+                keepMounted: true, // Better open performance on mobile.
+              }}>
+              {drawer}
+            </Drawer>
+          </Hidden>
+          <Hidden smDown implementation="css">
+            <Drawer
+              classes={{
+                paper: classes.drawerPaper,
+              }}
+              variant="permanent"
+              open>
+              {drawer}
+            </Drawer>
+          </Hidden>
+        </nav>
+        <main className={classes.content}>
+          <div className={classes.toolbar} />
+
+            <Route>
+                <Suspense fallback={<div>Loading...</div>}>
+                    <Switch>
+                        <Route path="/home" render={(props) => <<#= appGlblHomeDataModelClassName #> {...props} />} />
+                        <Route path="/authentication/login" render={(props) => <<#= appGlblLoginDataModelClassName #> {...props} />} />
+                        <Route path="/authentication/logout" render={(props) => <<#= appGlblLogoutDataModelClassName #> {...props} />} />
+                        <Route path="/authentication/register" render={(props) => <<#= appGlblRegisterDataModelClassName #> {...props} />} />
+                        <Route path="/authentication/changepassword" render={(props) => <<#= appGlblChngpswdDataModelClassName #> {...props} />} />
+
+                        {/* <Route path="/YourComponent/lform" render={(props) => 
+                          <div className={classes.routeChild} style={{position: 'fixed'}}>  
+                            <YourComponentLformComponent canAdd={true} canUpdate={true} canDelete={true} 
+                              showFilter={true} showAddFltItem={true} maxHeight={15} filterMaxHeight={2}/>
+                          </div>
+                        }/> */}
+
+
+                        <Route exact path="/">
+                            <Redirect to="/home" /> 
+                        </Route> 
+                        <Route render={(props) => <<#= appGlblPagenotfoundDataModelClassName #> {...props} />} />
+                    </Switch>  
+                </Suspense>
+            </Route>
+       </main>
+       <Snackbar
+        open={this.state.openSnackbar}
+        autoHideDuration={4000}
+        onClose={ this.onSnackbarClose }
+        message={this.state.textSnackbar}
+        action={
+          <React.Fragment>
+            <IconButton size="small" aria-label="close" color="inherit" onClick={this.onSnackbarClose}>
+              <Icon fontSize="small">close</Icon>
+            </IconButton>
+          </React.Fragment>
+        }        
+      />
+      </div>
+    )};
+}
+export default withStyles(styles)(  withTheme( withRouter( <#= appDataModelClassName #> ) ) )
+
+<#+
+    string GetModelInterfaceName(ModelViewSerializable model, string fileType) {
+        string result="";
+        if ((model == null) || string.IsNullOrEmpty(fileType)) {
+            return result;
+        }
+        if (model.CommonStaffs == null) {
+            return result;
+        }
+        CommonStaffSerializable refItem= 
+            model.CommonStaffs.Where(c => c.FileType == fileType).FirstOrDefault();
+        if (refItem == null) {
+            return result;
+        }
+        if(string.IsNullOrEmpty(refItem.FileName)) {
+            return result;
+        }
+        string fn = refItem.FileName.Replace(".interface","-interface");
+        StringBuilder sb = new StringBuilder();
+        bool toUpper = true;
+        foreach (char c in fn)
+        {
+            if( c == '-' )
+            {
+                toUpper = true;
+            } else
+            {
+                if (toUpper)
+                {
+                    sb.Append(Char.ToUpper(c));
+                    toUpper = false;
+                }
+                else
+                {
+                    sb.Append(c);
+                }
+            }
+                
+        }
+        return "I"+sb.ToString();
+    }
+    string GetModelClassName(ModelViewSerializable model, string fileType) {
+        string result="";
+        if ((model == null) || string.IsNullOrEmpty(fileType)) {
+            return result;
+        }
+        if (model.CommonStaffs == null) {
+            return result;
+        }
+        CommonStaffSerializable refItem= 
+            model.CommonStaffs.Where(c => c.FileType == fileType).FirstOrDefault();
+        if (refItem == null) {
+            return result;
+        }
+        if(string.IsNullOrEmpty(refItem.FileName)) {
+            return result;
+        }
+        string fn = refItem.FileName;
+        StringBuilder sb = new StringBuilder();
+        bool toUpper = true;
+        foreach (char c in fn)
+        {
+            if( c == '-' )
+            {
+                toUpper = true;
+            } else
+            {
+                if (toUpper)
+                {
+                    sb.Append(Char.ToUpper(c));
+                    toUpper = false;
+                }
+                else
+                {
+                    sb.Append(c);
+                }
+            }
+                
+        }
+        return sb.ToString();
+    }
+    string GetModelCssClassName(ModelViewSerializable model, string fileType) {
+        string result="";
+        if ((model == null) || string.IsNullOrEmpty(fileType)) {
+            return result;
+        }
+        if (model.CommonStaffs == null) {
+            return result;
+        }
+        CommonStaffSerializable refItem= 
+            model.CommonStaffs.Where(c => c.FileType == fileType).FirstOrDefault();
+        if (refItem == null) {
+            return result;
+        }
+        if(string.IsNullOrEmpty(refItem.FileName)) {
+            return result;
+        }
+        return refItem.FileName;
+    }
+    string GetModelFunctionName(ModelViewSerializable model, string fileType) {
+        string result="";
+        if ((model == null) || string.IsNullOrEmpty(fileType)) {
+            return result;
+        }
+        if (model.CommonStaffs == null) {
+            return result;
+        }
+        CommonStaffSerializable refItem= 
+            model.CommonStaffs.Where(c => c.FileType == fileType).FirstOrDefault();
+        if (refItem == null) {
+            return result;
+        }
+        if(string.IsNullOrEmpty(refItem.FileName)) {
+            return result;
+        }
+        string fn = refItem.FileName;
+        StringBuilder sb = new StringBuilder();
+        bool toUpper = true;
+        foreach (char c in fn)
+        {
+            if( c == '-' )
+            {
+                toUpper = true;
+            } else
+            {
+                if (toUpper)
+                {
+                    sb.Append(Char.ToUpper(c));
+                    toUpper = false;
+                }
+                else
+                {
+                    sb.Append(c);
+                }
+            }
+                
+        }
+        return sb.ToString();
+    }
+    string GetFolderName(ModelViewSerializable model, string refFolder, string currFolder) {
+        string result="./";
+        if ((model == null) || string.IsNullOrEmpty(refFolder) || string.IsNullOrEmpty(currFolder)) {
+            return result;
+        }
+        if (model.CommonStaffs == null) {
+            return result;
+        }
+        CommonStaffSerializable refItem= 
+            model.CommonStaffs.Where(c => c.FileType == refFolder).FirstOrDefault();
+        CommonStaffSerializable curItem= 
+            model.CommonStaffs.Where(c => c.FileType == currFolder).FirstOrDefault();
+        if ((refItem == null) || (curItem == null)) {
+            return result;
+        }
+        string[] refFolders  = new string[] {};
+        if(!string.IsNullOrEmpty(refItem.FileFolder)) {
+            refFolders  = refItem.FileFolder.Split(new string[] { "\\" }, StringSplitOptions.None);
+        }
+        string[] currFolders = new string[]{};
+        if(!string.IsNullOrEmpty(curItem.FileFolder)) {
+            currFolders  = curItem.FileFolder.Split(new string[] { "\\" }, StringSplitOptions.None);
+        }
+        int refLen = refFolders.Length;
+        int currLen = currFolders.Length;
+        int minLen = refLen < currLen ? refLen : currLen;
+        int cnt= 0;
+        for(int i = 0; i < minLen; i++) {
+            if ( !refFolders[i].Equals(currFolders[i], StringComparison.OrdinalIgnoreCase) ) break;
+            cnt++;
+        }
+        if(currLen > cnt) {
+            result += string.Join("", Enumerable.Repeat("../", currLen - cnt));
+        }
+        if(refLen > cnt) {
+            result += string.Join("/", refFolders, cnt, refLen - cnt) + "/";
+        }
+        result += refItem.FileName;
+        return result;
+    }
+    string GetServiceClassName(ModelViewSerializable model, string fileType) {
+        string result="";
+        if ((model == null) || string.IsNullOrEmpty(fileType) ) {
+            return result;
+        }
+        if (model.CommonStaffs == null) {
+            return result;
+        }
+        CommonStaffSerializable refItem= 
+            model.CommonStaffs.Where(c => c.FileType == fileType).FirstOrDefault();
+        if (refItem == null) {
+            return result;
+        }
+        if(string.IsNullOrEmpty(refItem.FileName)) {
+            return result;
+        }
+        string fn = refItem.FileName.Replace(".service","Service");
+        StringBuilder sb = new StringBuilder();
+        bool toUpper = true;
+        foreach (char c in fn)
+        {
+            if( c == '-' )
+            {
+                toUpper = true;
+            } else
+            {
+                if (toUpper)
+                {
+                    sb.Append(Char.ToUpper(c));
+                    toUpper = false;
+                }
+                else
+                {
+                    sb.Append(c);
+                }
+            }
+        }
+        return sb.ToString();
+    }
+    
+    string GetContextName(ModelViewSerializable model, string fileType) {
+        string result="";
+        if ((model == null) || string.IsNullOrEmpty(fileType)) {
+            return result;
+        }
+        if (model.CommonStaffs == null) {
+            return result;
+        }
+        CommonStaffSerializable refItem= 
+            model.CommonStaffs.Where(c => c.FileType == fileType).FirstOrDefault();
+        if (refItem == null) {
+            return result;
+        }
+        if(string.IsNullOrEmpty(refItem.FileName)) {
+            return result;
+        }
+        string fn = refItem.FileName.Replace(".context","-context");
+        StringBuilder sb = new StringBuilder();
+        bool toUpper = true;
+        foreach (char c in fn)
+        {
+            if( c == '-' )
+            {
+                toUpper = true;
+            } else
+            {
+                if (toUpper)
+                {
+                    sb.Append(Char.ToUpper(c));
+                    toUpper = false;
+                }
+                else
+                {
+                    sb.Append(c);
+                }
+            }
+                
+        }
+        return sb.ToString();
+    }
+
+#>

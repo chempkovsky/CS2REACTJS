@@ -1,0 +1,283 @@
+﻿<#@ template language="C#" HostSpecific="True" Debug="True" #>
+<#@ output extension="tsx" #>
+<#@ assembly name="System.Core" #>
+<#@ import namespace="System" #>
+<#@ import namespace="System.IO" #>
+<#@ import namespace="System.Linq" #>
+<#@ import namespace="System.Collections" #>
+<#@ import namespace="System.Collections.Generic" #>
+<#@ import namespace="System.Text" #>
+<#@ import namespace="CS2REACTJS" #>
+<#@ import namespace="CS2REACTJS.Model" #>
+<#@ import namespace="CS2REACTJS.Model.Serializable" #>
+<#@ parameter type="CS2REACTJS.Model.Serializable.ModelViewSerializable" name="Model" #>
+<#@ parameter type="CS2REACTJS.Model.Serializable.DbContextSerializable" name="Context" #>
+<#
+
+    string validatorsFolder                 = "00048-validators.tsx";
+    string validatorsClassName              = GetModelClassName(Model, validatorsFolder);
+
+    string validationErrorsFolder           = "00046-validation-errors.tsx";
+    string validationErrorsClassName        = GetModelInterfaceName(Model, validationErrorsFolder);
+
+    string validatorFnFolder                = "00047-validator-fn.tsx";
+    string validatorFnClassName             = GetModelInterfaceName(Model, validatorFnFolder);
+
+#>
+
+import <#= validationErrorsClassName #> from "<#= GetFolderName(Model, validationErrorsFolder, validatorsFolder) #>";
+import <#= validatorFnClassName #> from "<#= GetFolderName(Model, validatorFnFolder, validatorsFolder) #>";
+
+    export default class <#= validatorsClassName #> {
+        public static isEmptyInputValue(value: any): boolean {
+          return value == null || value.length === 0;
+        }
+        public static hasValidLength(value: any): boolean {
+          return value != null && typeof value.length === 'number';
+        }
+        public static min(min: number): <#= validatorFnClassName #> {
+            return (value: any): <#= validationErrorsClassName #>|null => {
+                if (<#= validatorsClassName #>.isEmptyInputValue(value) || <#= validatorsClassName #>.isEmptyInputValue(min)) {
+                return null;  
+                }
+                const val = parseFloat(value);
+                return !isNaN(val) && value < min ? {'min': {'min': min, 'actual': value}} : null;
+            };
+        }
+        public static max(max: number): <#= validatorFnClassName #> {
+            return (value: any): <#= validationErrorsClassName #>|null => {
+              if (<#= validatorsClassName #>.isEmptyInputValue(value) || <#= validatorsClassName #>.isEmptyInputValue(max)) {
+                return null;  
+              }
+              const val = parseFloat(value);
+              return !isNaN(val) && value > max ? {'max': {'max': max, 'actual': value}} : null;
+            };
+        }
+        public static required(value: any): <#= validationErrorsClassName #>|null {
+            return <#= validatorsClassName #>.isEmptyInputValue(value) ? {'required': true} : null;
+        }
+        public static requiredTrue(value: any): <#= validationErrorsClassName #>|null {
+            return value === true ? null : {'required': true};
+        }
+        public static EMAIL_REGEXP =
+            /^(?=.{1,254}$)(?=.{1,64}@)[a-zA-Z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-zA-Z0-9!#$%&'*+/=?^_`{|}~-]+)*@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$/;
+
+        public static email(value: any): <#= validationErrorsClassName #>|null {
+            if (<#= validatorsClassName #>.isEmptyInputValue(value)) {
+              return null;  
+            }
+            return <#= validatorsClassName #>.EMAIL_REGEXP.test(value) ? null : {'email': true};
+        }
+        public static minLength(minLength: number): <#= validatorFnClassName #> {
+            return (value: any): <#= validationErrorsClassName #>|null => {
+              if (<#= validatorsClassName #>.isEmptyInputValue(value) || !<#= validatorsClassName #>.hasValidLength(value)) {
+                return null;
+              }
+              return value.length < minLength ?
+                  {'minlength': {'requiredLength': minLength, 'actualLength': value.length}} :
+                  null;
+            };
+        }
+        public static maxLength(maxLength: number): <#= validatorFnClassName #> {
+            return (value: any): <#= validationErrorsClassName #>|null => {
+              return <#= validatorsClassName #>.hasValidLength(value) && value.length > maxLength ?
+                  {'maxlength': {'requiredLength': maxLength, 'actualLength': value.length}} :
+                  null;
+            };
+        }
+        public static pattern(pattern: string|RegExp): <#= validatorFnClassName #> {
+            if (!pattern) return Validators.nullValidator;
+            let regex: RegExp;
+            let regexStr: string;
+            if (typeof pattern === 'string') {
+              regexStr = '';
+              if (pattern.charAt(0) !== '^') regexStr += '^';
+              regexStr += pattern;
+              if (pattern.charAt(pattern.length - 1) !== '$') regexStr += '$';
+              regex = new RegExp(regexStr);
+            } else {
+              regexStr = pattern.toString();
+              regex = pattern;
+            }
+            return (value: any): <#= validationErrorsClassName #>|null => {
+              if (<#= validatorsClassName #>.isEmptyInputValue(value)) {
+                return null;  
+              }
+              const val: string = value;
+              return regex.test(val) ? null :
+                                         {'pattern': {'requiredPattern': regexStr, 'actualValue': val}};
+            };
+        }
+        public static nullValidator(value: any): <#= validationErrorsClassName #>|null {
+            return null;
+        }
+
+    }
+
+
+
+<#+
+    string GetModelClassName(ModelViewSerializable model, string fileType) {
+        string result="";
+        if ((model == null) || string.IsNullOrEmpty(fileType)) {
+            return result;
+        }
+        if (model.CommonStaffs == null) {
+            return result;
+        }
+        CommonStaffSerializable refItem= 
+            model.CommonStaffs.Where(c => c.FileType == fileType).FirstOrDefault();
+        if (refItem == null) {
+            return result;
+        }
+        if(string.IsNullOrEmpty(refItem.FileName)) {
+            return result;
+        }
+        string fn = refItem.FileName;
+        StringBuilder sb = new StringBuilder();
+        bool toUpper = true;
+        foreach (char c in fn)
+        {
+            if( c == '-' )
+            {
+                toUpper = true;
+            } else
+            {
+                if (toUpper)
+                {
+                    sb.Append(Char.ToUpper(c));
+                    toUpper = false;
+                }
+                else
+                {
+                    sb.Append(c);
+                }
+            }
+                
+        }
+        return sb.ToString();
+    }
+
+    string GetModelInterfaceName(ModelViewSerializable model, string fileType) {
+        string result="";
+        if ((model == null) || string.IsNullOrEmpty(fileType)) {
+            return result;
+        }
+        if (model.CommonStaffs == null) {
+            return result;
+        }
+        CommonStaffSerializable refItem= 
+            model.CommonStaffs.Where(c => c.FileType == fileType).FirstOrDefault();
+        if (refItem == null) {
+            return result;
+        }
+        if(string.IsNullOrEmpty(refItem.FileName)) {
+            return result;
+        }
+        string fn = refItem.FileName.Replace(".interface","-interface");
+        StringBuilder sb = new StringBuilder();
+        bool toUpper = true;
+        foreach (char c in fn)
+        {
+            if( c == '-' )
+            {
+                toUpper = true;
+            } else
+            {
+                if (toUpper)
+                {
+                    sb.Append(Char.ToUpper(c));
+                    toUpper = false;
+                }
+                else
+                {
+                    sb.Append(c);
+                }
+            }
+                
+        }
+        return "I"+sb.ToString();
+    }
+    string GetModelFunctionName(ModelViewSerializable model, string fileType) {
+        string result="";
+        if ((model == null) || string.IsNullOrEmpty(fileType)) {
+            return result;
+        }
+        if (model.CommonStaffs == null) {
+            return result;
+        }
+        CommonStaffSerializable refItem= 
+            model.CommonStaffs.Where(c => c.FileType == fileType).FirstOrDefault();
+        if (refItem == null) {
+            return result;
+        }
+        if(string.IsNullOrEmpty(refItem.FileName)) {
+            return result;
+        }
+        string fn = refItem.FileName;
+        StringBuilder sb = new StringBuilder();
+        bool toUpper = true;
+        foreach (char c in fn)
+        {
+            if( c == '-' )
+            {
+                toUpper = true;
+            } else
+            {
+                if (toUpper)
+                {
+                    sb.Append(Char.ToUpper(c));
+                    toUpper = false;
+                }
+                else
+                {
+                    sb.Append(c);
+                }
+            }
+                
+        }
+        return sb.ToString();
+    }
+    string GetFolderName(ModelViewSerializable model, string refFolder, string currFolder) {
+        string result="./";
+        if ((model == null) || string.IsNullOrEmpty(refFolder) || string.IsNullOrEmpty(currFolder)) {
+            return result;
+        }
+        if (model.CommonStaffs == null) {
+            return result;
+        }
+        CommonStaffSerializable refItem= 
+            model.CommonStaffs.Where(c => c.FileType == refFolder).FirstOrDefault();
+        CommonStaffSerializable curItem= 
+            model.CommonStaffs.Where(c => c.FileType == currFolder).FirstOrDefault();
+        if ((refItem == null) || (curItem == null)) {
+            return result;
+        }
+        string[] refFolders  = new string[] {};
+        if(!string.IsNullOrEmpty(refItem.FileFolder)) {
+            refFolders  = refItem.FileFolder.Split(new string[] { "\\" }, StringSplitOptions.None);
+        }
+        string[] currFolders = new string[]{};
+        if(!string.IsNullOrEmpty(curItem.FileFolder)) {
+            currFolders  = curItem.FileFolder.Split(new string[] { "\\" }, StringSplitOptions.None);
+        }
+        int refLen = refFolders.Length;
+        int currLen = currFolders.Length;
+        int minLen = refLen < currLen ? refLen : currLen;
+        int cnt= 0;
+        for(int i = 0; i < minLen; i++) {
+            if ( !refFolders[i].Equals(currFolders[i], StringComparison.OrdinalIgnoreCase) ) break;
+            cnt++;
+        }
+        if(currLen > cnt) {
+            result += string.Join("", Enumerable.Repeat("../", currLen - cnt));
+        }
+        if(refLen > cnt) {
+            result += string.Join("/", refFolders, cnt, refLen - cnt) + "/";
+        }
+        result += refItem.FileName;
+        return result;
+    }
+
+
+#>

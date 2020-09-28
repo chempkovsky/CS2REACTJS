@@ -1,0 +1,208 @@
+﻿<!DOCTYPE html>
+
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="utf-8" />
+    <title>Readme for 00037-fx-flex-row-input.interface.tsx</title>
+</head>
+<body>
+    <h3>(Context level) Readme for 00037-fx-flex-row-input.interface.tsx</h3>
+
+    <table cellspacing="5" border="1">
+        <tr>
+            <td>
+                Type
+            </td>
+            <td>
+                ReactJs interface
+            </td>
+        </tr>
+        <tr>
+            <td>
+                Status
+            </td>
+            <td>
+                <strong style="color:green">Active.</strong>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                Recomended folder
+            </td>
+            <td>
+                /src/shared/interfaces
+            </td>
+        </tr>
+        <tr>
+            <td>
+                Generator group
+            </td>
+            <td>
+                Context level
+            </td>
+        </tr>
+    </table>
+
+
+    <h4>
+        <strong>
+            <u>Remark</u>
+        </strong>
+    </h4>
+    Please generate the following list of css classes, interfaces and functions to implement responsive UI by means of the flex:
+
+    <table cellspacing="5" border="1">
+        <tr>
+            <td>
+                Css class
+            </td>
+            <td>
+                00030-fx-flex-base-row.css
+            </td>
+        </tr>
+        <tr>
+            <td>
+                Interface
+            </td>
+            <td>
+                00032-fx-flex-col-def.interface.tsx
+            </td>
+        </tr>
+        <tr>
+            <td>
+                Interface
+            </td>
+            <td>
+                00033-fx-flex-col-val.interface.tsx
+            </td>
+        </tr>
+        <tr>
+            <td>
+                Interface
+            </td>
+            <td>
+                00034-fx-flex-col-input.interface.tsx
+            </td>
+        </tr>
+        <tr>
+            <td>
+                Interface
+            </td>
+            <td>
+                00035-fx-flex-row-def.interface.tsx
+            </td>
+        </tr>
+        <tr>
+            <td>
+                Interface
+            </td>
+            <td>
+                00036-fx-flex-row-val.interface.tsx
+            </td>
+        </tr>
+        <tr>
+            <td>
+                Interface
+            </td>
+            <td>
+                00037-fx-flex-row-input.interface.tsx
+            </td>
+        </tr>
+        <tr>
+            <td>
+                Function
+            </td>
+            <td>
+                00038-col-flex-def.tsx
+            </td>
+        </tr>
+        <tr>
+            <td>
+                Function
+            </td>
+            <td>
+                00039-col-flex-val.tsx
+            </td>
+        </tr>
+        <tr>
+            <td>
+                Function
+            </td>
+            <td>
+                00040-col-flex.tsx
+            </td>
+        </tr>
+        <tr>
+            <td>
+                Function
+            </td>
+            <td>
+                00041-row-flex-def.tsx
+            </td>
+        </tr>
+        <tr>
+            <td>
+                Function
+            </td>
+            <td>
+                00042-row-flex-val.tsx
+            </td>
+        </tr>
+        <tr>
+            <td>
+                Function
+            </td>
+            <td>
+                00043-row-flex.tsx
+            </td>
+        </tr>
+        <tr>
+            <td>
+                Function
+            </td>
+            <td>
+                00044-curr-flex-screen.tsx
+            </td>
+        </tr>
+        <tr>
+            <td>
+                Function
+            </td>
+            <td>
+                00045-use-flex-screen.tsx
+            </td>
+        </tr>
+    </table>
+    <h4>
+        Here is a sample:
+    </h4>
+
+    <code>
+        <pre>
+        import './shared/fx-flex-css/fx-flex-base-row.css'
+        import RowFlex from './shared/fx-flex-funcs/row-flex';
+        import ColFlex from './shared/fx-flex-funcs/col-flex';
+        import UseFlexScreen from './shared/fx-flex-funcs/use-flex-screen';
+
+        function FxFlexSample() {
+        const screen = UseFlexScreen()
+            return (
+                &lt;div className="fx-flex-base-row" style={RowFlex({ scrn: screen, dflt: 'row' , xs: 'column-reverse' , sm: 'column' }) as React.CSSProperties}&gt;
+                    &lt;div style={ ColFlex({scrn: screen, xs:'99%', sm:'49%', md: '13.3%' , dflt:'73.3%'}) as React.CSSProperties}&gt;
+                        column 1
+                    &lt;/div&gt;
+                    &lt;div style={ ColFlex({scrn: screen, xs:'99%', sm:'49%', md: '13.3%' , dflt:'13.3%'}) as React.CSSProperties}&gt;
+                        column 2
+                    &lt;/div&gt;
+                    &lt;div style={ ColFlex({scrn: screen, xs:'99%', sm:'49%', md: '73.3%' , dflt:'13.3%'}) as React.CSSProperties}&gt;
+                        column 3
+                    &lt;/div&gt;
+                &lt;/div&gt;
+            )
+        }
+    </pre>
+    </code>
+
+
+</body>
+</html>

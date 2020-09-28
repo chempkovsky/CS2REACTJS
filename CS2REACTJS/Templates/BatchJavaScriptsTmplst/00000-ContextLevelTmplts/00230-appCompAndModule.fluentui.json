@@ -1,0 +1,39 @@
+{
+  "Description": [
+    "",
+    "                                BEFORE YOU START !!!",
+    "",
+    "1.",
+    "Please make sure that you selected src folder",
+    "",
+    "2",
+    "The current Batch overrides the following preinstalled files",
+    "       app",
+    "       index",
+    "",
+    ""
+  ],
+  "BatchItems": [
+    {
+      "DestinationFolder": "shared\\components\\app-glbl-home",
+      "GeneratorType": "00180-app-glbl-home.tsx",
+      "GeneratorSript": "app-glbl-home.fluentui.tsx.t4"
+    },
+    {
+      "DestinationFolder": "shared\\components\\app-glbl-pagenotfound",
+      "GeneratorType": "00185-app-glbl-pagenotfound.tsx",
+      "GeneratorSript": "app-glbl-pagenotfound.fluentui.tsx.t4"
+    },
+    {
+      "DestinationFolder": "",
+      "GeneratorType": "00210-App.tsx",
+      "GeneratorSript": "App.fluentui.tsx.t4"
+    },
+    {
+      "DestinationFolder": "",
+      "GeneratorType": "00220-index.tsx",
+      "GeneratorSript": "index.fluentui.tsx.t4"
+    }
+  ]
+
+}

@@ -1,0 +1,185 @@
+﻿<!DOCTYPE html>
+
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="utf-8" />
+    <title>Readme for 00082-column-selector-state.interface.tsx</title>
+</head>
+<body>
+    <h3>(Context level) Readme for 00082-column-selector-state.interface.tsx</h3>
+
+    <table cellspacing="5" border="1">
+        <tr>
+            <td>
+                Type
+            </td>
+            <td>
+                ReactJs interface
+            </td>
+        </tr>
+        <tr>
+            <td>
+                Status
+            </td>
+            <td>
+                <strong style="color:green">Active.</strong>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                Recomended folder
+            </td>
+            <td>
+                /src/shared/interfaces
+            </td>
+        </tr>
+        <tr>
+            <td>
+                Generator group
+            </td>
+            <td>
+                Context level
+            </td>
+        </tr>
+    </table>
+
+
+    <h4>
+        <strong>
+            <u>Remark</u>
+        </strong>
+    </h4>
+    Please generate the following list of css classes, interfaces and componeents to implement select column dialog for tabled data forms:
+
+    <table cellspacing="5" border="1">
+        <tr>
+            <td>
+                Interface
+            </td>
+            <td>
+                00080-column-selector-item.interface.tsx
+            </td>
+        </tr>
+        <tr>
+            <td>
+                Interface
+            </td>
+            <td>
+                00082-column-selector-state.interface.tsx
+            </td>
+        </tr>
+        <tr>
+            <td>
+                Interface
+            </td>
+            <td>
+                00084-column-selector-props.interface.tsx
+            </td>
+        </tr>
+        <tr>
+            <td>
+                Component
+            </td>
+            <td>
+                00090-column-selector.tsx
+            </td>
+        </tr>
+        <tr>
+            <td>
+                Interface
+            </td>
+            <td>
+                00092-column-selector-dlg-state.interface.tsx
+            </td>
+        </tr>
+        <tr>
+            <td>
+                Interface
+            </td>
+            <td>
+                00094-column-selector-dlg-props.interface.tsx
+            </td>
+        </tr>
+        <tr>
+            <td>
+                Component
+            </td>
+            <td>
+                00099-column-selector-dlg.tsx
+            </td>
+        </tr>
+    </table>
+    <h4>
+        Here is a sample:
+    </h4>
+
+    <code>
+        <pre>
+
+    interface AppState {
+        colToSel: Array&lt;IColumnSelectorItemInterface&gt;
+        open: boolean;
+    }
+
+    interface AppProps {}
+
+
+    class App extends React.Component &lt; AppProps, AppState &gt; {
+      constructor(props: AppProps) {
+        super(props);
+        this.state =  {
+          colToSel:[
+            {name: 'int32', caption: 'caption int32', checked: false },
+            {name: 'double', caption: 'caption double', checked: true },
+            {name: 'string', caption: 'caption string', checked: false },
+            {name: 'datetime', caption: 'caption datetime', checked: true },
+
+          ],
+          open: false,
+
+        };    
+        this.onClick = this.onClick.bind(this);
+        this.onClose = this.onClose.bind(this);
+      }
+
+
+      onClick() {
+        this.setState<'open'>( { open: true } );
+      }
+
+      onClose(rslt: boolean ,cols?: Array &lt; IColumnSelectorItemInterface &gt;) {
+        this.setState<'open'>( { open: false } );
+        if(cols) {
+          cols.forEach(c => {
+            let  i: number = this.state.colToSel.findIndex(v=>v.name===c.name)
+            if(i > -1) this.state.colToSel[i].checked = c.checked
+          })
+          this.setState<'colToSel'>( { colToSel: this.state.colToSel } );
+        }
+      }
+
+
+      render() {
+        return (
+            &lt;div&gt;
+                &lt;div&gt;
+                &lt;ColumnSelector columsToSelect={this.state.colToSel}&gt;&lt;/ColumnSelector&gt;
+                &lt;p />
+
+                &lt;button onClick={this.onClick}>ColumnSelectorDlg&lt;/button&gt; 
+                &lt;ColumnSelectorDlg open={ this.state.open }
+                                   maxWidth='md'
+                                   colums={this.state.colToSel}
+                                   caption={'this is caption'}
+                                   onClose={this.onClose}>&lt;/ColumnSelectorDlg&gt; 
+              &lt;/div&gt;
+          &lt;/div&gt;
+        )};
+
+
+    </pre>
+    </code>
+
+
+</body>
+</html>

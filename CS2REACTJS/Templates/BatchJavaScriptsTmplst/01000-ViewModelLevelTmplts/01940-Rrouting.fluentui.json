@@ -1,0 +1,35 @@
+{
+  "Description": [
+    "",
+    "                                BEFORE YOU START !!!",
+    "1.",
+    "Please make sure that you have already run the following scripts for the current ViewModel",
+    "                                01820-Redit.component.tsx",
+    "                                01920-Rlist.component.tsx",
+    "",
+    "                                AND",
+    "",
+    "Please make sure that you have already run the following scripts for all direct and indirect detail ViewModels",
+    "                                01820-Redit.component.tsx",
+    "                                01920-Rlist.component.tsx",
+    "",
+    "2.",
+    "Please make sure that you selected src\\components\\your-view-model-name folder",
+    "  where [your-view-model-name] is a name of currently selected ViewModel",
+    "",
+    "",
+    ""
+  ],
+  "BatchItems": [
+    {
+      "DestinationFolder": "interfaces",
+      "GeneratorType": "01939-Rrouting-props.interface.tsx",
+      "GeneratorSript": "Rrouting-props.interface.tsx.t4"
+    },
+    {
+      "DestinationFolder": "components",
+      "GeneratorType": "01940-Rrouting.component.tsx",
+      "GeneratorSript": "Rrouting.component.tsx.t4"
+    }
+  ]
+}

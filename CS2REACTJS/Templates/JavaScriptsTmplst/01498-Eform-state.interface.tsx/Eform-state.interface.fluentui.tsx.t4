@@ -1,0 +1,934 @@
+﻿<#@ template language="C#" HostSpecific="True" Debug="True" #>
+<#@ output extension="tsx" #>
+<#@ assembly name="System.Core" #>
+<#@ import namespace="System" #>
+<#@ import namespace="System.IO" #>
+<#@ import namespace="System.Linq" #>
+<#@ import namespace="System.Collections" #>
+<#@ import namespace="System.Collections.Generic" #>
+<#@ import namespace="System.Text" #>
+<#@ import namespace="CS2REACTJS" #>
+<#@ import namespace="CS2REACTJS.Model" #>
+<#@ import namespace="CS2REACTJS.Model.Serializable" #>
+<#@ parameter type="CS2REACTJS.Model.Serializable.ModelViewSerializable" name="Model" #>
+<#@ parameter type="CS2REACTJS.Model.Serializable.DbContextSerializable" name="Context" #>
+
+<#
+    string eformStateDataModelFolder                    = "01498-Eform-state.interface.tsx";
+    string eformStateDataModelClassName                 = GetModelInterfaceName(Model, eformStateDataModelFolder);
+
+    string eformModeEnumlFolder                         = "00025-eform-mode.enum.tsx";
+    string eformModeEnumName                            = GetContextEnumClassName(Context, eformModeEnumlFolder);
+
+    string formControlValueFolder                       = "00049-form-control-value.tsx";
+    string formControlValueClassName                    = GetContextClassName(Context, formControlValueFolder);
+
+    string webServiceFilterRsltDataModelFolder          = "00052-web-service-filter-rslt.interface.tsx";
+    string webServiceFilterRsltDataModelClassName       = GetContextInterfaceName(Context, webServiceFilterRsltDataModelFolder);
+
+    string formControlStateFolder                       = "00110-form-control-state.tsx";
+    string formControlStateClassName                    = GetContextInterfaceName(Context, formControlStateFolder);
+
+    string viewInterfaceFolder                          = "01100-.interface.tsx";
+
+    string HiddenFilterModalSufix                       = "HfMdl";
+    string OpenModalSufix                               = "OpMdl";
+    string SearchDataSufix                              = "SrchData";
+    string ComboSufix                                   = "CmbCntrl";
+    string ButtonSufix                                  = "BttnItm";
+    string TypeaheadSufix                               = "TphdCntrl";
+    string ButtonDisable                                = "BttnDsnbl";
+    string HiddenFilterPropName                         = "hiddenFilter";
+    string EformModePropName                            = "eformMode";
+    string FormControlModelPropName                     = "eformControlModel";
+   
+    List<string> FKViewsDict =  GetFKViewsList(Model, Context, new List<string>());
+    if (! FKViewsDict.Contains(Model.ViewName) ) {
+        FKViewsDict.Add(Model.ViewName);
+    }
+
+    List<string> SDViewsDict = GetSearchDialogViewsList(Model, Context, new List<string>());
+
+
+#>
+
+import <#= eformModeEnumName #> from "<#= GetCommonFolderName(Model, Context, eformModeEnumlFolder, eformStateDataModelFolder) #>";
+import <#= formControlStateClassName #> from "<#= GetCommonFolderName(Model, Context, formControlStateFolder, eformStateDataModelFolder) #>";
+import <#= webServiceFilterRsltDataModelClassName #> from "<#= GetCommonFolderName(Model, Context, webServiceFilterRsltDataModelFolder, eformStateDataModelFolder) #>";
+
+<#
+    foreach(string viewNm in FKViewsDict) {
+#>
+import <#=  GetInterfaceNameEx(Context, viewNm) #> from '<#=  GetCrossComponentFolderName(Model, eformStateDataModelFolder, Context, viewNm, viewInterfaceFolder) #>';
+<#
+    }
+    foreach(string viewNm in SDViewsDict) {
+        if (!FKViewsDict.Contains(viewNm)) {
+#>
+import <#=  GetInterfaceNameEx(Context, viewNm) #> from '<#=  GetCrossComponentFolderName(Model, eformStateDataModelFolder, Context, viewNm, viewInterfaceFolder) #>';
+<#
+        }
+    }
+#>
+
+
+export default interface <#= eformStateDataModelClassName #> {
+    isMounting: boolean;
+    scrn: string;
+<#
+    foreach(ModelViewUIFormPropertySerializable modelViewUIFormPropertySerializable in Model.UIFormProperties) {
+#>
+    <#= GetTypeScriptPropertyNameEx(modelViewUIFormPropertySerializable, Model) #>: <#= formControlStateClassName #>;
+<#
+    } 
+#>
+
+<# 
+    foreach(ModelViewUIFormPropertySerializable modelViewUIFormPropertySerializable in Model.UIFormProperties) {
+        if (HasButton(modelViewUIFormPropertySerializable, Model)  && modelViewUIFormPropertySerializable.IsShownInView) {  
+#>
+    <#= GetTypeScriptPropertyNameWithSufix(modelViewUIFormPropertySerializable, Model, OpenModalSufix) #>: boolean;
+    <#= GetTypeScriptPropertyNameWithSufix(modelViewUIFormPropertySerializable, Model, HiddenFilterModalSufix) #>: Array< <#= webServiceFilterRsltDataModelClassName #> >;
+<#
+        }
+    } 
+#>
+
+<#    
+    foreach(ModelViewUIFormPropertySerializable modelViewUIFormPropertySerializable in Model.UIFormProperties) {
+        if (HasCombo(modelViewUIFormPropertySerializable, Model) && modelViewUIFormPropertySerializable.IsShownInView) { 
+#> 
+    <#= GetTypeScriptPropertyNameWithSufix(modelViewUIFormPropertySerializable, Model, ComboSufix) #>: <#= formControlStateClassName #>|null;
+    <#= GetExpressionForControlList(modelViewUIFormPropertySerializable, Model, ComboSufix) #> : <#= string.Join(" | ", CollectComboListInterfaces(Context, modelViewUIFormPropertySerializable, Model)) #> | null;
+<#
+        } 
+        if (HasButton(modelViewUIFormPropertySerializable, Model)  && modelViewUIFormPropertySerializable.IsShownInView) {  
+#>
+    <#=  GetTypeScriptPropertyNameWithSufix(modelViewUIFormPropertySerializable, Model, ButtonSufix) #>: <#= string.Join(" | ", CollectButtonItemInterfaces(Context, modelViewUIFormPropertySerializable, Model)) #> | null;
+    <#=  GetTypeScriptPropertyNameWithSufix(modelViewUIFormPropertySerializable, Model, ButtonDisable) #>: boolean;
+
+<#
+        } 
+        if (HasTypeahead(modelViewUIFormPropertySerializable, Model)  && modelViewUIFormPropertySerializable.IsShownInView) {  
+#> 
+    <#=  GetTypeScriptPropertyNameWithSufix(modelViewUIFormPropertySerializable, Model, TypeaheadSufix) #>: <#= formControlStateClassName #>|null;
+    // <#=  GetExpressionForControlList(modelViewUIFormPropertySerializable, Model, TypeaheadSufix) #> : <#= string.Join(" | ", CollectTypeaheadListInterfaces(Context, modelViewUIFormPropertySerializable, Model)) #> | null;
+<#
+        } 
+    } 
+#>
+    <#= EformModePropName #>: <#= eformModeEnumName #>;    
+    <#= HiddenFilterPropName #>: Array< <#= webServiceFilterRsltDataModelClassName #> >;
+    <#= FormControlModelPropName #>: <#= GetInterfaceName(Model) #> | null;
+}
+
+
+<#+
+
+    string GetInterfaceName(ModelViewSerializable model) {
+        return "I"+model.ViewName;
+    }
+    string GetInterfacePageName(ModelViewSerializable model) {
+        return "I"+model.PageViewName;
+    }
+    string GetInterfaceFilterName(ModelViewSerializable model) {
+        return "I"+model.ViewName + "Filter";
+    }
+    string GetFolderName(ModelViewSerializable model, string refFolder, string currFolder) {
+        string result="./";
+        if ((model == null) || string.IsNullOrEmpty(refFolder) || string.IsNullOrEmpty(currFolder)) {
+            return result;
+        }
+        if (model.CommonStaffs == null) {
+            return result;
+        }
+        CommonStaffSerializable refItem= 
+            model.CommonStaffs.Where(c => c.FileType == refFolder).FirstOrDefault();
+        CommonStaffSerializable curItem= 
+            model.CommonStaffs.Where(c => c.FileType == currFolder).FirstOrDefault();
+        if ((refItem == null) || (curItem == null)) {
+            return result;
+        }
+        string[] refFolders  = new string[] {};
+        if(!string.IsNullOrEmpty(refItem.FileFolder)) {
+            refFolders  = refItem.FileFolder.Split(new string[] { "\\" }, StringSplitOptions.None);
+        }
+        string[] currFolders = new string[]{};
+        if(!string.IsNullOrEmpty(curItem.FileFolder)) {
+            currFolders  = curItem.FileFolder.Split(new string[] { "\\" }, StringSplitOptions.None);
+        }
+        int refLen = refFolders.Length;
+        int currLen = currFolders.Length;
+        int minLen = refLen < currLen ? refLen : currLen;
+        int cnt= 0;
+        for(int i = 0; i < minLen; i++) {
+            if ( !refFolders[i].Equals(currFolders[i], StringComparison.OrdinalIgnoreCase) ) break;
+            cnt++;
+        }
+        if(currLen > cnt) {
+            result += string.Join("",Enumerable.Repeat("../", currLen - cnt));
+        }
+        if(refLen > cnt) {
+            result += string.Join("/", refFolders, cnt, refLen - cnt) + "/";
+        }
+        result += refItem.FileName;
+        return result;
+    }
+    string GetModelInterfaceName(ModelViewSerializable model, string fileType) {
+        string result="";
+        if ((model == null) || string.IsNullOrEmpty(fileType)) {
+            return result;
+        }
+        if (model.CommonStaffs == null) {
+            return result;
+        }
+        CommonStaffSerializable refItem= 
+            model.CommonStaffs.Where(c => c.FileType == fileType).FirstOrDefault();
+        if (refItem == null) {
+            return result;
+        }
+        if(string.IsNullOrEmpty(refItem.FileName)) {
+            return result;
+        }
+        string fn = refItem.FileName.Replace(".interface","-interface");
+        StringBuilder sb = new StringBuilder();
+        bool toUpper = true;
+        foreach (char c in fn)
+        {
+            if( c == '-' )
+            {
+                toUpper = true;
+            } else
+            {
+                if (toUpper)
+                {
+                    sb.Append(Char.ToUpper(c));
+                    toUpper = false;
+                }
+                else
+                {
+                    sb.Append(c);
+                }
+            }
+                
+        }
+        return "I"+sb.ToString();
+    }
+    string GetContextInterfaceName(DbContextSerializable context, string fileType) {
+        string result="";
+        if ((context == null) || string.IsNullOrEmpty(fileType)) {
+            return result;
+        }
+        if (context.CommonStaffs == null) {
+            return result;
+        }
+        CommonStaffSerializable refItem= 
+            context.CommonStaffs.Where(c => c.FileType == fileType).FirstOrDefault();
+        if (refItem == null) {
+            return result;
+        }
+        if(string.IsNullOrEmpty(refItem.FileName)) {
+            return result;
+        }
+        string fn = refItem.FileName.Replace(".interface","-interface");
+        StringBuilder sb = new StringBuilder();
+        bool toUpper = true;
+        foreach (char c in fn)
+        {
+            if( c == '-' )
+            {
+                toUpper = true;
+            } else
+            {
+                if (toUpper)
+                {
+                    sb.Append(Char.ToUpper(c));
+                    toUpper = false;
+                }
+                else
+                {
+                    sb.Append(c);
+                }
+            }
+                
+        }
+        return "I"+sb.ToString();
+    }
+
+    string GetCommonFolderName(ModelViewSerializable model, DbContextSerializable context,  string refFolder, string currFolder) {
+        string result="./";
+        if ((model == null) || (context == null) || string.IsNullOrEmpty(refFolder) || string.IsNullOrEmpty(currFolder)) {
+            return result;
+        }
+        if ((model.CommonStaffs == null) || (context.CommonStaffs == null)) {
+            return result;
+        }
+        CommonStaffSerializable refItem= 
+            context.CommonStaffs.Where(c => c.FileType == refFolder).FirstOrDefault();
+        CommonStaffSerializable curItem= 
+            model.CommonStaffs.Where(c => c.FileType == currFolder).FirstOrDefault();
+        if ((refItem == null) || (curItem == null)) {
+            return result;
+        }
+        string[] refFolders  = new string[] {};
+        if(!string.IsNullOrEmpty(refItem.FileFolder)) {
+            refFolders  = refItem.FileFolder.Split(new string[] { "\\" }, StringSplitOptions.None);
+        }
+        string[] currFolders = new string[]{};
+        if(!string.IsNullOrEmpty(curItem.FileFolder)) {
+            currFolders  = curItem.FileFolder.Split(new string[] { "\\" }, StringSplitOptions.None);
+        }
+        int refLen = refFolders.Length;
+        int currLen = currFolders.Length;
+        int minLen = refLen < currLen ? refLen : currLen;
+        int cnt= 0;
+        for(int i = 0; i < minLen; i++) {
+            if ( !refFolders[i].Equals(currFolders[i], StringComparison.OrdinalIgnoreCase) ) break;
+            cnt++;
+        }
+        if(currLen > cnt) {
+            result += string.Join("",Enumerable.Repeat("../", currLen - cnt));
+        }
+        if(refLen > cnt) {
+            result += string.Join("/", refFolders, cnt, refLen - cnt) + "/";
+        }
+        result += refItem.FileName;
+        return result;
+    }
+    string GetModelComponentClassName(ModelViewSerializable model, string fileType) {
+        string result="";
+        if ((model == null) || string.IsNullOrEmpty(fileType) ) {
+            return result;
+        }
+        if (model.CommonStaffs == null) {
+            return result;
+        }
+        CommonStaffSerializable refItem= 
+            model.CommonStaffs.Where(c => c.FileType == fileType).FirstOrDefault();
+        if (refItem == null) {
+            return result;
+        }
+        if(string.IsNullOrEmpty(refItem.FileName)) {
+            return result;
+        }
+        string fn = refItem.FileName.Replace(".component","-component");
+        StringBuilder sb = new StringBuilder();
+        bool toUpper = true;
+        foreach (char c in fn)
+        {
+            if( c == '-' )
+            {
+                toUpper = true;
+            } else
+            {
+                if (toUpper)
+                {
+                    sb.Append(Char.ToUpper(c));
+                    toUpper = false;
+                }
+                else
+                {
+                    sb.Append(c);
+                }
+            }
+        }
+        return sb.ToString();
+    }
+    string GetContextClassName(DbContextSerializable context, string fileType) {
+        string result="";
+        if ((context == null) || string.IsNullOrEmpty(fileType)) {
+            return result;
+        }
+        if (context.CommonStaffs == null) {
+            return result;
+        }
+        CommonStaffSerializable refItem= 
+            context.CommonStaffs.Where(c => c.FileType == fileType).FirstOrDefault();
+        if (refItem == null) {
+            return result;
+        }
+        if(string.IsNullOrEmpty(refItem.FileName)) {
+            return result;
+        }
+        string fn = refItem.FileName;
+        StringBuilder sb = new StringBuilder();
+        bool toUpper = true;
+        foreach (char c in fn)
+        {
+            if( c == '-' )
+            {
+                toUpper = true;
+            } else
+            {
+                if (toUpper)
+                {
+                    sb.Append(Char.ToUpper(c));
+                    toUpper = false;
+                }
+                else
+                {
+                    sb.Append(c);
+                }
+            }
+                
+        }
+        return sb.ToString();
+    }
+    public string FirstLetterToLower(string str)
+    {
+        if (str == null)
+            return null;
+        if (str.Length > 1)
+            return char.ToLower(str[0]) + str.Substring(1);
+        return str.ToUpper();
+    }
+    string GetTypeScriptPropertyName(ModelViewPropertyOfVwSerializable prop, ModelViewSerializable model) {
+        if ((model == null) || (prop == null)) {
+            return "Noname";
+        }
+        if (model.GenerateJSonAttribute) {
+            return prop.JsonPropertyName;
+        } else {
+            return FirstLetterToLower(prop.ViewPropertyName);
+        }
+    }
+    string GetTypeScriptPropertyNameEx(ModelViewUIFormPropertySerializable prop, ModelViewSerializable model) {
+        ModelViewPropertyOfVwSerializable sclrProp = model.ScalarProperties.Where(p => p.ViewPropertyName == prop.ViewPropertyName).FirstOrDefault();
+        return GetTypeScriptPropertyName(sclrProp, model);
+    }
+    bool HasCombo(ModelViewUIFormPropertySerializable prop, ModelViewSerializable model) {
+        return  (prop.InputTypeWhenAdd == InputTypeEnum.Combo) || 
+                (prop.InputTypeWhenUpdate == InputTypeEnum.Combo) || 
+                (prop.InputTypeWhenDelete == InputTypeEnum.Combo);
+    }
+    bool HasButton(ModelViewUIFormPropertySerializable prop, ModelViewSerializable model) {
+        return (prop.InputTypeWhenAdd == InputTypeEnum.SearchDialog) || 
+            (prop.InputTypeWhenUpdate == InputTypeEnum.SearchDialog) ||
+            (prop.InputTypeWhenDelete == InputTypeEnum.SearchDialog);
+    }
+    bool HasTypeahead(ModelViewUIFormPropertySerializable prop, ModelViewSerializable model) {
+        return (prop.InputTypeWhenAdd == InputTypeEnum.Typeahead) || 
+            (prop.InputTypeWhenUpdate == InputTypeEnum.Typeahead) ||
+            (prop.InputTypeWhenDelete == InputTypeEnum.Typeahead);
+    }
+    string GetTypeScriptPropertyNameWithSufix(ModelViewUIFormPropertySerializable prop, ModelViewSerializable model, string sufix) {
+        return GetTypeScriptPropertyNameEx(prop, model) + sufix;
+    }
+    string GetExpressionForControlList(ModelViewUIFormPropertySerializable prop, ModelViewSerializable model, string sufix) {
+        return  GetTypeScriptPropertyNameWithSufix(prop, model, sufix) + "Vals";
+    }
+    string GetViewByForeignNameChain(DbContextSerializable context, string ViewName, string foreignKeyNameChain) {
+        if ( (context == null) || (string.IsNullOrEmpty(ViewName)) ) {
+            return "";
+        }
+        ModelViewSerializable mv = context.ModelViews.Where(v => v.ViewName == ViewName).FirstOrDefault();
+        if (mv == null)
+        {
+            return "";
+        }
+        if (string.IsNullOrEmpty(foreignKeyNameChain))
+        {
+            return ViewName;
+        }
+        string[] foreignKeys = foreignKeyNameChain.Split(new char[] { '.' }, StringSplitOptions.RemoveEmptyEntries);
+        if (foreignKeys.Length < 1)
+        {
+            return "";
+        }
+        ModelViewForeignKeySerializable fk = 
+            mv.ForeignKeys.Where(f => f.NavigationName == foreignKeys[0]).FirstOrDefault();
+        if (fk == null)
+        {
+            return "";
+        }
+        if (foreignKeys.Length == 1)
+        {
+            return GetViewByForeignNameChain(context, fk.ViewName, "");
+        }
+        return GetViewByForeignNameChain(context, fk.ViewName, string.Join(".", foreignKeys, 1, foreignKeys.Length - 1));
+    }
+
+    List<string> CollectComboItemInterfaces(DbContextSerializable context, 
+                                            ModelViewUIFormPropertySerializable prop, 
+                                            ModelViewSerializable model) {
+        List<string> result = new List<string>();
+        ModelViewSerializable mv = null;
+        string intrfsNm = null;
+        string viewNameForSel = null;
+        
+        if (prop.InputTypeWhenAdd == InputTypeEnum.Combo)   {
+            viewNameForSel = prop.ForeifKeyViewNameForAdd;
+            if (string.IsNullOrEmpty(viewNameForSel)) {
+                viewNameForSel = GetViewByForeignNameChain(context, model.ViewName, prop.ForeignKeyNameChain);
+            }
+            if (!string.IsNullOrEmpty(viewNameForSel)) {
+                mv = context.ModelViews.Where(v => v.ViewName == viewNameForSel).FirstOrDefault();
+                if (mv != null) {
+                    result.Add( GetInterfaceName(mv) );
+                }
+            }
+        }
+        if (prop.InputTypeWhenUpdate == InputTypeEnum.Combo) {
+            viewNameForSel = prop.ForeifKeyViewNameForUpd;
+            if (string.IsNullOrEmpty(viewNameForSel)) {
+                viewNameForSel = GetViewByForeignNameChain(context, model.ViewName, prop.ForeignKeyNameChain);
+            }
+            if (!string.IsNullOrEmpty(viewNameForSel)) {
+                mv = context.ModelViews.Where(v => v.ViewName == viewNameForSel).FirstOrDefault();
+                if (mv != null) {
+                    intrfsNm =  GetInterfaceName(mv) ;
+                    if(!result.Contains(intrfsNm)) {
+                        result.Add(intrfsNm);
+                    }
+                }
+            }
+        }
+        if (prop.InputTypeWhenDelete == InputTypeEnum.Combo) {
+            viewNameForSel = prop.ForeifKeyViewNameForDel;
+            if (string.IsNullOrEmpty(viewNameForSel)) {
+                viewNameForSel = GetViewByForeignNameChain(context, model.ViewName, prop.ForeignKeyNameChain);
+            }
+            if (!string.IsNullOrEmpty(viewNameForSel)) {
+                mv = context.ModelViews.Where(v => v.ViewName == viewNameForSel).FirstOrDefault();
+                if (mv != null) {
+                    intrfsNm =  GetInterfaceName(mv) ;
+                    if(!result.Contains(intrfsNm)) {
+                        result.Add(intrfsNm);
+                    }
+                }
+            }
+        }
+        return result;
+    }
+
+    List<string> CollectComboListInterfaces(DbContextSerializable context, 
+                                            ModelViewUIFormPropertySerializable prop, 
+                                            ModelViewSerializable model) {
+        List<string> result = new List<string>();
+        ModelViewSerializable mv = null;
+        string intrfsNm = null;
+        string viewNameForSel = null;
+        
+        if (prop.InputTypeWhenAdd == InputTypeEnum.Combo)   {
+            viewNameForSel = prop.ForeifKeyViewNameForAdd;
+            if (string.IsNullOrEmpty(viewNameForSel)) {
+                viewNameForSel = GetViewByForeignNameChain(context, model.ViewName, prop.ForeignKeyNameChain);
+            }
+            if (!string.IsNullOrEmpty(viewNameForSel)) {
+                mv = context.ModelViews.Where(v => v.ViewName == viewNameForSel).FirstOrDefault();
+                if (mv != null) {
+                    result.Add("Array<" + GetInterfaceName(mv) + ">");
+                }
+            }
+        }
+        if (prop.InputTypeWhenUpdate == InputTypeEnum.Combo) {
+            viewNameForSel = prop.ForeifKeyViewNameForUpd;
+            if (string.IsNullOrEmpty(viewNameForSel)) {
+                viewNameForSel = GetViewByForeignNameChain(context, model.ViewName, prop.ForeignKeyNameChain);
+            }
+            if (!string.IsNullOrEmpty(viewNameForSel)) {
+                mv = context.ModelViews.Where(v => v.ViewName == viewNameForSel).FirstOrDefault();
+                if (mv != null) {
+                    intrfsNm = "Array<" + GetInterfaceName(mv) + ">";
+                    if(!result.Contains(intrfsNm)) {
+                        result.Add(intrfsNm);
+                    }
+                }
+            }
+        }
+        if (prop.InputTypeWhenDelete == InputTypeEnum.Combo) {
+            viewNameForSel = prop.ForeifKeyViewNameForDel;
+            if (string.IsNullOrEmpty(viewNameForSel)) {
+                viewNameForSel = GetViewByForeignNameChain(context, model.ViewName, prop.ForeignKeyNameChain);
+            }
+            if (!string.IsNullOrEmpty(viewNameForSel)) {
+                mv = context.ModelViews.Where(v => v.ViewName == viewNameForSel).FirstOrDefault();
+                if (mv != null) {
+                    intrfsNm = "Array<" + GetInterfaceName(mv) + ">";
+                    if(!result.Contains(intrfsNm)) {
+                        result.Add(intrfsNm);
+                    }
+                }
+            }
+        }
+        return result;
+    }
+    List<string> CollectButtonItemInterfaces(DbContextSerializable context, 
+                                             ModelViewUIFormPropertySerializable prop, 
+                                             ModelViewSerializable model) {
+        List<string> result = new List<string>();
+        ModelViewSerializable mv = null;
+        string intrfsNm = null;
+        string viewNameForSel = null;
+        
+        if (prop.InputTypeWhenAdd == InputTypeEnum.SearchDialog) {
+            viewNameForSel = prop.ForeifKeyViewNameForAdd;
+            if (string.IsNullOrEmpty(viewNameForSel)) {
+                viewNameForSel = GetViewByForeignNameChain(context, model.ViewName, prop.ForeignKeyNameChain);
+            }
+            if (!string.IsNullOrEmpty(viewNameForSel)) {
+                mv = context.ModelViews.Where(v => v.ViewName == viewNameForSel).FirstOrDefault();
+                if (mv != null) {
+                    result.Add( GetInterfaceName(mv) );
+                }
+            }
+        }
+        if (prop.InputTypeWhenUpdate == InputTypeEnum.SearchDialog)  {
+            viewNameForSel = prop.ForeifKeyViewNameForUpd;
+            if (string.IsNullOrEmpty(viewNameForSel)) {
+                viewNameForSel = GetViewByForeignNameChain(context, model.ViewName, prop.ForeignKeyNameChain);
+            }
+            if (!string.IsNullOrEmpty(viewNameForSel)) {
+                mv = context.ModelViews.Where(v => v.ViewName == viewNameForSel).FirstOrDefault();
+                if (mv != null) {
+                    intrfsNm =  GetInterfaceName(mv) ;
+                    if(!result.Contains(intrfsNm)) {
+                        result.Add(intrfsNm);
+                    }
+                }
+            }
+        }
+        if (prop.InputTypeWhenDelete == InputTypeEnum.SearchDialog) {
+            viewNameForSel = prop.ForeifKeyViewNameForDel;
+            if (string.IsNullOrEmpty(viewNameForSel)) {
+                viewNameForSel = GetViewByForeignNameChain(context, model.ViewName, prop.ForeignKeyNameChain);
+            }
+            if (!string.IsNullOrEmpty(viewNameForSel)) {
+                mv = context.ModelViews.Where(v => v.ViewName == viewNameForSel).FirstOrDefault();
+                if (mv != null) {
+                    intrfsNm =  GetInterfaceName(mv) ;
+                    if(!result.Contains(intrfsNm)) {
+                        result.Add(intrfsNm);
+                    }
+                }
+            }
+        }
+        return result;
+    }
+    List<string> CollectTypeaheadItemInterfaces(DbContextSerializable context, 
+                                                ModelViewUIFormPropertySerializable prop, 
+                                                ModelViewSerializable model) {
+        List<string> result = new List<string>();
+        ModelViewSerializable mv = null;
+        string intrfsNm = null;
+        string viewNameForSel = null;
+        
+        if (prop.InputTypeWhenAdd == InputTypeEnum.Typeahead)   {
+            viewNameForSel = prop.ForeifKeyViewNameForAdd;
+            if (string.IsNullOrEmpty(viewNameForSel)) {
+                viewNameForSel = GetViewByForeignNameChain(context, model.ViewName, prop.ForeignKeyNameChain);
+            }
+            if (!string.IsNullOrEmpty(viewNameForSel)) {
+                mv = context.ModelViews.Where(v => v.ViewName == viewNameForSel).FirstOrDefault();
+                if (mv != null) {
+                    result.Add( GetInterfaceName(mv) );
+                }
+            }
+        }
+        if (prop.InputTypeWhenUpdate == InputTypeEnum.Typeahead) {
+            viewNameForSel = prop.ForeifKeyViewNameForUpd;
+            if (string.IsNullOrEmpty(viewNameForSel)) {
+                viewNameForSel = GetViewByForeignNameChain(context, model.ViewName, prop.ForeignKeyNameChain);
+            }
+            if (!string.IsNullOrEmpty(viewNameForSel)) {
+                mv = context.ModelViews.Where(v => v.ViewName == viewNameForSel).FirstOrDefault();
+                if (mv != null) {
+                    intrfsNm =  GetInterfaceName(mv) ;
+                    if(!result.Contains(intrfsNm)) {
+                        result.Add(intrfsNm);
+                    }
+                }
+            }
+        }
+        if (prop.InputTypeWhenDelete == InputTypeEnum.Typeahead) {
+            viewNameForSel = prop.ForeifKeyViewNameForDel;
+            if (string.IsNullOrEmpty(viewNameForSel)) {
+                viewNameForSel = GetViewByForeignNameChain(context, model.ViewName, prop.ForeignKeyNameChain);
+            }
+            if (!string.IsNullOrEmpty(viewNameForSel)) {
+                mv = context.ModelViews.Where(v => v.ViewName == viewNameForSel).FirstOrDefault();
+                if (mv != null) {
+                    intrfsNm =  GetInterfaceName(mv) ;
+                    if(!result.Contains(intrfsNm)) {
+                        result.Add(intrfsNm);
+                    }
+                }
+            }
+        }
+        return result;
+    }
+
+    List<string> CollectTypeaheadListInterfaces(DbContextSerializable context, 
+                                                ModelViewUIFormPropertySerializable prop, 
+                                                ModelViewSerializable model) {
+        List<string> result = new List<string>();
+        ModelViewSerializable mv = null;
+        string intrfsNm = null;
+        string viewNameForSel = null;
+        
+        if (prop.InputTypeWhenAdd == InputTypeEnum.Typeahead)   {
+            viewNameForSel = prop.ForeifKeyViewNameForAdd;
+            if (string.IsNullOrEmpty(viewNameForSel)) {
+                viewNameForSel = GetViewByForeignNameChain(context, model.ViewName, prop.ForeignKeyNameChain);
+            }
+            if (!string.IsNullOrEmpty(viewNameForSel)) {
+                mv = context.ModelViews.Where(v => v.ViewName == viewNameForSel).FirstOrDefault();
+                if (mv != null) {
+                    result.Add("Array<" + GetInterfaceName(mv) + ">");
+                }
+            }
+        }
+        if (prop.InputTypeWhenUpdate == InputTypeEnum.Typeahead) {
+            viewNameForSel = prop.ForeifKeyViewNameForUpd;
+            if (string.IsNullOrEmpty(viewNameForSel)) {
+                viewNameForSel = GetViewByForeignNameChain(context, model.ViewName, prop.ForeignKeyNameChain);
+            }
+            if (!string.IsNullOrEmpty(viewNameForSel)) {
+                mv = context.ModelViews.Where(v => v.ViewName == viewNameForSel).FirstOrDefault();
+                if (mv != null) {
+                    intrfsNm = "Array<" + GetInterfaceName(mv) + ">";
+                    if(!result.Contains(intrfsNm)) {
+                        result.Add(intrfsNm);
+                    }
+                }
+            }
+        }
+        if (prop.InputTypeWhenDelete == InputTypeEnum.Typeahead) {
+            viewNameForSel = prop.ForeifKeyViewNameForDel;
+            if (string.IsNullOrEmpty(viewNameForSel)) {
+                viewNameForSel = GetViewByForeignNameChain(context, model.ViewName, prop.ForeignKeyNameChain);
+            }
+            if (!string.IsNullOrEmpty(viewNameForSel)) {
+                mv = context.ModelViews.Where(v => v.ViewName == viewNameForSel).FirstOrDefault();
+                if (mv != null) {
+                    intrfsNm = "Array<" + GetInterfaceName(mv) + ">";
+                    if(!result.Contains(intrfsNm)) {
+                        result.Add(intrfsNm);
+                    }
+                }
+            }
+        }
+        return result;
+    }
+    string GetContextEnumClassName(DbContextSerializable context, string fileType) {
+        string result="";
+        if ((context == null) || string.IsNullOrEmpty(fileType)) {
+            return result;
+        }
+        if (context.CommonStaffs == null) {
+            return result;
+        }
+        CommonStaffSerializable refItem= 
+            context.CommonStaffs.Where(c => c.FileType == fileType).FirstOrDefault();
+        if (refItem == null) {
+            return result;
+        }
+        if(string.IsNullOrEmpty(refItem.FileName)) {
+            return result;
+        }
+        string fn = refItem.FileName.Replace(".enum","");
+        StringBuilder sb = new StringBuilder();
+        bool toUpper = true;
+        foreach (char c in fn)
+        {
+            if( c == '-' )
+            {
+                toUpper = true;
+            } else
+            {
+                if (toUpper)
+                {
+                    sb.Append(Char.ToUpper(c));
+                    toUpper = false;
+                }
+                else
+                {
+                    sb.Append(c);
+                }
+            }
+                
+        }
+        return sb.ToString();
+    }
+  
+    List<string> GetFKViewsList(ModelViewSerializable model, 
+                                     DbContextSerializable context,
+                                     List<string> fkViewsDict)
+    {
+        if ((model == null) || (context == null) || (fkViewsDict == null)) {
+            return fkViewsDict;
+        }
+        if (model.ScalarProperties == null || model.UIFormProperties == null) {
+            return fkViewsDict;
+        }
+        string viewNameForSel = null;
+        ModelViewSerializable mv = null;
+        foreach(ModelViewUIFormPropertySerializable modelViewUIFormPropertySerializable in model.UIFormProperties) {
+            if ((modelViewUIFormPropertySerializable.InputTypeWhenAdd == InputTypeEnum.Combo) ||
+                (modelViewUIFormPropertySerializable.InputTypeWhenAdd == InputTypeEnum.SearchDialog) ||
+                (modelViewUIFormPropertySerializable.InputTypeWhenAdd == InputTypeEnum.Typeahead)) {
+                viewNameForSel = modelViewUIFormPropertySerializable.ForeifKeyViewNameForAdd;
+                if (string.IsNullOrEmpty(viewNameForSel)) {
+                    viewNameForSel = GetViewByForeignNameChain(context, model.ViewName, modelViewUIFormPropertySerializable.ForeignKeyNameChain);
+                }
+                if (!string.IsNullOrEmpty(viewNameForSel)) {
+                    mv = context.ModelViews.Where(v => v.ViewName == viewNameForSel).FirstOrDefault();
+                    if (mv != null) {
+                        if( ! fkViewsDict.Contains(viewNameForSel) ) {
+                            fkViewsDict.Add(viewNameForSel);
+                        }
+                    }
+                }
+            }
+            if ((modelViewUIFormPropertySerializable.InputTypeWhenUpdate == InputTypeEnum.Combo) ||
+                (modelViewUIFormPropertySerializable.InputTypeWhenUpdate == InputTypeEnum.SearchDialog) ||
+                (modelViewUIFormPropertySerializable.InputTypeWhenUpdate == InputTypeEnum.Typeahead)) {
+                viewNameForSel = modelViewUIFormPropertySerializable.ForeifKeyViewNameForUpd;
+                if (string.IsNullOrEmpty(viewNameForSel)) {
+                    viewNameForSel = GetViewByForeignNameChain(context, model.ViewName, modelViewUIFormPropertySerializable.ForeignKeyNameChain);
+                }
+                if (!string.IsNullOrEmpty(viewNameForSel)) {
+                    mv = context.ModelViews.Where(v => v.ViewName == viewNameForSel).FirstOrDefault();
+                    if (mv != null) {
+                        if( ! fkViewsDict.Contains(viewNameForSel) ) {
+                            fkViewsDict.Add(viewNameForSel);
+                        }
+                    }
+                }
+            }
+            if ((modelViewUIFormPropertySerializable.InputTypeWhenDelete == InputTypeEnum.Combo) ||
+                (modelViewUIFormPropertySerializable.InputTypeWhenDelete == InputTypeEnum.SearchDialog) ||
+                (modelViewUIFormPropertySerializable.InputTypeWhenDelete == InputTypeEnum.Typeahead)) {
+                viewNameForSel = modelViewUIFormPropertySerializable.ForeifKeyViewNameForDel;
+                if (string.IsNullOrEmpty(viewNameForSel)) {
+                    viewNameForSel = GetViewByForeignNameChain(context, model.ViewName, modelViewUIFormPropertySerializable.ForeignKeyNameChain);
+                }
+                if (!string.IsNullOrEmpty(viewNameForSel)) {
+                    mv = context.ModelViews.Where(v => v.ViewName == viewNameForSel).FirstOrDefault();
+                    if (mv != null) {
+                        if( ! fkViewsDict.Contains(viewNameForSel) ) {
+                            fkViewsDict.Add(viewNameForSel);
+                        }
+                    }
+                }
+            }
+        }
+        return fkViewsDict;
+    }
+    List<string> GetSearchDialogViewsList(ModelViewSerializable model, 
+                                         DbContextSerializable context,
+                                         List<string> sdViewsDict)
+    {
+        if ((model == null) || (context == null) || (sdViewsDict == null)) {
+            return sdViewsDict;
+        }
+        if (model.ScalarProperties == null || model.UIFormProperties == null) {
+            return sdViewsDict;
+        }
+        string viewNameForSel = null;
+        ModelViewSerializable mv = null;
+        foreach(ModelViewUIFormPropertySerializable modelViewUIFormPropertySerializable in model.UIFormProperties) {
+            if (modelViewUIFormPropertySerializable.InputTypeWhenAdd == InputTypeEnum.SearchDialog) {
+                viewNameForSel = modelViewUIFormPropertySerializable.ForeifKeyViewNameForAdd;
+                if (string.IsNullOrEmpty(viewNameForSel)) {
+                    viewNameForSel = GetViewByForeignNameChain(context, model.ViewName, modelViewUIFormPropertySerializable.ForeignKeyNameChain);
+                }
+                if (!string.IsNullOrEmpty(viewNameForSel)) {
+                    mv = context.ModelViews.Where(v => v.ViewName == viewNameForSel).FirstOrDefault();
+                    if (mv != null) {
+                        if( ! sdViewsDict.Contains(viewNameForSel) ) {
+                            sdViewsDict.Add(viewNameForSel);
+                        }
+                    }
+                }
+            }
+            if (modelViewUIFormPropertySerializable.InputTypeWhenUpdate == InputTypeEnum.SearchDialog) {
+                viewNameForSel = modelViewUIFormPropertySerializable.ForeifKeyViewNameForUpd;
+                if (string.IsNullOrEmpty(viewNameForSel)) {
+                    viewNameForSel = GetViewByForeignNameChain(context, model.ViewName, modelViewUIFormPropertySerializable.ForeignKeyNameChain);
+                }
+                if (!string.IsNullOrEmpty(viewNameForSel)) {
+                    mv = context.ModelViews.Where(v => v.ViewName == viewNameForSel).FirstOrDefault();
+                    if (mv != null) {
+                        if( ! sdViewsDict.Contains(viewNameForSel) ) {
+                            sdViewsDict.Add(viewNameForSel);
+                        }
+                    }
+                }
+            }
+            if (modelViewUIFormPropertySerializable.InputTypeWhenDelete == InputTypeEnum.SearchDialog) {
+                viewNameForSel = modelViewUIFormPropertySerializable.ForeifKeyViewNameForDel;
+                if (string.IsNullOrEmpty(viewNameForSel)) {
+                    viewNameForSel = GetViewByForeignNameChain(context, model.ViewName, modelViewUIFormPropertySerializable.ForeignKeyNameChain);
+                }
+                if (!string.IsNullOrEmpty(viewNameForSel)) {
+                    mv = context.ModelViews.Where(v => v.ViewName == viewNameForSel).FirstOrDefault();
+                    if (mv != null) {
+                        if( ! sdViewsDict.Contains(viewNameForSel) ) {
+                            sdViewsDict.Add(viewNameForSel);
+                        }
+                    }
+                }
+            }
+        }
+        return sdViewsDict;
+    }
+    string GetInterfaceNameEx(DbContextSerializable context, string viewName) {
+        if ((context == null) || string.IsNullOrEmpty(viewName)) {
+            return "I";
+        }
+        ModelViewSerializable model = context.ModelViews.Where(v => v.ViewName == viewName).FirstOrDefault();
+        if (model == null) {
+            return "I";
+        }
+        return GetInterfaceName(model);
+    }
+    string GetCrossComponentFolderName(ModelViewSerializable model, string currFolder, DbContextSerializable context, string refViewName, string refFolder) {
+        string result="./";
+        if ((model == null) || string.IsNullOrEmpty(currFolder) || (context == null) || string.IsNullOrEmpty(refFolder) || string.IsNullOrEmpty(refViewName)) {
+            return result;
+        }
+        if ((model.CommonStaffs == null) || (context.ModelViews == null)) {
+            return result;
+        }
+        ModelViewSerializable refModel = context.ModelViews.Where(v => v.ViewName == refViewName).FirstOrDefault();
+        if (refModel == null) {
+            return result;
+        }
+        if (refModel.CommonStaffs == null)  {
+            return result;
+        }
+        CommonStaffSerializable refItem= 
+            refModel.CommonStaffs.Where(c => c.FileType == refFolder).FirstOrDefault();
+        CommonStaffSerializable curItem= 
+            model.CommonStaffs.Where(c => c.FileType == currFolder).FirstOrDefault();
+        if ((refItem == null) || (curItem == null)) {
+            return result;
+        }
+        string[] refFolders  = new string[] {};
+        if(!string.IsNullOrEmpty(refItem.FileFolder)) {
+            refFolders  = refItem.FileFolder.Split(new string[] { "\\" }, StringSplitOptions.None);
+        }
+        string[] currFolders = new string[]{};
+        if(!string.IsNullOrEmpty(curItem.FileFolder)) {
+            currFolders  = curItem.FileFolder.Split(new string[] { "\\" }, StringSplitOptions.None);
+        }
+        int refLen = refFolders.Length;
+        int currLen = currFolders.Length;
+        int minLen = refLen < currLen ? refLen : currLen;
+        int cnt= 0;
+        for(int i = 0; i < minLen; i++) {
+            if ( !refFolders[i].Equals(currFolders[i], StringComparison.OrdinalIgnoreCase) ) break;
+            cnt++;
+        }
+        if(currLen > cnt) {
+            result += string.Join("",Enumerable.Repeat("../", currLen - cnt));
+        }
+        if(refLen > cnt) {
+            result += string.Join("/", refFolders, cnt, refLen - cnt) + "/";
+        }
+        result += refItem.FileName;
+        return result;
+    }
+
+#>

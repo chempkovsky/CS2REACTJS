@@ -1,0 +1,19 @@
+{
+  "Description": [
+    "",
+    "                                BEFORE YOU START !!!",
+    "Please make sure that you selected src folder",
+    "",
+    "  the commands of the current batch are included in 00000-ContextLevelBatchXXXXX",
+    "",
+    ""
+  ],
+  "BatchItems": [
+    {
+      "DestinationFolder": "shared\\formatters",
+      "GeneratorType": "00023-data-formatters.tsx",
+      "GeneratorSript": "data-formatters.tsx.t4"
+    }
+  ]
+
+}

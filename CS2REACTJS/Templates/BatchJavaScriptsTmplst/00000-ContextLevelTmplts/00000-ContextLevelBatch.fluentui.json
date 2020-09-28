@@ -1,0 +1,380 @@
+{
+  "Description": [
+    "",
+    "                                BEFORE YOU START !!!",
+    "Please make sure that you selected [src] folder",
+    "",
+    ""
+  ],
+  "BatchItems": [
+    {
+      "DestinationFolder": "shared\\formatters",
+      "GeneratorType": "00023-data-formatters.tsx",
+      "GeneratorSript": "data-formatters.tsx.t4"
+    },
+    {
+      "DestinationFolder": "shared\\interfaces",
+      "GeneratorType": "00024-detail-view-sel.interface.tsx",
+      "GeneratorSript": "detail-view-sel.interface.tsx.t4"
+    },
+    {
+      "DestinationFolder": "shared\\enums",
+      "GeneratorType": "00025-eform-mode.enum.tsx",
+      "GeneratorSript": "eform-mode.enum.tsx.t4"
+    },
+    {
+      "DestinationFolder": "shared\\interfaces",
+      "GeneratorType": "00026-app-tbl-def.interface.tsx",
+      "GeneratorSript": "app-tbl-def.interface.tsx.t4"
+    },
+    {
+      "DestinationFolder": "shared\\interfaces",
+      "GeneratorType": "00026-app-tbl-def.interface.tsx",
+      "GeneratorSript": "app-tbl-def.interface.tsx.t4"
+    },
+    {
+      "DestinationFolder": "shared\\interfaces",
+      "GeneratorType": "00027-app-glbl-http-hlp.interface.tsx",
+      "GeneratorSript": "app-glbl-http-hlp.interface.tsx.t4"
+    },
+    {
+      "DestinationFolder": "shared\\services",
+      "GeneratorType": "00028-app-glbl-settings.service.tsx",
+      "GeneratorSript": "app-glbl-settings.service.fluentui.tsx.t4"
+    },
+    {
+      "DestinationFolder": "shared\\contexts",
+      "GeneratorType": "00029-app-glbl-settings.context.tsx",
+      "GeneratorSript": "app-glbl-settings.context.tsx.t4"
+    },
+    {
+      "DestinationFolder": "shared\\fx-flex-css",
+      "GeneratorType": "00030-fx-flex-base-row.css",
+      "GeneratorSript": "fx-flex-base-row.css.t4"
+    },
+    {
+      "DestinationFolder": "shared\\interfaces",
+      "GeneratorType": "00032-fx-flex-col-def.interface.tsx",
+      "GeneratorSript": "fx-flex-col-def.inteface.tsx.t4"
+    },
+    {
+      "DestinationFolder": "shared\\interfaces",
+      "GeneratorType": "00033-fx-flex-col-val.interface.tsx",
+      "GeneratorSript": "fx-flex-col-val.inteface.tsx.t4"
+    },
+    {
+      "DestinationFolder": "shared\\interfaces",
+      "GeneratorType": "00034-fx-flex-col-input.interface.tsx",
+      "GeneratorSript": "fx-flex-col-input.inteface.tsx.t4"
+    },
+    {
+      "DestinationFolder": "shared\\interfaces",
+      "GeneratorType": "00035-fx-flex-row-def.interface.tsx",
+      "GeneratorSript": "fx-flex-row-def.inteface.tsx.t4"
+    },
+    {
+      "DestinationFolder": "shared\\interfaces",
+      "GeneratorType": "00036-fx-flex-row-val.interface.tsx",
+      "GeneratorSript": "fx-flex-row-val.inteface.tsx.t4"
+    },
+    {
+      "DestinationFolder": "shared\\interfaces",
+      "GeneratorType": "00037-fx-flex-row-input.interface.tsx",
+      "GeneratorSript": "fx-flex-row-input.inteface.tsx.t4"
+    },
+    {
+      "DestinationFolder": "shared\\fx-flex-funcs",
+      "GeneratorType": "00038-col-flex-def.tsx",
+      "GeneratorSript": "col-flex-def.tsx.t4"
+    },
+    {
+      "DestinationFolder": "shared\\fx-flex-funcs",
+      "GeneratorType": "00039-col-flex-val.tsx",
+      "GeneratorSript": "col-flex-val.tsx.t4"
+    },
+    {
+      "DestinationFolder": "shared\\fx-flex-funcs",
+      "GeneratorType": "00040-col-flex.tsx",
+      "GeneratorSript": "col-flex.tsx.t4"
+    },
+    {
+      "DestinationFolder": "shared\\fx-flex-funcs",
+      "GeneratorType": "00041-row-flex-def.tsx",
+      "GeneratorSript": "row-flex-def.tsx.t4"
+    },
+    {
+      "DestinationFolder": "shared\\fx-flex-funcs",
+      "GeneratorType": "00042-row-flex-val.tsx",
+      "GeneratorSript": "row-flex-val.tsx.t4"
+    },
+    {
+      "DestinationFolder": "shared\\fx-flex-funcs",
+      "GeneratorType": "00043-row-flex.tsx",
+      "GeneratorSript": "row-flex.tsx.t4"
+    },
+    {
+      "DestinationFolder": "shared\\fx-flex-funcs",
+      "GeneratorType": "00044-curr-flex-screen.tsx",
+      "GeneratorSript": "curr-flex-screen.tsx.t4"
+    },
+    {
+      "DestinationFolder": "shared\\fx-flex-funcs",
+      "GeneratorType": "00045-use-flex-screen.tsx",
+      "GeneratorSript": "use-flex-screen.tsx.t4"
+    },
+    {
+      "DestinationFolder": "shared\\validators",
+      "GeneratorType": "00046-validation-errors.tsx",
+      "GeneratorSript": "validation-errors.tsx.t4"
+    },
+    {
+      "DestinationFolder": "shared\\validators",
+      "GeneratorType": "00047-validator-fn.tsx",
+      "GeneratorSript": "validator-fn.tsx.t4"
+    },
+    {
+      "DestinationFolder": "shared\\validators",
+      "GeneratorType": "00048-validators.tsx",
+      "GeneratorSript": "validators.tsx.t4"
+    },
+    {
+      "DestinationFolder": "shared\\validators",
+      "GeneratorType": "00049-form-control-value.tsx",
+      "GeneratorSript": "form-control-value.tsx.t4"
+    },
+    {
+      "DestinationFolder": "shared\\interfaces",
+      "GeneratorType": "00050-web-service-filter-def.interface.tsx",
+      "GeneratorSript": "web-service-filter-def.interface.tsx.t4"
+    },
+    {
+      "DestinationFolder": "shared\\interfaces",
+      "GeneratorType": "00051-web-service-filter-operator.interface.tsx",
+      "GeneratorSript": "web-service-filter-operator.interface.tsx.t4"
+    },
+    {
+      "DestinationFolder": "shared\\interfaces",
+      "GeneratorType": "00052-web-service-filter-rslt.interface.tsx",
+      "GeneratorSript": "web-service-filter-rslt.interface.tsx.t4"
+    },
+    {
+      "DestinationFolder": "shared\\interfaces",
+      "GeneratorType": "00055-web-service-filter-item-state.interface.tsx",
+      "GeneratorSript": "web-service-filter-item-state.interface.fluentui.tsx.t4"
+    },
+    {
+      "DestinationFolder": "shared\\interfaces",
+      "GeneratorType": "00056-web-service-filter-item-props.interface.tsx",
+      "GeneratorSript": "web-service-filter-item-props.interface.tsx.t4"
+    },
+    {
+      "DestinationFolder": "shared\\web-service-filter",
+      "GeneratorType": "00060-web-service-filter-item.tsx",
+      "GeneratorSript": "web-service-filter-item.fluentui.tsx.t4"
+    },
+    {
+      "DestinationFolder": "shared\\interfaces",
+      "GeneratorType": "00062-web-service-filter-event.interface.tsx",
+      "GeneratorSript": "web-service-filter-event.interface.tsx.t4"
+    },
+    {
+      "DestinationFolder": "shared\\interfaces",
+      "GeneratorType": "00063-web-service-filter-menu.interface.tsx",
+      "GeneratorSript": "web-service-filter-menu.interface.tsx.t4"
+    },
+    {
+      "DestinationFolder": "shared\\interfaces",
+      "GeneratorType": "00064-web-service-filter-state.interface.tsx",
+      "GeneratorSript": "web-service-filter-state.interface.tsx.t4"
+    },
+    {
+      "DestinationFolder": "shared\\interfaces",
+      "GeneratorType": "00065-web-service-filter-props.interface.tsx",
+      "GeneratorSript": "web-service-filter-props.interface.tsx.t4"
+    },
+    {
+      "DestinationFolder": "shared\\web-service-filter",
+      "GeneratorType": "00070-web-service-filter.tsx",
+      "GeneratorSript": "web-service-filter.fluentui.tsx.t4"
+    },
+    {
+      "DestinationFolder": "shared\\interfaces",
+      "GeneratorType": "00080-column-selector-item.interface.tsx",
+      "GeneratorSript": "column-selector-item.interface.tsx.t4"
+    },
+    {
+      "DestinationFolder": "shared\\interfaces",
+      "GeneratorType": "00082-column-selector-state.interface.tsx",
+      "GeneratorSript": "column-selector-state.interface.tsx.t4"
+    },
+    {
+      "DestinationFolder": "shared\\interfaces",
+      "GeneratorType": "00084-column-selector-props.interface.tsx",
+      "GeneratorSript": "column-selector-props.interface.tsx.t4"
+    },
+    {
+      "DestinationFolder": "shared\\components\\column-selector",
+      "GeneratorType": "00090-column-selector.tsx",
+      "GeneratorSript": "column-selector.fluentui.tsx.t4"
+    },
+    {
+      "DestinationFolder": "shared\\interfaces",
+      "GeneratorType": "00092-column-selector-dlg-state.interface.tsx",
+      "GeneratorSript": "column-selector-dlg-state.interface.tsx.t4"
+    },
+    {
+      "DestinationFolder": "shared\\interfaces",
+      "GeneratorType": "00094-column-selector-dlg-props.interface.tsx",
+      "GeneratorSript": "column-selector-dlg-props.interface.tsx.t4"
+    },
+    {
+      "DestinationFolder": "shared\\components\\column-selector",
+      "GeneratorType": "00099-column-selector-dlg.tsx",
+      "GeneratorSript": "column-selector-dlg.fluentui.tsx.t4"
+    },
+    {
+      "DestinationFolder": "shared\\interfaces",
+      "GeneratorType": "00102-message-dlg-state.interface.tsx",
+      "GeneratorSript": "message-dlg-state.interface.tsx.t4"
+    },
+    {
+      "DestinationFolder": "shared\\interfaces",
+      "GeneratorType": "00104-message-dlg-props.interface.tsx",
+      "GeneratorSript": "message-dlg-props.interface.tsx.t4"
+    },
+    {
+      "DestinationFolder": "shared\\components\\message-dlg",
+      "GeneratorType": "00106-message-dlg.tsx",
+      "GeneratorSript": "message-dlg.fluentui.tsx.t4"
+    },
+    {
+      "DestinationFolder": "shared\\interfaces",
+      "GeneratorType": "00110-form-control-state.tsx",
+      "GeneratorSript": "form-control-state.tsx.t4"
+    },
+    {
+      "DestinationFolder": "shared\\interfaces",
+      "GeneratorType": "00116-app-glbl-chngpswd.interface.tsx",
+      "GeneratorSript": "app-glbl-chngpswd.interface.tsx.t4"
+    },
+    {
+      "DestinationFolder": "shared\\interfaces",
+      "GeneratorType": "00118-app-glbl-register.interface.tsx",
+      "GeneratorSript": "app-glbl-register.interface.tsx.t4"
+    },
+    {
+      "DestinationFolder": "shared\\RouterParser",
+      "GeneratorType": "00120-routercollection.tsx",
+      "GeneratorSript": "routercollection.tsx.t4"
+    },
+    {
+      "DestinationFolder": "shared\\RouterParser",
+      "GeneratorType": "00122-routershared.tsx",
+      "GeneratorSript": "routershared.tsx.t4"
+    },
+    {
+      "DestinationFolder": "shared\\RouterParser",
+      "GeneratorType": "00124-routerurltree.tsx",
+      "GeneratorSript": "routerurltree.tsx.t4"
+    },
+    {
+      "DestinationFolder": "shared\\services",
+      "GeneratorType": "00130-app-glbl-login.service.tsx",
+      "GeneratorSript": "app-glbl-login.service.tsx.t4"
+    },
+    {
+      "DestinationFolder": "shared\\components\\app-glbl-register",
+      "GeneratorType": "00135-app-glbl-register.tsx",
+      "GeneratorSript": "app-glbl-register.fluentui.tsx.t4"
+    },
+    {
+      "DestinationFolder": "shared\\components\\app-glbl-login",
+      "GeneratorType": "00140-app-glbl-login.tsx",
+      "GeneratorSript": "app-glbl-login.fluentui.tsx.t4"
+    },
+    {
+      "DestinationFolder": "shared\\components\\app-glbl-logout",
+      "GeneratorType": "00142-app-glbl-logout.tsx",
+      "GeneratorSript": "app-glbl-logout.fluentui.tsx.t4"
+    },
+    {
+      "DestinationFolder": "shared\\components\\app-glbl-chngpswd",
+      "GeneratorType": "00144-app-glbl-chngpswd.tsx",
+      "GeneratorSript": "app-glbl-chngpswd.fluentui.tsx.t4"
+    },
+    {
+      "DestinationFolder": "shared\\components\\app-glbl-home",
+      "GeneratorType": "00180-app-glbl-home.tsx",
+      "GeneratorSript": "app-glbl-home.fluentui.tsx.t4"
+    },
+    {
+      "DestinationFolder": "shared\\components\\app-glbl-pagenotfound",
+      "GeneratorType": "00185-app-glbl-pagenotfound.tsx",
+      "GeneratorSript": "app-glbl-pagenotfound.fluentui.tsx.t4"
+    },
+
+    {
+      "DestinationFolder": "shared\\interfaces",
+      "GeneratorType": "00228-table-pagination-state.interface.tsx",
+      "GeneratorSript": "table-pagination-state.interface.tsx.t4"
+    },
+    {
+      "DestinationFolder": "shared\\interfaces",
+      "GeneratorType": "00229-table-pagination-props.interface.tsx",
+      "GeneratorSript": "table-pagination-props.interface.tsx.t4"
+    },
+    {
+      "DestinationFolder": "shared\\components\\table-pagination",
+      "GeneratorType": "00230-table-pagination.tsx",
+      "GeneratorSript": "table-pagination.fluentui.tsx.t4"
+    },
+
+
+    {
+      "DestinationFolder": "shared\\interfaces",
+      "GeneratorType": "00238-table-head-cell-state.interface.tsx",
+      "GeneratorSript": "table-head-cell-state.interface.tsx.t4"
+    },
+    {
+      "DestinationFolder": "shared\\interfaces",
+      "GeneratorType": "00239-table-head-cell-props.interface.tsx",
+      "GeneratorSript": "table-head-cell-props.interface.tsx.t4"
+    },
+    {
+      "DestinationFolder": "shared\\components\\table-head-cell",
+      "GeneratorType": "00240-table-head-cell.tsx",
+      "GeneratorSript": "table-head-cell.fluentui.tsx.t4"
+    },
+
+    {
+      "DestinationFolder": "shared\\components\\table-body-cell",
+      "GeneratorType": "00250-table-body-cell.tsx",
+      "GeneratorSript": "table-body-cell.fluentui.tsx.t4"
+    },
+
+    {
+      "DestinationFolder": "shared\\components\\autocomplete",
+      "GeneratorType": "00260-autocomplete.tsx",
+      "GeneratorSript": "autocomplete.fluentui.tsx.t4"
+    },
+
+    {
+      "DestinationFolder": "shared\\components\\toast",
+      "GeneratorType": "00270-toast.tsx",
+      "GeneratorSript": "toast.fluentui.tsx.t4"
+    },
+
+
+    {
+      "DestinationFolder": "",
+      "GeneratorType": "00210-App.tsx",
+      "GeneratorSript": "App.fluentui.tsx.t4"
+    },
+    {
+      "DestinationFolder": "",
+      "GeneratorType": "00220-index.tsx",
+      "GeneratorSript": "index.fluentui.tsx.t4"
+    }
+  ]
+
+}

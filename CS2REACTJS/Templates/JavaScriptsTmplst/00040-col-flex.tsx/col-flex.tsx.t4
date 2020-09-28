@@ -1,0 +1,203 @@
+﻿<#@ template language="C#" HostSpecific="True" Debug="True" #>
+<#@ output extension="tsx" #>
+<#@ assembly name="System.Core" #>
+<#@ import namespace="System" #>
+<#@ import namespace="System.IO" #>
+<#@ import namespace="System.Linq" #>
+<#@ import namespace="System.Collections" #>
+<#@ import namespace="System.Collections.Generic" #>
+<#@ import namespace="System.Text" #>
+<#@ import namespace="CS2REACTJS" #>
+<#@ import namespace="CS2REACTJS.Model" #>
+<#@ import namespace="CS2REACTJS.Model.Serializable" #>
+<#@ parameter type="CS2REACTJS.Model.Serializable.ModelViewSerializable" name="Model" #>
+<#@ parameter type="CS2REACTJS.Model.Serializable.DbContextSerializable" name="Context" #>
+<#
+
+    string colFlexFunctionFolder            = "00040-col-flex.tsx";
+    string colFlexFunctionName              = GetModelFunctionName(Model, colFlexFunctionFolder);
+    string colFlexValFunctionFolder         = "00039-col-flex-val.tsx";
+    string colFlexValFunctionName           = GetModelFunctionName(Model, colFlexValFunctionFolder);
+    string colFlexDefFunctionFolder         = "00038-col-flex-def.tsx";
+    string colFlexDefFunctionName           = GetModelFunctionName(Model, colFlexDefFunctionFolder);
+
+    string fxFlexColDefDataModelFolder      = "00032-fx-flex-col-def.interface.tsx";
+    string fxFlexColDefDataModelClassName   = GetModelInterfaceName(Model, fxFlexColDefDataModelFolder);
+    string fxFlexColValDataModelFolder      = "00033-fx-flex-col-val.interface.tsx";
+    string fxFlexColValDataModelClassName   = GetModelInterfaceName(Model, fxFlexColValDataModelFolder);
+    string fxFlexColInputDataModelFolder      = "00034-fx-flex-col-input.interface.tsx";
+    string fxFlexColInputDataModelClassName   = GetModelInterfaceName(Model, fxFlexColInputDataModelFolder);
+
+
+
+#>
+
+import <#= colFlexDefFunctionName #> from "<#= GetFolderName(Model, colFlexDefFunctionFolder, colFlexFunctionFolder) #>";
+import <#= colFlexValFunctionName #> from "<#= GetFolderName(Model, colFlexValFunctionFolder, colFlexFunctionFolder) #>";
+import <#= fxFlexColDefDataModelClassName #> from "<#= GetFolderName(Model, fxFlexColDefDataModelFolder, colFlexFunctionFolder) #>";
+import <#= fxFlexColValDataModelClassName #> from "<#= GetFolderName(Model, fxFlexColValDataModelFolder, colFlexFunctionFolder) #>";
+import <#= fxFlexColInputDataModelClassName #> from "<#= GetFolderName(Model, fxFlexColInputDataModelFolder, colFlexFunctionFolder) #>";
+
+   export default function <#= colFlexFunctionName #>(v: <#= fxFlexColInputDataModelClassName #>): <#= fxFlexColValDataModelClassName #> | <#= fxFlexColDefDataModelClassName #> {
+        let isNd = typeof v === 'undefined';
+        isNd = isNd ? isNd : v === null;
+        if (isNd) return <#= colFlexDefFunctionName #>();
+        isNd = typeof v.scrn === 'undefined';
+        isNd = isNd ? isNd : v.scrn === null;
+        if (isNd) {
+            isNd = typeof v.dflt === 'undefined';
+            isNd = isNd ? isNd : v.dflt === null;
+            if(isNd) { return <#= colFlexDefFunctionName #>(); } else { return <#= colFlexValFunctionName #>(v.dflt as string); }
+        }
+        isNd = typeof v.dflt === 'undefined';
+        let dflt:string|null = (typeof v.dflt === 'undefined') ? null : v.dflt;
+        switch(v.scrn) {
+            case 'xs':
+                isNd = typeof v.xs === 'undefined';
+                isNd = isNd ? isNd : v.xs === null;
+                if(!isNd) { dflt = v.xs as string; }
+                break;
+            case 'sm':
+                isNd = typeof v.sm === 'undefined';
+                isNd = isNd ? isNd : v.sm === null;
+                if(!isNd) { dflt = v.sm as string; }
+                break;
+            case 'md':
+                isNd = typeof v.md === 'undefined';
+                isNd = isNd ? isNd : v.md === null;
+                if(!isNd) { dflt = v.md as string; }
+                break;
+            case 'lg':
+                isNd = typeof v.lg === 'undefined';
+                isNd = isNd ? isNd : v.lg === null;
+                if(!isNd) { dflt = v.lg as string; }
+                break;
+            default:
+                break;
+        }
+        if(dflt === null) { return <#= colFlexDefFunctionName #>() } else { return <#= colFlexValFunctionName #>(dflt) }
+    }
+
+<#+
+    string GetModelInterfaceName(ModelViewSerializable model, string fileType) {
+        string result="";
+        if ((model == null) || string.IsNullOrEmpty(fileType)) {
+            return result;
+        }
+        if (model.CommonStaffs == null) {
+            return result;
+        }
+        CommonStaffSerializable refItem= 
+            model.CommonStaffs.Where(c => c.FileType == fileType).FirstOrDefault();
+        if (refItem == null) {
+            return result;
+        }
+        if(string.IsNullOrEmpty(refItem.FileName)) {
+            return result;
+        }
+        string fn = refItem.FileName.Replace(".interface","-interface");
+        StringBuilder sb = new StringBuilder();
+        bool toUpper = true;
+        foreach (char c in fn)
+        {
+            if( c == '-' )
+            {
+                toUpper = true;
+            } else
+            {
+                if (toUpper)
+                {
+                    sb.Append(Char.ToUpper(c));
+                    toUpper = false;
+                }
+                else
+                {
+                    sb.Append(c);
+                }
+            }
+                
+        }
+        return "I"+sb.ToString();
+    }
+    string GetModelFunctionName(ModelViewSerializable model, string fileType) {
+        string result="";
+        if ((model == null) || string.IsNullOrEmpty(fileType)) {
+            return result;
+        }
+        if (model.CommonStaffs == null) {
+            return result;
+        }
+        CommonStaffSerializable refItem= 
+            model.CommonStaffs.Where(c => c.FileType == fileType).FirstOrDefault();
+        if (refItem == null) {
+            return result;
+        }
+        if(string.IsNullOrEmpty(refItem.FileName)) {
+            return result;
+        }
+        string fn = refItem.FileName;
+        StringBuilder sb = new StringBuilder();
+        bool toUpper = true;
+        foreach (char c in fn)
+        {
+            if( c == '-' )
+            {
+                toUpper = true;
+            } else
+            {
+                if (toUpper)
+                {
+                    sb.Append(Char.ToUpper(c));
+                    toUpper = false;
+                }
+                else
+                {
+                    sb.Append(c);
+                }
+            }
+                
+        }
+        return sb.ToString();
+    }
+    string GetFolderName(ModelViewSerializable model, string refFolder, string currFolder) {
+        string result="./";
+        if ((model == null) || string.IsNullOrEmpty(refFolder) || string.IsNullOrEmpty(currFolder)) {
+            return result;
+        }
+        if (model.CommonStaffs == null) {
+            return result;
+        }
+        CommonStaffSerializable refItem= 
+            model.CommonStaffs.Where(c => c.FileType == refFolder).FirstOrDefault();
+        CommonStaffSerializable curItem= 
+            model.CommonStaffs.Where(c => c.FileType == currFolder).FirstOrDefault();
+        if ((refItem == null) || (curItem == null)) {
+            return result;
+        }
+        string[] refFolders  = new string[] {};
+        if(!string.IsNullOrEmpty(refItem.FileFolder)) {
+            refFolders  = refItem.FileFolder.Split(new string[] { "\\" }, StringSplitOptions.None);
+        }
+        string[] currFolders = new string[]{};
+        if(!string.IsNullOrEmpty(curItem.FileFolder)) {
+            currFolders  = curItem.FileFolder.Split(new string[] { "\\" }, StringSplitOptions.None);
+        }
+        int refLen = refFolders.Length;
+        int currLen = currFolders.Length;
+        int minLen = refLen < currLen ? refLen : currLen;
+        int cnt= 0;
+        for(int i = 0; i < minLen; i++) {
+            if ( !refFolders[i].Equals(currFolders[i], StringComparison.OrdinalIgnoreCase) ) break;
+            cnt++;
+        }
+        if(currLen > cnt) {
+            result += string.Join("", Enumerable.Repeat("../", currLen - cnt));
+        }
+        if(refLen > cnt) {
+            result += string.Join("/", refFolders, cnt, refLen - cnt) + "/";
+        }
+        result += refItem.FileName;
+        return result;
+    }
+
+#>

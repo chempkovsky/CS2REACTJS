@@ -1,0 +1,455 @@
+﻿<#@ template language="C#" HostSpecific="True" Debug="True" #>
+<#@ output extension="tsx" #>
+<#@ assembly name="System.Core" #>
+<#@ import namespace="System" #>
+<#@ import namespace="System.IO" #>
+<#@ import namespace="System.Linq" #>
+<#@ import namespace="System.Collections" #>
+<#@ import namespace="System.Collections.Generic" #>
+<#@ import namespace="System.Text" #>
+<#@ import namespace="CS2REACTJS" #>
+<#@ import namespace="CS2REACTJS.Model" #>
+<#@ import namespace="CS2REACTJS.Model.Serializable" #>
+<#@ parameter type="CS2REACTJS.Model.Serializable.ModelViewSerializable" name="Model" #>
+<#@ parameter type="CS2REACTJS.Model.Serializable.DbContextSerializable" name="Context" #>
+<#
+
+    string appGlblLoginDataModelFolder                  = "00140-app-glbl-login.tsx";
+    string appGlblLoginDataModelClassName               = GetModelClassName(Model, appGlblLoginDataModelFolder);
+
+    string appLoginServiceFolder                        = "00130-app-glbl-login.service.tsx";
+    string appLoginServiceClassName                     = GetServiceClassName(Model, appLoginServiceFolder);
+
+    string appGlblSettingsServiceFolder                 = "00028-app-glbl-settings.service.tsx";
+    string appGlblSettingsServiceClassName              = GetServiceClassName(Model, appGlblSettingsServiceFolder);
+
+    string appGlblSettingsContextFolder                 = "00029-app-glbl-settings.context.tsx";
+    string appGlblSettingsContextClassName              = GetContextName(Model, appGlblSettingsContextFolder);
+
+    string validatorsFolder                             = "00048-validators.tsx";
+    string validatorsClassName                          = GetModelClassName(Model, validatorsFolder);
+
+    string formControlValueFolder                       = "00049-form-control-value.tsx";
+    string formControlValueClassName                    = GetModelClassName(Model, formControlValueFolder);
+
+    string formControlStateFolder                       = "00110-form-control-state.tsx";
+    string formControlStateClassName                    = GetModelInterfaceName(Model, formControlStateFolder);
+
+
+
+    string onCancel                                     = "onCancel";
+    string doSubmit                                     = "doSubmit";
+    string onPwdHide                                    = "onPwdHide";
+    string ShowErrorMethodName                          = "showError";
+    string setAuthInfoMethodName                        = "setAuthInfo";
+
+#>
+
+import React from 'react';
+import { DefaultButton, FontIcon, IconButton, PrimaryButton, Stack, StackItem, TextField } from '@fluentui/react';
+import Card from '@uifabric/react-cards/lib/components/Card/Card';
+
+import <#= appGlblSettingsContextClassName #> from '<#= GetFolderName(Model, appGlblSettingsContextFolder, appGlblLoginDataModelFolder) #>';
+import <#= formControlStateClassName #> from "<#= GetFolderName(Model, formControlStateFolder, appGlblLoginDataModelFolder) #>";
+import <#= formControlValueClassName #> from "<#= GetFolderName(Model, formControlValueFolder, appGlblLoginDataModelFolder) #>";
+import <#= validatorsClassName #> from "<#= GetFolderName(Model, validatorsFolder, appGlblLoginDataModelFolder) #>";
+import <#= appLoginServiceClassName #> from "<#= GetFolderName(Model, appLoginServiceFolder, appGlblLoginDataModelFolder) #>";
+
+interface <#= appGlblLoginDataModelClassName + "State" #> {
+    pwdhide: boolean;
+    username: <#= formControlStateClassName #>;
+    password: <#= formControlStateClassName #>;
+}
+
+export default class <#= appGlblLoginDataModelClassName #> extends React.Component<any, <#= appGlblLoginDataModelClassName + "State" #>>  {
+    static contextType = <#= appGlblSettingsContextClassName #>;
+    public username: <#= formControlValueClassName #> = new <#= formControlValueClassName #>(null, false, [ <#= validatorsClassName + ".required" #>, <#= validatorsClassName + ".minLength(3)" #>, <#= validatorsClassName + ".maxLength(127)" #> ]);
+    public password: <#= formControlValueClassName #> = new <#= formControlValueClassName #>(null, false, [ <#= validatorsClassName + ".required"#>, <#= validatorsClassName + ".minLength(6)" #>, <#= validatorsClassName + ".maxLength(127)" #> ]);
+    constructor(props: any) {
+        super(props);
+        this.state = {
+            pwdhide: true,
+            username: {Value: '', Disabled: false, Invalid: false, Errors: {}},
+            password: {Value: '', Disabled: false, Invalid: false, Errors: {}},
+        };
+        this.ValForInput = this.ValForInput.bind(this);
+        this.getErrorMessage = this.getErrorMessage.bind(this);
+        this.<#= onCancel #> = this.<#= onCancel #>.bind(this);
+        this.<#= doSubmit #> = this.<#= doSubmit #>.bind(this);
+        this.<#= onPwdHide #> = this.<#= onPwdHide #>.bind(this);
+        this.onPasswordChange = this.onPasswordChange.bind(this);
+        this.onUsernameChange = this.onUsernameChange.bind(this);
+        this.checkValid = this.checkValid.bind(this);
+    }
+    public ValForInput(value: any): any {
+        if(typeof value === 'undefined') return '';
+        if(value === null) return '';
+        return value;
+    }
+    getErrorMessage(fc: <#= formControlStateClassName #>): string {
+        if(fc)
+            return <#= formControlValueClassName #>.getValidationErrorMessageEx(fc.Errors);
+        else 
+            return 'Validation Error.';
+    } 
+    public checkValid(): boolean {
+        let rslt: boolean = true;
+        this.password.Validate();
+        this.password.Touched = true;
+        this.setState({password: { Errors: this.password.Errors,    
+                                   Invalid: this.password.InvalidEx,
+                                   Disabled: this.password.Disabled,
+                                   Value: this.password.Value }
+                                });
+        rslt = rslt &&  this.password.Valid;    
+        this.username.Validate();
+        this.username.Touched = true;
+        this.setState({username: { Errors: this.username.Errors,    
+                                   Invalid: this.username.InvalidEx,
+                                   Disabled: this.username.Disabled,
+                                   Value: this.username.Value }
+                                });
+        rslt = rslt &&  this.username.Valid;    
+        return rslt;
+    }
+    <#= onCancel #>() {
+      if(this.props.history) {
+        this.props.history.push('/');
+      }
+    }
+    <#= doSubmit #>() {
+        if(! this.checkValid() ) return;
+        <#= appLoginServiceClassName #>.login(this.context, this.username.Value, this.password.Value)
+        .then((res: any) => res.json())
+        .then(
+            (respdata: any ) => {
+                this.context.UserName = this.username.Value;
+                this.context.<#= setAuthInfoMethodName #>(respdata);
+                this.<#= onCancel #>()
+            },
+            (error: any) => {
+                this.context.<#= ShowErrorMethodName #>('http', error);
+            }
+        );
+    }
+    <#= onPwdHide #>() {
+        this.setState({pwdhide: !(this.state.pwdhide)})
+    }
+    onPasswordChange(event: any, newValue?: string) {
+        this.password.Value = newValue;
+        this.password.Touched = true;
+        this.setState({password: { Errors: this.password.Errors,    
+                                   Invalid: this.password.InvalidEx,
+                                   Disabled: this.password.Disabled,
+                                   Value: this.password.Value }
+                                });
+    }
+    onUsernameChange(event: any, newValue?: string) {
+        this.username.Value = newValue;
+        this.username.Touched = true;
+        this.setState({username: { Errors: this.username.Errors,    
+                                   Invalid: this.username.InvalidEx,
+                                   Disabled: this.username.Disabled,
+                                   Value: this.username.Value }
+                                });
+    }
+
+    render() {
+        return (
+            <Stack horizontal={false} verticalAlign="center" style={{  height:`calc(100% - 8px)` }}>
+                <StackItem align='center' >
+                    <Card tokens={{minWidth:380, childrenMargin: 16}}>
+                        <Card.Item>
+                                <h3>Sign in </h3>
+                        </Card.Item>
+                        <Card.Section >
+                            <TextField label="User name" 
+                                onChange={ this.onUsernameChange }
+                                value={ this.ValForInput(this.state.username.Value) }
+                                errorMessage={ this.state.username.Invalid ? this.getErrorMessage(this.state.username) as string : undefined }
+                                description={ this.state.username.Invalid ? undefined : 'length of the username must be large than 3' }
+                            />
+                            <TextField label="Password"
+                                value={ this.ValForInput(this.state.password.Value) }
+                                errorMessage={ this.state.password.Invalid ? this.getErrorMessage(this.state.password) as string : undefined }
+                                description={ this.state.password.Invalid ? undefined : 'length of the password must be large than 5' }
+                                onChange={ this.onPasswordChange }
+                                type = {this.state.pwdhide ? 'password' : 'text'}
+                                onRenderSuffix={()=> { return(
+                                    <IconButton onClick={this.<#= onPwdHide #>} style={{width:'12px'}}>
+                                        <FontIcon iconName= {this.state.pwdhide ?'VisuallyImpaired' : 'RedEye'}  ></FontIcon>
+                                    </IconButton>
+                                  )}}
+                            />
+                        </Card.Section>
+                        <Card.Item>
+                            <DefaultButton onClick={ this.<#= onCancel #> }  text='Cancel' />
+                            <PrimaryButton onClick={ this.<#= doSubmit #> } text='Ok'  />
+                       </Card.Item>
+                    </Card>
+                </StackItem> 
+            </Stack>
+        )};
+}
+
+
+<#+
+    string GetModelInterfaceName(ModelViewSerializable model, string fileType) {
+        string result="";
+        if ((model == null) || string.IsNullOrEmpty(fileType)) {
+            return result;
+        }
+        if (model.CommonStaffs == null) {
+            return result;
+        }
+        CommonStaffSerializable refItem= 
+            model.CommonStaffs.Where(c => c.FileType == fileType).FirstOrDefault();
+        if (refItem == null) {
+            return result;
+        }
+        if(string.IsNullOrEmpty(refItem.FileName)) {
+            return result;
+        }
+        string fn = refItem.FileName.Replace(".interface","-interface");
+        StringBuilder sb = new StringBuilder();
+        bool toUpper = true;
+        foreach (char c in fn)
+        {
+            if( c == '-' )
+            {
+                toUpper = true;
+            } else
+            {
+                if (toUpper)
+                {
+                    sb.Append(Char.ToUpper(c));
+                    toUpper = false;
+                }
+                else
+                {
+                    sb.Append(c);
+                }
+            }
+                
+        }
+        return "I"+sb.ToString();
+    }
+    string GetModelClassName(ModelViewSerializable model, string fileType) {
+        string result="";
+        if ((model == null) || string.IsNullOrEmpty(fileType)) {
+            return result;
+        }
+        if (model.CommonStaffs == null) {
+            return result;
+        }
+        CommonStaffSerializable refItem= 
+            model.CommonStaffs.Where(c => c.FileType == fileType).FirstOrDefault();
+        if (refItem == null) {
+            return result;
+        }
+        if(string.IsNullOrEmpty(refItem.FileName)) {
+            return result;
+        }
+        string fn = refItem.FileName;
+        StringBuilder sb = new StringBuilder();
+        bool toUpper = true;
+        foreach (char c in fn)
+        {
+            if( c == '-' )
+            {
+                toUpper = true;
+            } else
+            {
+                if (toUpper)
+                {
+                    sb.Append(Char.ToUpper(c));
+                    toUpper = false;
+                }
+                else
+                {
+                    sb.Append(c);
+                }
+            }
+                
+        }
+        return sb.ToString();
+    }
+    string GetModelCssClassName(ModelViewSerializable model, string fileType) {
+        string result="";
+        if ((model == null) || string.IsNullOrEmpty(fileType)) {
+            return result;
+        }
+        if (model.CommonStaffs == null) {
+            return result;
+        }
+        CommonStaffSerializable refItem= 
+            model.CommonStaffs.Where(c => c.FileType == fileType).FirstOrDefault();
+        if (refItem == null) {
+            return result;
+        }
+        if(string.IsNullOrEmpty(refItem.FileName)) {
+            return result;
+        }
+        return refItem.FileName;
+    }
+    string GetModelFunctionName(ModelViewSerializable model, string fileType) {
+        string result="";
+        if ((model == null) || string.IsNullOrEmpty(fileType)) {
+            return result;
+        }
+        if (model.CommonStaffs == null) {
+            return result;
+        }
+        CommonStaffSerializable refItem= 
+            model.CommonStaffs.Where(c => c.FileType == fileType).FirstOrDefault();
+        if (refItem == null) {
+            return result;
+        }
+        if(string.IsNullOrEmpty(refItem.FileName)) {
+            return result;
+        }
+        string fn = refItem.FileName;
+        StringBuilder sb = new StringBuilder();
+        bool toUpper = true;
+        foreach (char c in fn)
+        {
+            if( c == '-' )
+            {
+                toUpper = true;
+            } else
+            {
+                if (toUpper)
+                {
+                    sb.Append(Char.ToUpper(c));
+                    toUpper = false;
+                }
+                else
+                {
+                    sb.Append(c);
+                }
+            }
+                
+        }
+        return sb.ToString();
+    }
+    string GetFolderName(ModelViewSerializable model, string refFolder, string currFolder) {
+        string result="./";
+        if ((model == null) || string.IsNullOrEmpty(refFolder) || string.IsNullOrEmpty(currFolder)) {
+            return result;
+        }
+        if (model.CommonStaffs == null) {
+            return result;
+        }
+        CommonStaffSerializable refItem= 
+            model.CommonStaffs.Where(c => c.FileType == refFolder).FirstOrDefault();
+        CommonStaffSerializable curItem= 
+            model.CommonStaffs.Where(c => c.FileType == currFolder).FirstOrDefault();
+        if ((refItem == null) || (curItem == null)) {
+            return result;
+        }
+        string[] refFolders  = new string[] {};
+        if(!string.IsNullOrEmpty(refItem.FileFolder)) {
+            refFolders  = refItem.FileFolder.Split(new string[] { "\\" }, StringSplitOptions.None);
+        }
+        string[] currFolders = new string[]{};
+        if(!string.IsNullOrEmpty(curItem.FileFolder)) {
+            currFolders  = curItem.FileFolder.Split(new string[] { "\\" }, StringSplitOptions.None);
+        }
+        int refLen = refFolders.Length;
+        int currLen = currFolders.Length;
+        int minLen = refLen < currLen ? refLen : currLen;
+        int cnt= 0;
+        for(int i = 0; i < minLen; i++) {
+            if ( !refFolders[i].Equals(currFolders[i], StringComparison.OrdinalIgnoreCase) ) break;
+            cnt++;
+        }
+        if(currLen > cnt) {
+            result += string.Join("", Enumerable.Repeat("../", currLen - cnt));
+        }
+        if(refLen > cnt) {
+            result += string.Join("/", refFolders, cnt, refLen - cnt) + "/";
+        }
+        result += refItem.FileName;
+        return result;
+    }
+    string GetServiceClassName(ModelViewSerializable model, string fileType) {
+        string result="";
+        if ((model == null) || string.IsNullOrEmpty(fileType) ) {
+            return result;
+        }
+        if (model.CommonStaffs == null) {
+            return result;
+        }
+        CommonStaffSerializable refItem= 
+            model.CommonStaffs.Where(c => c.FileType == fileType).FirstOrDefault();
+        if (refItem == null) {
+            return result;
+        }
+        if(string.IsNullOrEmpty(refItem.FileName)) {
+            return result;
+        }
+        string fn = refItem.FileName.Replace(".service","Service");
+        StringBuilder sb = new StringBuilder();
+        bool toUpper = true;
+        foreach (char c in fn)
+        {
+            if( c == '-' )
+            {
+                toUpper = true;
+            } else
+            {
+                if (toUpper)
+                {
+                    sb.Append(Char.ToUpper(c));
+                    toUpper = false;
+                }
+                else
+                {
+                    sb.Append(c);
+                }
+            }
+        }
+        return sb.ToString();
+    }
+    string GetContextName(ModelViewSerializable model, string fileType) {
+        string result="";
+        if ((model == null) || string.IsNullOrEmpty(fileType)) {
+            return result;
+        }
+        if (model.CommonStaffs == null) {
+            return result;
+        }
+        CommonStaffSerializable refItem= 
+            model.CommonStaffs.Where(c => c.FileType == fileType).FirstOrDefault();
+        if (refItem == null) {
+            return result;
+        }
+        if(string.IsNullOrEmpty(refItem.FileName)) {
+            return result;
+        }
+        string fn = refItem.FileName.Replace(".context","-context");
+        StringBuilder sb = new StringBuilder();
+        bool toUpper = true;
+        foreach (char c in fn)
+        {
+            if( c == '-' )
+            {
+                toUpper = true;
+            } else
+            {
+                if (toUpper)
+                {
+                    sb.Append(Char.ToUpper(c));
+                    toUpper = false;
+                }
+                else
+                {
+                    sb.Append(c);
+                }
+            }
+                
+        }
+        return sb.ToString();
+    }
+
+#>

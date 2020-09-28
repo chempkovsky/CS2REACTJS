@@ -1,0 +1,29 @@
+{
+  "Description": [
+    "",
+    "                                BEFORE YOU START !!!",
+    "",
+    "1.",
+    "Please make sure that you selected src\\components\\your-view-model-name folder",
+    "  where [your-view-model-name] is a name of currently selected ViewModel",
+    ""
+  ],
+  "BatchItems": [
+    {
+      "DestinationFolder": "interfaces",
+      "GeneratorType": "01100-.interface.tsx",
+      "GeneratorSript": "interface.tsx.t4"
+    },
+    {
+      "DestinationFolder": "interfaces",
+      "GeneratorType": "01200-Page.interface.tsx",
+      "GeneratorSript": "Page.interface.tsx.t4"
+    },
+    {
+      "DestinationFolder": "interfaces",
+      "GeneratorType": "01300-Filter.interface.tsx",
+      "GeneratorSript": "Filter.interface.tsx.t4"
+    }
+  ]
+
+}

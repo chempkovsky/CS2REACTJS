@@ -1,0 +1,579 @@
+﻿<#@ template language="C#" HostSpecific="True" Debug="True" #>
+<#@ output extension="tsx" #>
+<#@ assembly name="System.Core" #>
+<#@ import namespace="System" #>
+<#@ import namespace="System.IO" #>
+<#@ import namespace="System.Linq" #>
+<#@ import namespace="System.Collections" #>
+<#@ import namespace="System.Collections.Generic" #>
+<#@ import namespace="System.Text" #>
+<#@ import namespace="CS2REACTJS" #>
+<#@ import namespace="CS2REACTJS.Model" #>
+<#@ import namespace="CS2REACTJS.Model.Serializable" #>
+<#@ parameter type="CS2REACTJS.Model.Serializable.ModelViewSerializable" name="Model" #>
+<#@ parameter type="CS2REACTJS.Model.Serializable.DbContextSerializable" name="Context" #>
+<#
+
+    string appGlblRegisterDataModelFolder               = "00135-app-glbl-register.tsx";
+    string appGlblRegisterDataModelClassName            = GetModelClassName(Model, appGlblRegisterDataModelFolder);
+
+    string appLoginServiceFolder                        = "00130-app-glbl-login.service.tsx";
+    string appLoginServiceClassName                     = GetServiceClassName(Model, appLoginServiceFolder);
+
+    string appGlblSettingsServiceFolder                 = "00028-app-glbl-settings.service.tsx";
+    string appGlblSettingsServiceClassName              = GetServiceClassName(Model, appGlblSettingsServiceFolder);
+
+    string appGlblSettingsContextFolder                 = "00029-app-glbl-settings.context.tsx";
+    string appGlblSettingsContextClassName              = GetContextName(Model, appGlblSettingsContextFolder);
+
+    string validatorsFolder                             = "00048-validators.tsx";
+    string validatorsClassName                          = GetModelClassName(Model, validatorsFolder);
+
+    string formControlValueFolder                       = "00049-form-control-value.tsx";
+    string formControlValueClassName                    = GetModelClassName(Model, formControlValueFolder);
+
+    string formControlStateFolder                       = "00110-form-control-state.tsx";
+    string formControlStateClassName                    = GetModelInterfaceName(Model, formControlStateFolder);
+
+    string appRegisterInterfaceDataModelFolder          = "00118-app-glbl-register.interface.tsx";
+    string appRegisterInterfaceDataModelClassName       = GetModelInterfaceName(Model, appRegisterInterfaceDataModelFolder);
+
+
+
+    string onCancel                                     = "onCancel";
+    string doSubmit                                     = "doSubmit";
+    string onPwdHide                                    = "onPwdHide";
+    string onCnfHide                                    = "onCnfHide";
+    string ShowErrorMethodName                          = "showError";
+    string setAuthInfoMethodName                        = "setAuthInfo";
+
+#>
+
+import React from 'react';
+import Icon from '@material-ui/core/Icon';
+import Grid from '@material-ui/core/Grid';
+import { withTheme, Card, CardContent, TextField, InputAdornment, IconButton, CardActions, Button, Typography } from '@material-ui/core';
+
+
+import <#= appGlblSettingsContextClassName #> from '<#= GetFolderName(Model, appGlblSettingsContextFolder, appGlblRegisterDataModelFolder) #>';
+import <#= formControlStateClassName #> from "<#= GetFolderName(Model, formControlStateFolder, appGlblRegisterDataModelFolder) #>";
+import <#= formControlValueClassName #> from "<#= GetFolderName(Model, formControlValueFolder, appGlblRegisterDataModelFolder) #>";
+import <#= validatorsClassName #> from "<#= GetFolderName(Model, validatorsFolder, appGlblRegisterDataModelFolder) #>";
+import <#= appLoginServiceClassName #> from "<#= GetFolderName(Model, appLoginServiceFolder, appGlblRegisterDataModelFolder) #>";
+import <#= appRegisterInterfaceDataModelClassName #> from "<#= GetFolderName(Model, appRegisterInterfaceDataModelFolder, appGlblRegisterDataModelFolder) #>";
+
+interface <#= appGlblRegisterDataModelClassName + "State" #> {
+    pwdhide: boolean;
+    cnfhide: boolean;
+    username: <#= formControlStateClassName #>;
+    password: <#= formControlStateClassName #>;
+    confirmpassword: <#= formControlStateClassName #>;
+}
+
+
+
+class <#= appGlblRegisterDataModelClassName #> extends React.Component<any, <#= appGlblRegisterDataModelClassName + "State" #>>  {
+    static contextType = <#= appGlblSettingsContextClassName #>;
+    public username: <#= formControlValueClassName #> = new <#= formControlValueClassName #>(null, false, [ <#= validatorsClassName + ".required" #>, <#= validatorsClassName + ".minLength(3)" #>, <#= validatorsClassName + ".maxLength(127)" #> ]);
+    public password: <#= formControlValueClassName #> = new <#= formControlValueClassName #>(null, false, [ <#= validatorsClassName + ".required"#>, <#= validatorsClassName + ".minLength(6)" #>, <#= validatorsClassName + ".maxLength(127)" #> ]);
+    public confirmpassword: <#= formControlValueClassName #> = new <#= formControlValueClassName #>(null, false, [ <#= validatorsClassName + ".required"#>, <#= validatorsClassName + ".minLength(6)" #>, <#= validatorsClassName + ".maxLength(127)" #> ]);
+    constructor(props: any) {
+        super(props);
+        this.state = {
+            pwdhide: true,
+            cnfhide: true,
+            username: {Value: '', Disabled: false, Invalid: false, Errors: {}},
+            password: {Value: '', Disabled: false, Invalid: false, Errors: {}},
+            confirmpassword: {Value: '', Disabled: false, Invalid: false, Errors: {}},
+        };
+        this.ValForInput = this.ValForInput.bind(this);
+        this.getErrorMessage = this.getErrorMessage.bind(this);
+        this.<#= onCancel #> = this.<#= onCancel #>.bind(this);
+        this.<#= doSubmit #> = this.<#= doSubmit #>.bind(this);
+        this.<#= onPwdHide #> = this.<#= onPwdHide #>.bind(this);
+        this.<#= onCnfHide #> = this.<#= onCnfHide #>.bind(this);
+        this.onPasswordChange = this.onPasswordChange.bind(this);
+        this.onUsernameChange = this.onUsernameChange.bind(this);
+        this.onConfirmPasswordChange = this.onConfirmPasswordChange.bind(this);
+        this.checkValid = this.checkValid.bind(this);
+        this.doLogIn = this.doLogIn.bind(this);
+    }
+    public ValForInput(value: any): any {
+        if(typeof value === 'undefined') return '';
+        if(value === null) return '';
+        return value;
+    }
+    getErrorMessage(fc: <#= formControlStateClassName #>): string {
+        if(fc)
+            return <#= formControlValueClassName #>.getValidationErrorMessageEx(fc.Errors);
+        else 
+            return 'Validation Error.';
+    } 
+    public checkValid(): boolean {
+        let rslt: boolean = true;
+        this.password.Validate();
+        this.password.Touched = true;
+        this.setState({password: { Errors: this.password.Errors,    
+                                   Invalid: this.password.InvalidEx,
+                                   Disabled: this.password.Disabled,
+                                   Value: this.password.Value }
+                                });
+        rslt = rslt &&  this.password.Valid;    
+
+        this.confirmpassword.Validate();
+        this.confirmpassword.Touched = true;
+        rslt = rslt && this.confirmpassword.Valid;    
+        if (rslt) {
+            if(this.password.Value !== this.confirmpassword.Value) {
+                this.confirmpassword.Errors = { 'mustbeequal': 'Password and Confirm password must be equal'}
+                rslt = false; 
+            }
+        }
+        this.setState({confirmpassword:   { Errors: this.confirmpassword.Errors,    
+                                            Invalid: this.confirmpassword.InvalidEx,
+                                            Disabled: this.confirmpassword.Disabled,
+                                            Value: this.confirmpassword.Value }
+                                          });
+
+
+
+        this.username.Validate();
+        this.username.Touched = true;
+        this.setState({username: { Errors: this.username.Errors,    
+                                   Invalid: this.username.InvalidEx,
+                                   Disabled: this.username.Disabled,
+                                   Value: this.username.Value }
+                                });
+        rslt = rslt &&  this.username.Valid;    
+        return rslt;
+    }
+    <#= onCancel #>() {
+      if(this.props.history) {
+        this.props.history.push('/');
+      }
+    }
+
+    doLogIn() {
+        <#= appLoginServiceClassName #>.login(this.context, this.username.Value, this.password.Value)
+        .then((res: any) => res.json())
+        .then(
+            (respdata: any ) => {
+                this.context.UserName = this.username.Value;
+                this.context.<#= setAuthInfoMethodName #>(respdata);
+                this.<#= onCancel #>()
+            },
+            (error: any) => {
+                this.context.<#= ShowErrorMethodName #>('http', error);
+            }
+        );
+    }
+
+    <#= doSubmit #>() {
+        if(! this.checkValid() ) return;
+        let rqDt: <#= appRegisterInterfaceDataModelClassName #> = {
+           email: this.username.Value,
+           password: this.password.Value,
+           confirmPassword: this.confirmpassword.Value
+        }
+
+        <#= appLoginServiceClassName #>.register(this.context, rqDt)
+        // .then((res: any) => res.json())
+        .then(
+            (respdata: Response ) => {
+                if(respdata.ok) {
+                    this.doLogIn();
+                } else {
+                   let msg = {
+                        message: 'Error status: ' + respdata.status + ' With Status Text: ' + respdata.statusText
+                    }
+                    this.context.showError('http',  msg);    
+                }
+            },
+            (error: any) => {
+                this.context.<#= ShowErrorMethodName #>('http', error);
+            }
+        );
+    }
+    <#= onPwdHide #>() {
+        this.setState({pwdhide: !(this.state.pwdhide)})
+    }
+    <#= onCnfHide #>() {
+        this.setState({cnfhide: !(this.state.cnfhide)})
+    }
+    onPasswordChange(event: any) {
+        this.password.Value = event.target.value;
+        this.password.Touched = true;
+        this.setState({password: { Errors: this.password.Errors,    
+                                   Invalid: this.password.InvalidEx,
+                                   Disabled: this.password.Disabled,
+                                   Value: this.password.Value }
+                                });
+    }
+    onConfirmPasswordChange(event: any) {
+        this.confirmpassword.Value = event.target.value;
+        this.confirmpassword.Touched = true;
+        this.setState({confirmpassword: { Errors: this.confirmpassword.Errors,    
+                                          Invalid: this.confirmpassword.InvalidEx,
+                                          Disabled: this.confirmpassword.Disabled,
+                                          Value: this.confirmpassword.Value }
+                                });
+    }
+    onUsernameChange(event: any) {
+        this.username.Value = event.target.value;
+        this.username.Touched = true;
+        this.setState({username: { Errors: this.username.Errors,    
+                                   Invalid: this.username.InvalidEx,
+                                   Disabled: this.username.Disabled,
+                                   Value: this.username.Value }
+                                });
+    }
+
+    render() {
+        const { theme } = this.props;
+        return (
+            <Grid style={{  height:`calc(100% - ${theme.spacing(8)}px)` }}
+                container
+                direction="column"
+                justify="center"
+                alignContent="center"
+                alignItems="center">   
+                <Grid item >
+                    <Card>
+                        <CardContent>
+                            <Typography variant="h6" component="h6">Register</Typography>
+                            <TextField fullWidth  InputLabelProps={{ shrink: true }}
+                                onChange={ this.onUsernameChange }
+                                value={ this.ValForInput(this.state.username.Value) }
+                                error={ this.state.username.Invalid }
+                                label="User name"
+                                helperText={ this.state.username.Invalid ? 
+                                    this.getErrorMessage(this.state.username) as string : 
+                                    'length of the username must be large than 3'
+                                }
+                                margin="dense"
+                                variant="outlined"
+                                disabled={false} 
+                            />
+                            <TextField fullWidth  InputLabelProps={{ shrink: true }}
+                                onChange={ this.onPasswordChange }
+                                value={ this.ValForInput(this.state.password.Value) }
+                                error={ this.state.password.Invalid }
+                                label="Password"
+                                helperText={ this.state.password.Invalid ? 
+                                    this.getErrorMessage(this.state.password) as string : 
+                                    'length of the password must be large than 5'
+                                }
+                                margin="dense"
+                                variant="outlined"
+                                disabled={false} 
+                                InputProps={{
+                                  type: this.state.pwdhide ? 'password' : 'text',
+                                  endAdornment: (
+                                    <InputAdornment position="end">
+                                        <IconButton  size="small" 
+                                            onClick={this.<#= onPwdHide #>}>
+                                                <Icon  >{this.state.pwdhide ? 'visibility_off' : 'visibility'}</Icon> 
+                                        </IconButton>            
+                                    </InputAdornment>)              
+                                }}
+                            />
+                            <TextField fullWidth  InputLabelProps={{ shrink: true }}
+                                onChange={ this.onConfirmPasswordChange }
+                                value={ this.ValForInput(this.state.confirmpassword.Value) }
+                                error={ this.state.confirmpassword.Invalid }
+                                label="Confirm Password"
+                                helperText={ this.state.confirmpassword.Invalid ? 
+                                    this.getErrorMessage(this.state.confirmpassword) as string : 
+                                    'length of the confirmpassword must be large than 5'
+                                }
+                                margin="dense"
+                                variant="outlined"
+                                disabled={false} 
+                                InputProps={{
+                                  type: this.state.cnfhide ? 'password' : 'text',
+                                  endAdornment: (
+                                    <InputAdornment position="end">
+                                        <IconButton  size="small" 
+                                            onClick={this.<#= onCnfHide #>}>
+                                                <Icon  >{this.state.cnfhide ? 'visibility_off' : 'visibility'}</Icon> 
+                                        </IconButton>            
+                                    </InputAdornment>)              
+                                }}
+                            />
+                       </CardContent>
+                        <CardActions>
+                            <Button variant="outlined" onClick={ this.<#= onCancel #> }  autoFocus>
+                            Cancel
+                            </Button>
+                            <Button variant="outlined" onClick={ this.<#= doSubmit #> }  >
+                            Ok
+                            </Button>
+                        </CardActions>
+                    </Card>
+                </Grid> 
+            </Grid>
+        )};
+}
+
+export default  withTheme( <#= appGlblRegisterDataModelClassName #> )  
+
+<#+
+    string GetModelInterfaceName(ModelViewSerializable model, string fileType) {
+        string result="";
+        if ((model == null) || string.IsNullOrEmpty(fileType)) {
+            return result;
+        }
+        if (model.CommonStaffs == null) {
+            return result;
+        }
+        CommonStaffSerializable refItem= 
+            model.CommonStaffs.Where(c => c.FileType == fileType).FirstOrDefault();
+        if (refItem == null) {
+            return result;
+        }
+        if(string.IsNullOrEmpty(refItem.FileName)) {
+            return result;
+        }
+        string fn = refItem.FileName.Replace(".interface","-interface");
+        StringBuilder sb = new StringBuilder();
+        bool toUpper = true;
+        foreach (char c in fn)
+        {
+            if( c == '-' )
+            {
+                toUpper = true;
+            } else
+            {
+                if (toUpper)
+                {
+                    sb.Append(Char.ToUpper(c));
+                    toUpper = false;
+                }
+                else
+                {
+                    sb.Append(c);
+                }
+            }
+                
+        }
+        return "I"+sb.ToString();
+    }
+    string GetModelClassName(ModelViewSerializable model, string fileType) {
+        string result="";
+        if ((model == null) || string.IsNullOrEmpty(fileType)) {
+            return result;
+        }
+        if (model.CommonStaffs == null) {
+            return result;
+        }
+        CommonStaffSerializable refItem= 
+            model.CommonStaffs.Where(c => c.FileType == fileType).FirstOrDefault();
+        if (refItem == null) {
+            return result;
+        }
+        if(string.IsNullOrEmpty(refItem.FileName)) {
+            return result;
+        }
+        string fn = refItem.FileName;
+        StringBuilder sb = new StringBuilder();
+        bool toUpper = true;
+        foreach (char c in fn)
+        {
+            if( c == '-' )
+            {
+                toUpper = true;
+            } else
+            {
+                if (toUpper)
+                {
+                    sb.Append(Char.ToUpper(c));
+                    toUpper = false;
+                }
+                else
+                {
+                    sb.Append(c);
+                }
+            }
+                
+        }
+        return sb.ToString();
+    }
+    string GetModelCssClassName(ModelViewSerializable model, string fileType) {
+        string result="";
+        if ((model == null) || string.IsNullOrEmpty(fileType)) {
+            return result;
+        }
+        if (model.CommonStaffs == null) {
+            return result;
+        }
+        CommonStaffSerializable refItem= 
+            model.CommonStaffs.Where(c => c.FileType == fileType).FirstOrDefault();
+        if (refItem == null) {
+            return result;
+        }
+        if(string.IsNullOrEmpty(refItem.FileName)) {
+            return result;
+        }
+        return refItem.FileName;
+    }
+    string GetModelFunctionName(ModelViewSerializable model, string fileType) {
+        string result="";
+        if ((model == null) || string.IsNullOrEmpty(fileType)) {
+            return result;
+        }
+        if (model.CommonStaffs == null) {
+            return result;
+        }
+        CommonStaffSerializable refItem= 
+            model.CommonStaffs.Where(c => c.FileType == fileType).FirstOrDefault();
+        if (refItem == null) {
+            return result;
+        }
+        if(string.IsNullOrEmpty(refItem.FileName)) {
+            return result;
+        }
+        string fn = refItem.FileName;
+        StringBuilder sb = new StringBuilder();
+        bool toUpper = true;
+        foreach (char c in fn)
+        {
+            if( c == '-' )
+            {
+                toUpper = true;
+            } else
+            {
+                if (toUpper)
+                {
+                    sb.Append(Char.ToUpper(c));
+                    toUpper = false;
+                }
+                else
+                {
+                    sb.Append(c);
+                }
+            }
+                
+        }
+        return sb.ToString();
+    }
+    string GetFolderName(ModelViewSerializable model, string refFolder, string currFolder) {
+        string result="./";
+        if ((model == null) || string.IsNullOrEmpty(refFolder) || string.IsNullOrEmpty(currFolder)) {
+            return result;
+        }
+        if (model.CommonStaffs == null) {
+            return result;
+        }
+        CommonStaffSerializable refItem= 
+            model.CommonStaffs.Where(c => c.FileType == refFolder).FirstOrDefault();
+        CommonStaffSerializable curItem= 
+            model.CommonStaffs.Where(c => c.FileType == currFolder).FirstOrDefault();
+        if ((refItem == null) || (curItem == null)) {
+            return result;
+        }
+        string[] refFolders  = new string[] {};
+        if(!string.IsNullOrEmpty(refItem.FileFolder)) {
+            refFolders  = refItem.FileFolder.Split(new string[] { "\\" }, StringSplitOptions.None);
+        }
+        string[] currFolders = new string[]{};
+        if(!string.IsNullOrEmpty(curItem.FileFolder)) {
+            currFolders  = curItem.FileFolder.Split(new string[] { "\\" }, StringSplitOptions.None);
+        }
+        int refLen = refFolders.Length;
+        int currLen = currFolders.Length;
+        int minLen = refLen < currLen ? refLen : currLen;
+        int cnt= 0;
+        for(int i = 0; i < minLen; i++) {
+            if ( !refFolders[i].Equals(currFolders[i], StringComparison.OrdinalIgnoreCase) ) break;
+            cnt++;
+        }
+        if(currLen > cnt) {
+            result += string.Join("", Enumerable.Repeat("../", currLen - cnt));
+        }
+        if(refLen > cnt) {
+            result += string.Join("/", refFolders, cnt, refLen - cnt) + "/";
+        }
+        result += refItem.FileName;
+        return result;
+    }
+    string GetServiceClassName(ModelViewSerializable model, string fileType) {
+        string result="";
+        if ((model == null) || string.IsNullOrEmpty(fileType) ) {
+            return result;
+        }
+        if (model.CommonStaffs == null) {
+            return result;
+        }
+        CommonStaffSerializable refItem= 
+            model.CommonStaffs.Where(c => c.FileType == fileType).FirstOrDefault();
+        if (refItem == null) {
+            return result;
+        }
+        if(string.IsNullOrEmpty(refItem.FileName)) {
+            return result;
+        }
+        string fn = refItem.FileName.Replace(".service","Service");
+        StringBuilder sb = new StringBuilder();
+        bool toUpper = true;
+        foreach (char c in fn)
+        {
+            if( c == '-' )
+            {
+                toUpper = true;
+            } else
+            {
+                if (toUpper)
+                {
+                    sb.Append(Char.ToUpper(c));
+                    toUpper = false;
+                }
+                else
+                {
+                    sb.Append(c);
+                }
+            }
+        }
+        return sb.ToString();
+    }
+    string GetContextName(ModelViewSerializable model, string fileType) {
+        string result="";
+        if ((model == null) || string.IsNullOrEmpty(fileType)) {
+            return result;
+        }
+        if (model.CommonStaffs == null) {
+            return result;
+        }
+        CommonStaffSerializable refItem= 
+            model.CommonStaffs.Where(c => c.FileType == fileType).FirstOrDefault();
+        if (refItem == null) {
+            return result;
+        }
+        if(string.IsNullOrEmpty(refItem.FileName)) {
+            return result;
+        }
+        string fn = refItem.FileName.Replace(".context","-context");
+        StringBuilder sb = new StringBuilder();
+        bool toUpper = true;
+        foreach (char c in fn)
+        {
+            if( c == '-' )
+            {
+                toUpper = true;
+            } else
+            {
+                if (toUpper)
+                {
+                    sb.Append(Char.ToUpper(c));
+                    toUpper = false;
+                }
+                else
+                {
+                    sb.Append(c);
+                }
+            }
+                
+        }
+        return sb.ToString();
+    }
+
+#>

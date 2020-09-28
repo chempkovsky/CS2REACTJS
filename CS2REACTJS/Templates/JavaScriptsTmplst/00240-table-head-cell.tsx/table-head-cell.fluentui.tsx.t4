@@ -1,0 +1,210 @@
+﻿<#@ template language="C#" HostSpecific="True" Debug="True" #>
+<#@ output extension="tsx" #>
+<#@ assembly name="System.Core" #>
+<#@ import namespace="System" #>
+<#@ import namespace="System.IO" #>
+<#@ import namespace="System.Linq" #>
+<#@ import namespace="System.Collections" #>
+<#@ import namespace="System.Collections.Generic" #>
+<#@ import namespace="System.Text" #>
+<#@ import namespace="CS2REACTJS" #>
+<#@ import namespace="CS2REACTJS.Model" #>
+<#@ import namespace="CS2REACTJS.Model.Serializable" #>
+<#@ parameter type="CS2REACTJS.Model.Serializable.ModelViewSerializable" name="Model" #>
+<#@ parameter type="CS2REACTJS.Model.Serializable.DbContextSerializable" name="Context" #>
+<#
+
+    
+    string tableheadCellDataModelFolder                 = "00240-table-head-cell.tsx";
+    string tableheadCellDataModelClassName              = GetModelClassName(Model, tableheadCellDataModelFolder);
+
+    string tableheadCellStateDataModelFolder            = "00238-table-head-cell-state.interface.tsx";
+    string tableheadCellStateDataModelClassName         = GetModelInterfaceName(Model, tableheadCellStateDataModelFolder);
+
+    string tableheadCellPropsDataModelFolder            = "00239-table-head-cell-props.interface.tsx";
+    string tableheadCellPropsDataModelClassName         = GetModelInterfaceName(Model, tableheadCellPropsDataModelFolder);
+
+#>
+
+import React, { Component } from 'react';
+import { FontIcon }  from '@fluentui/react';
+import <#= tableheadCellStateDataModelClassName #> from "<#= GetFolderName(Model, tableheadCellStateDataModelFolder, tableheadCellDataModelFolder) #>";
+import <#= tableheadCellPropsDataModelClassName #> from "<#= GetFolderName(Model, tableheadCellPropsDataModelFolder, tableheadCellDataModelFolder) #>";
+
+// import { initializeIcons }  from '@fluentui/react';
+// initializeIcons();
+
+
+export default class <#= tableheadCellDataModelClassName #>  extends Component<<#= tableheadCellPropsDataModelClassName #>, <#= tableheadCellStateDataModelClassName #>> {
+    constructor(props: <#= tableheadCellPropsDataModelClassName #>) {
+        super(props);
+        this.state = {
+            colkey: '',
+            upIconName: 'SortUp',
+            downIconName: 'SortDown',
+            sortDir:'',
+            sortable: false,
+        }
+        this.doOnClick = this.doOnClick.bind(this);
+    }
+    static getDerivedStateFromProps(nwprps: <#= tableheadCellPropsDataModelClassName #>, oldstt: <#= tableheadCellStateDataModelClassName #>): any {
+        let rslt: { [key: string]: any; } = {};
+        if (nwprps.colkey) rslt['colkey'] = nwprps.colkey; else rslt['colkey'] = '';
+        if (nwprps.upIconName) rslt['upIconName'] = nwprps.upIconName; else rslt['upIconName'] = 'SortUp';
+        if (nwprps.downIconName) rslt['downIconName'] = nwprps.downIconName; else rslt['downIconName'] = 'SortDown';
+        if (nwprps.sortDir) rslt['sortDir'] = nwprps.sortDir; else rslt['sortDir'] = '';
+        if (nwprps.sortable) rslt['sortable'] = nwprps.sortable; else rslt['sortable'] = false;
+        return  rslt;
+    }
+    doOnClick() {
+        if(this.state.sortable) {
+            if(this.props.onSort) {
+                if (this.props.sortDir==='asc') { this.props.onSort(this, this.state.colkey, 'desc') }
+                    else if(this.state.sortDir==='desc') { this.props.onSort(this, this.state.colkey, '') } 
+                    else { this.props.onSort(this, this.state.colkey, 'asc') } 
+            }
+        }
+    }
+    render () {
+        let iconName: string|undefined ; 
+        if (this.state.sortDir==='asc') { iconName = this.state.upIconName; }
+        else if(this.state.sortDir==='desc') { iconName = this.state.downIconName; }
+        let cursor='initial';
+        if(this.state.sortable) cursor = 'pointer';
+        return (
+            <th className={this.props.className}
+                style={{border:'inherit', borderCollapse: 'inherit', cursor: cursor, paddingLeft:'8px', paddingRight:'8px', fontWeight: 'normal'}}
+                onClick={()=>this.doOnClick()}
+            > 
+                    { iconName ? <FontIcon iconName={iconName} /> : '' }
+                    {this.props.children}
+            </th>
+        );
+    }
+}
+
+
+
+<#+
+    string GetModelInterfaceName(ModelViewSerializable model, string fileType) {
+        string result="";
+        if ((model == null) || string.IsNullOrEmpty(fileType)) {
+            return result;
+        }
+        if (model.CommonStaffs == null) {
+            return result;
+        }
+        CommonStaffSerializable refItem= 
+            model.CommonStaffs.Where(c => c.FileType == fileType).FirstOrDefault();
+        if (refItem == null) {
+            return result;
+        }
+        if(string.IsNullOrEmpty(refItem.FileName)) {
+            return result;
+        }
+        string fn = refItem.FileName.Replace(".interface","-interface");
+        StringBuilder sb = new StringBuilder();
+        bool toUpper = true;
+        foreach (char c in fn)
+        {
+            if( c == '-' )
+            {
+                toUpper = true;
+            } else
+            {
+                if (toUpper)
+                {
+                    sb.Append(Char.ToUpper(c));
+                    toUpper = false;
+                }
+                else
+                {
+                    sb.Append(c);
+                }
+            }
+                
+        }
+        return "I"+sb.ToString();
+    }
+    string GetModelClassName(ModelViewSerializable model, string fileType) {
+        string result="";
+        if ((model == null) || string.IsNullOrEmpty(fileType)) {
+            return result;
+        }
+        if (model.CommonStaffs == null) {
+            return result;
+        }
+        CommonStaffSerializable refItem= 
+            model.CommonStaffs.Where(c => c.FileType == fileType).FirstOrDefault();
+        if (refItem == null) {
+            return result;
+        }
+        if(string.IsNullOrEmpty(refItem.FileName)) {
+            return result;
+        }
+        string fn = refItem.FileName;
+        StringBuilder sb = new StringBuilder();
+        bool toUpper = true;
+        foreach (char c in fn)
+        {
+            if( c == '-' )
+            {
+                toUpper = true;
+            } else
+            {
+                if (toUpper)
+                {
+                    sb.Append(Char.ToUpper(c));
+                    toUpper = false;
+                }
+                else
+                {
+                    sb.Append(c);
+                }
+            }
+                
+        }
+        return sb.ToString();
+    }
+    string GetFolderName(ModelViewSerializable model, string refFolder, string currFolder) {
+        string result="./";
+        if ((model == null) || string.IsNullOrEmpty(refFolder) || string.IsNullOrEmpty(currFolder)) {
+            return result;
+        }
+        if (model.CommonStaffs == null) {
+            return result;
+        }
+        CommonStaffSerializable refItem= 
+            model.CommonStaffs.Where(c => c.FileType == refFolder).FirstOrDefault();
+        CommonStaffSerializable curItem= 
+            model.CommonStaffs.Where(c => c.FileType == currFolder).FirstOrDefault();
+        if ((refItem == null) || (curItem == null)) {
+            return result;
+        }
+        string[] refFolders  = new string[] {};
+        if(!string.IsNullOrEmpty(refItem.FileFolder)) {
+            refFolders  = refItem.FileFolder.Split(new string[] { "\\" }, StringSplitOptions.None);
+        }
+        string[] currFolders = new string[]{};
+        if(!string.IsNullOrEmpty(curItem.FileFolder)) {
+            currFolders  = curItem.FileFolder.Split(new string[] { "\\" }, StringSplitOptions.None);
+        }
+        int refLen = refFolders.Length;
+        int currLen = currFolders.Length;
+        int minLen = refLen < currLen ? refLen : currLen;
+        int cnt= 0;
+        for(int i = 0; i < minLen; i++) {
+            if ( !refFolders[i].Equals(currFolders[i], StringComparison.OrdinalIgnoreCase) ) break;
+            cnt++;
+        }
+        if(currLen > cnt) {
+            result += string.Join("", Enumerable.Repeat("../", currLen - cnt));
+        }
+        if(refLen > cnt) {
+            result += string.Join("/", refFolders, cnt, refLen - cnt) + "/";
+        }
+        result += refItem.FileName;
+        return result;
+    }
+
+#>

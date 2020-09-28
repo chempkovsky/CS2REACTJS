@@ -1,0 +1,1011 @@
+{
+  "Description": [
+    "",
+    "                                BEFORE YOU START !!!",
+    "1.",
+    "  Please make sure that you selected src\\app folder",
+    "",
+    "2.",
+    " Please make that security ModelViews has the following names",
+    " (Names are case sensitive)",
+    "     securitydashboardView",
+    "     securitymodelView",
+    "     securityuserView",
+    "     securityroleView",
+    "     securitypermissionView",
+    "     securityuser2roleView",
+    "",
+    "",
+    ""
+  ],
+  "BatchItems": [
+    {
+      "DestinationFolder": "components\\securitydashboard-view\\interfaces",
+      "GeneratorType": "01100-.interface.ts",
+      "GeneratorSript": "InterfaceForView.ts.t4",
+      "ViewModel": "securitydashboardView"
+    },
+    {
+      "DestinationFolder": "components\\securitydashboard-view\\interfaces",
+      "GeneratorType": "01200-Page.interface.ts",
+      "GeneratorSript": "InterfaceForViewPage.ts.t4",
+      "ViewModel": "securitydashboardView"
+    },
+    {
+      "DestinationFolder": "components\\securitydashboard-view\\interfaces",
+      "GeneratorType": "01300-Filter.interface.ts",
+      "GeneratorSript": "InterfaceForViewFilter.ts.t4",
+      "ViewModel": "securitydashboardView"
+    },
+
+    {
+      "DestinationFolder": "components\\securitymodel-view\\interfaces",
+      "GeneratorType": "01100-.interface.ts",
+      "GeneratorSript": "InterfaceForView.ts.t4",
+      "ViewModel": "securitymodelView"
+    },
+    {
+      "DestinationFolder": "components\\securitymodel-view\\interfaces",
+      "GeneratorType": "01200-Page.interface.ts",
+      "GeneratorSript": "InterfaceForViewPage.ts.t4",
+      "ViewModel": "securitymodelView"
+    },
+    {
+      "DestinationFolder": "components\\securitymodel-view\\interfaces",
+      "GeneratorType": "01300-Filter.interface.ts",
+      "GeneratorSript": "InterfaceForViewFilter.ts.t4",
+      "ViewModel": "securitymodelView"
+    },
+
+    {
+      "DestinationFolder": "components\\securityuser-view\\interfaces",
+      "GeneratorType": "01100-.interface.ts",
+      "GeneratorSript": "InterfaceForView.ts.t4",
+      "ViewModel": "securityuserView"
+    },
+    {
+      "DestinationFolder": "components\\securityuser-view\\interfaces",
+      "GeneratorType": "01200-Page.interface.ts",
+      "GeneratorSript": "InterfaceForViewPage.ts.t4",
+      "ViewModel": "securityuserView"
+    },
+    {
+      "DestinationFolder": "components\\securityuser-view\\interfaces",
+      "GeneratorType": "01300-Filter.interface.ts",
+      "GeneratorSript": "InterfaceForViewFilter.ts.t4",
+      "ViewModel": "securityuserView"
+    },
+
+    {
+      "DestinationFolder": "components\\securityrole-view\\interfaces",
+      "GeneratorType": "01100-.interface.ts",
+      "GeneratorSript": "InterfaceForView.ts.t4",
+      "ViewModel": "securityroleView"
+    },
+    {
+      "DestinationFolder": "components\\securityrole-view\\interfaces",
+      "GeneratorType": "01200-Page.interface.ts",
+      "GeneratorSript": "InterfaceForViewPage.ts.t4",
+      "ViewModel": "securityroleView"
+    },
+    {
+      "DestinationFolder": "components\\securityrole-view\\interfaces",
+      "GeneratorType": "01300-Filter.interface.ts",
+      "GeneratorSript": "InterfaceForViewFilter.ts.t4",
+      "ViewModel": "securityroleView"
+    },
+
+    {
+      "DestinationFolder": "components\\securitypermission-view\\interfaces",
+      "GeneratorType": "01100-.interface.ts",
+      "GeneratorSript": "InterfaceForView.ts.t4",
+      "ViewModel": "securitypermissionView"
+    },
+    {
+      "DestinationFolder": "components\\securitypermission-view\\interfaces",
+      "GeneratorType": "01200-Page.interface.ts",
+      "GeneratorSript": "InterfaceForViewPage.ts.t4",
+      "ViewModel": "securitypermissionView"
+    },
+    {
+      "DestinationFolder": "components\\securitypermission-view\\interfaces",
+      "GeneratorType": "01300-Filter.interface.ts",
+      "GeneratorSript": "InterfaceForViewFilter.ts.t4",
+      "ViewModel": "securitypermissionView"
+    },
+
+    {
+      "DestinationFolder": "components\\securityuser2role-view\\interfaces",
+      "GeneratorType": "01100-.interface.ts",
+      "GeneratorSript": "InterfaceForView.ts.t4",
+      "ViewModel": "securityuser2roleView"
+    },
+    {
+      "DestinationFolder": "components\\securityuser2role-view\\interfaces",
+      "GeneratorType": "01200-Page.interface.ts",
+      "GeneratorSript": "InterfaceForViewPage.ts.t4",
+      "ViewModel": "securityuser2roleView"
+    },
+    {
+      "DestinationFolder": "components\\securityuser2role-view\\interfaces",
+      "GeneratorType": "01300-Filter.interface.ts",
+      "GeneratorSript": "InterfaceForViewFilter.ts.t4",
+      "ViewModel": "securityuser2roleView"
+    },
+
+
+    {
+      "DestinationFolder": "services\\securitydashboard-view",
+      "GeneratorType": "01400-.service.ts",
+      "GeneratorSript": "WebServiceForView.ts.t4",
+      "ViewModel": "securitydashboardView"
+    },
+    {
+      "DestinationFolder": "services\\securitymodel-view",
+      "GeneratorType": "01400-.service.ts",
+      "GeneratorSript": "WebServiceForView.ts.t4",
+      "ViewModel": "securitymodelView"
+    },
+    {
+      "DestinationFolder": "services\\securityuser-view",
+      "GeneratorType": "01400-.service.ts",
+      "GeneratorSript": "WebServiceForView.ts.t4",
+      "ViewModel": "securityuserView"
+    },
+    {
+      "DestinationFolder": "services\\securityrole-view",
+      "GeneratorType": "01400-.service.ts",
+      "GeneratorSript": "WebServiceForView.ts.t4",
+      "ViewModel": "securityroleView"
+    },
+    {
+      "DestinationFolder": "services\\securitypermission-view",
+      "GeneratorType": "01401-.service.ts",
+      "GeneratorSript": "WebServiceBitAggrForView.ts.t4",
+      "ViewModel": "securitypermissionView"
+    },
+    {
+      "DestinationFolder": "services\\securityuser2role-view",
+      "GeneratorType": "01400-.service.ts",
+      "GeneratorSript": "WebServiceForView.ts.t4",
+      "ViewModel": "securityuser2roleView"
+    },
+
+    {
+      "DestinationFolder": "components\\securitydashboard-view\\sform",
+      "GeneratorType": "01420-Sform.component.css",
+      "GeneratorSript": "SearchFormForView.css.t4",
+      "ViewModel": "securitydashboardView"
+    },
+    {
+      "DestinationFolder": "components\\securitydashboard-view\\sform",
+      "GeneratorType": "01420-Sform.component.html",
+      "GeneratorSript": "SearchFormForView.html.t4",
+      "ViewModel": "securitydashboardView"
+    },
+    {
+      "DestinationFolder": "components\\securitydashboard-view\\sform",
+      "GeneratorType": "01420-Sform.component.ts",
+      "GeneratorSript": "SearchFormForView.ts.t4",
+      "ViewModel": "securitydashboardView"
+    },
+    {
+      "DestinationFolder": "components\\securitydashboard-view\\sdlg",
+      "GeneratorType": "01430-Dlg.interface.ts",
+      "GeneratorSript": "InterfaceForDlg.ts.t4",
+      "ViewModel": "securitydashboardView"
+    },
+    {
+      "DestinationFolder": "components\\securitydashboard-view\\sdlg",
+      "GeneratorType": "01440-Sdlg.component.css",
+      "GeneratorSript": "SearchDlgFormForView.css.t4",
+      "ViewModel": "securitydashboardView"
+    },
+    {
+      "DestinationFolder": "components\\securitydashboard-view\\sdlg",
+      "GeneratorType": "01440-Sdlg.component.html",
+      "GeneratorSript": "SearchDlgFormForView.html.t4",
+      "ViewModel": "securitydashboardView"
+    },
+    {
+      "DestinationFolder": "components\\securitydashboard-view\\sdlg",
+      "GeneratorType": "01440-Sdlg.component.ts",
+      "GeneratorSript": "SearchDlgFormForView.ts.t4",
+      "ViewModel": "securitydashboardView"
+    },
+    {
+      "DestinationFolder": "components\\securitydashboard-view",
+      "GeneratorType": "01450-S.module.ts",
+      "GeneratorSript": "SearchModuleForView.ts.t4",
+      "ViewModel": "securitydashboardView"
+    },
+
+
+    {
+      "DestinationFolder": "components\\securitymodel-view\\sform",
+      "GeneratorType": "01420-Sform.component.css",
+      "GeneratorSript": "SearchFormForView.css.t4",
+      "ViewModel": "securitymodelView"
+    },
+    {
+      "DestinationFolder": "components\\securitymodel-view\\sform",
+      "GeneratorType": "01420-Sform.component.html",
+      "GeneratorSript": "SearchFormForView.html.t4",
+      "ViewModel": "securitymodelView"
+    },
+    {
+      "DestinationFolder": "components\\securitymodel-view\\sform",
+      "GeneratorType": "01420-Sform.component.ts",
+      "GeneratorSript": "SearchFormForView.ts.t4",
+      "ViewModel": "securitymodelView"
+    },
+    {
+      "DestinationFolder": "components\\securitymodel-view\\sdlg",
+      "GeneratorType": "01430-Dlg.interface.ts",
+      "GeneratorSript": "InterfaceForDlg.ts.t4",
+      "ViewModel": "securitymodelView"
+    },
+    {
+      "DestinationFolder": "components\\securitymodel-view\\sdlg",
+      "GeneratorType": "01440-Sdlg.component.css",
+      "GeneratorSript": "SearchDlgFormForView.css.t4",
+      "ViewModel": "securitymodelView"
+    },
+    {
+      "DestinationFolder": "components\\securitymodel-view\\sdlg",
+      "GeneratorType": "01440-Sdlg.component.html",
+      "GeneratorSript": "SearchDlgFormForView.html.t4",
+      "ViewModel": "securitymodelView"
+    },
+    {
+      "DestinationFolder": "components\\securitymodel-view\\sdlg",
+      "GeneratorType": "01440-Sdlg.component.ts",
+      "GeneratorSript": "SearchDlgFormForView.ts.t4",
+      "ViewModel": "securitymodelView"
+    },
+    {
+      "DestinationFolder": "components\\securitymodel-view",
+      "GeneratorType": "01450-S.module.ts",
+      "GeneratorSript": "SearchModuleForView.ts.t4",
+      "ViewModel": "securitymodelView"
+    },
+
+
+
+    {
+      "DestinationFolder": "components\\securityuser-view\\sform",
+      "GeneratorType": "01420-Sform.component.css",
+      "GeneratorSript": "SearchFormForView.css.t4",
+      "ViewModel": "securityuserView"
+    },
+    {
+      "DestinationFolder": "components\\securityuser-view\\sform",
+      "GeneratorType": "01420-Sform.component.html",
+      "GeneratorSript": "SearchFormForView.html.t4",
+      "ViewModel": "securityuserView"
+    },
+    {
+      "DestinationFolder": "components\\securityuser-view\\sform",
+      "GeneratorType": "01420-Sform.component.ts",
+      "GeneratorSript": "SearchFormForView.ts.t4",
+      "ViewModel": "securityuserView"
+    },
+    {
+      "DestinationFolder": "components\\securityuser-view\\sdlg",
+      "GeneratorType": "01430-Dlg.interface.ts",
+      "GeneratorSript": "InterfaceForDlg.ts.t4",
+      "ViewModel": "securityuserView"
+    },
+    {
+      "DestinationFolder": "components\\securityuser-view\\sdlg",
+      "GeneratorType": "01440-Sdlg.component.css",
+      "GeneratorSript": "SearchDlgFormForView.css.t4",
+      "ViewModel": "securityuserView"
+    },
+    {
+      "DestinationFolder": "components\\securityuser-view\\sdlg",
+      "GeneratorType": "01440-Sdlg.component.html",
+      "GeneratorSript": "SearchDlgFormForView.html.t4",
+      "ViewModel": "securityuserView"
+    },
+    {
+      "DestinationFolder": "components\\securityuser-view\\sdlg",
+      "GeneratorType": "01440-Sdlg.component.ts",
+      "GeneratorSript": "SearchDlgFormForView.ts.t4",
+      "ViewModel": "securityuserView"
+    },
+    {
+      "DestinationFolder": "components\\securityuser-view",
+      "GeneratorType": "01450-S.module.ts",
+      "GeneratorSript": "SearchModuleForView.ts.t4",
+      "ViewModel": "securityuserView"
+    },
+
+
+    {
+      "DestinationFolder": "components\\securityrole-view\\sform",
+      "GeneratorType": "01420-Sform.component.css",
+      "GeneratorSript": "SearchFormForView.css.t4",
+      "ViewModel": "securityroleView"
+    },
+    {
+      "DestinationFolder": "components\\securityrole-view\\sform",
+      "GeneratorType": "01420-Sform.component.html",
+      "GeneratorSript": "SearchFormForView.html.t4",
+      "ViewModel": "securityroleView"
+    },
+    {
+      "DestinationFolder": "components\\securityrole-view\\sform",
+      "GeneratorType": "01420-Sform.component.ts",
+      "GeneratorSript": "SearchFormForView.ts.t4",
+      "ViewModel": "securityroleView"
+    },
+    {
+      "DestinationFolder": "components\\securityrole-view\\sdlg",
+      "GeneratorType": "01430-Dlg.interface.ts",
+      "GeneratorSript": "InterfaceForDlg.ts.t4",
+      "ViewModel": "securityroleView"
+    },
+    {
+      "DestinationFolder": "components\\securityrole-view\\sdlg",
+      "GeneratorType": "01440-Sdlg.component.css",
+      "GeneratorSript": "SearchDlgFormForView.css.t4",
+      "ViewModel": "securityroleView"
+    },
+    {
+      "DestinationFolder": "components\\securityrole-view\\sdlg",
+      "GeneratorType": "01440-Sdlg.component.html",
+      "GeneratorSript": "SearchDlgFormForView.html.t4",
+      "ViewModel": "securityroleView"
+    },
+    {
+      "DestinationFolder": "components\\securityrole-view\\sdlg",
+      "GeneratorType": "01440-Sdlg.component.ts",
+      "GeneratorSript": "SearchDlgFormForView.ts.t4",
+      "ViewModel": "securityroleView"
+    },
+    {
+      "DestinationFolder": "components\\securityrole-view",
+      "GeneratorType": "01450-S.module.ts",
+      "GeneratorSript": "SearchModuleForView.ts.t4",
+      "ViewModel": "securityroleView"
+    },
+
+    {
+      "DestinationFolder": "components\\securityuser2role-view\\sform",
+      "GeneratorType": "01420-Sform.component.css",
+      "GeneratorSript": "SearchFormForView.css.t4",
+      "ViewModel": "securityuser2roleView"
+    },
+    {
+      "DestinationFolder": "components\\securityuser2role-view\\sform",
+      "GeneratorType": "01420-Sform.component.html",
+      "GeneratorSript": "SearchFormForView.html.t4",
+      "ViewModel": "securityuser2roleView"
+    },
+    {
+      "DestinationFolder": "components\\securityuser2role-view\\sform",
+      "GeneratorType": "01420-Sform.component.ts",
+      "GeneratorSript": "SearchFormForView.ts.t4",
+      "ViewModel": "securityuser2roleView"
+    },
+    {
+      "DestinationFolder": "components\\securityuser2role-view\\sdlg",
+      "GeneratorType": "01430-Dlg.interface.ts",
+      "GeneratorSript": "InterfaceForDlg.ts.t4",
+      "ViewModel": "securityuser2roleView"
+    },
+    {
+      "DestinationFolder": "components\\securityuser2role-view\\sdlg",
+      "GeneratorType": "01440-Sdlg.component.css",
+      "GeneratorSript": "SearchDlgFormForView.css.t4",
+      "ViewModel": "securityuser2roleView"
+    },
+    {
+      "DestinationFolder": "components\\securityuser2role-view\\sdlg",
+      "GeneratorType": "01440-Sdlg.component.html",
+      "GeneratorSript": "SearchDlgFormForView.html.t4",
+      "ViewModel": "securityuser2roleView"
+    },
+    {
+      "DestinationFolder": "components\\securityuser2role-view\\sdlg",
+      "GeneratorType": "01440-Sdlg.component.ts",
+      "GeneratorSript": "SearchDlgFormForView.ts.t4",
+      "ViewModel": "securityuser2roleView"
+    },
+    {
+      "DestinationFolder": "components\\securityuser2role-view",
+      "GeneratorType": "01450-S.module.ts",
+      "GeneratorSript": "SearchModuleForView.ts.t4",
+      "ViewModel": "securityuser2roleView"
+    },
+
+    {
+      "DestinationFolder": "components\\securitydashboard-view\\eform",
+      "GeneratorType": "01500-Eform.component.css",
+      "GeneratorSript": "EditFormForView.css.t4",
+      "ViewModel": "securitydashboardView"
+    },
+    {
+      "DestinationFolder": "components\\securitydashboard-view\\eform",
+      "GeneratorType": "01500-Eform.component.html",
+      "GeneratorSript": "EditFormForView.html.t4",
+      "ViewModel": "securitydashboardView"
+    },
+    {
+      "DestinationFolder": "components\\securitydashboard-view\\eform",
+      "GeneratorType": "01500-Eform.component.ts",
+      "GeneratorSript": "EditFormForView.ts.t4",
+      "ViewModel": "securitydashboardView"
+    },
+    {
+      "DestinationFolder": "components\\securitydashboard-view\\edlg",
+      "GeneratorType": "01510-Edlg.interface.ts",
+      "GeneratorSript": "InterfaceForEdlg.ts.t4",
+      "ViewModel": "securitydashboardView"
+    },
+    {
+      "DestinationFolder": "components\\securitydashboard-view\\edlg",
+      "GeneratorType": "01520-Edlg.component.css",
+      "GeneratorSript": "EditDlgFormForView.css.t4",
+      "ViewModel": "securitydashboardView"
+    },
+    {
+      "DestinationFolder": "components\\securitydashboard-view\\edlg",
+      "GeneratorType": "01520-Edlg.component.html",
+      "GeneratorSript": "EditDlgFormForView.html.t4",
+      "ViewModel": "securitydashboardView"
+    },
+    {
+      "DestinationFolder": "components\\securitydashboard-view\\edlg",
+      "GeneratorType": "01520-Edlg.component.ts",
+      "GeneratorSript": "EditDlgFormForView.ts.t4",
+      "ViewModel": "securitydashboardView"
+    },
+    {
+      "DestinationFolder": "components\\securitydashboard-view",
+      "GeneratorType": "01550-E.module.ts",
+      "GeneratorSript": "eformModuleForView.ts.t4",
+      "ViewModel": "securitydashboardView"
+    },
+
+    {
+      "DestinationFolder": "components\\securitymodel-view\\eform",
+      "GeneratorType": "01500-Eform.component.css",
+      "GeneratorSript": "EditFormForView.css.t4",
+      "ViewModel": "securitymodelView"
+    },
+    {
+      "DestinationFolder": "components\\securitymodel-view\\eform",
+      "GeneratorType": "01500-Eform.component.html",
+      "GeneratorSript": "EditFormForView.html.t4",
+      "ViewModel": "securitymodelView"
+    },
+    {
+      "DestinationFolder": "components\\securitymodel-view\\eform",
+      "GeneratorType": "01500-Eform.component.ts",
+      "GeneratorSript": "EditFormForView.ts.t4",
+      "ViewModel": "securitymodelView"
+    },
+    {
+      "DestinationFolder": "components\\securitymodel-view\\edlg",
+      "GeneratorType": "01510-Edlg.interface.ts",
+      "GeneratorSript": "InterfaceForEdlg.ts.t4",
+      "ViewModel": "securitymodelView"
+    },
+    {
+      "DestinationFolder": "components\\securitymodel-view\\edlg",
+      "GeneratorType": "01520-Edlg.component.css",
+      "GeneratorSript": "EditDlgFormForView.css.t4",
+      "ViewModel": "securitymodelView"
+    },
+    {
+      "DestinationFolder": "components\\securitymodel-view\\edlg",
+      "GeneratorType": "01520-Edlg.component.html",
+      "GeneratorSript": "EditDlgFormForView.html.t4",
+      "ViewModel": "securitymodelView"
+    },
+    {
+      "DestinationFolder": "components\\securitymodel-view\\edlg",
+      "GeneratorType": "01520-Edlg.component.ts",
+      "GeneratorSript": "EditDlgFormForView.ts.t4",
+      "ViewModel": "securitymodelView"
+    },
+    {
+      "DestinationFolder": "components\\securitymodel-view",
+      "GeneratorType": "01550-E.module.ts",
+      "GeneratorSript": "eformModuleForView.ts.t4",
+      "ViewModel": "securitymodelView"
+    },
+
+    {
+      "DestinationFolder": "components\\securityuser-view\\eform",
+      "GeneratorType": "01500-Eform.component.css",
+      "GeneratorSript": "EditFormForView.css.t4",
+      "ViewModel": "securityuserView"
+    },
+    {
+      "DestinationFolder": "components\\securityuser-view\\eform",
+      "GeneratorType": "01500-Eform.component.html",
+      "GeneratorSript": "EditFormForView.html.t4",
+      "ViewModel": "securityuserView"
+    },
+    {
+      "DestinationFolder": "components\\securityuser-view\\eform",
+      "GeneratorType": "01500-Eform.component.ts",
+      "GeneratorSript": "EditFormForView.ts.t4",
+      "ViewModel": "securityuserView"
+    },
+    {
+      "DestinationFolder": "components\\securityuser-view\\edlg",
+      "GeneratorType": "01510-Edlg.interface.ts",
+      "GeneratorSript": "InterfaceForEdlg.ts.t4",
+      "ViewModel": "securityuserView"
+    },
+    {
+      "DestinationFolder": "components\\securityuser-view\\edlg",
+      "GeneratorType": "01520-Edlg.component.css",
+      "GeneratorSript": "EditDlgFormForView.css.t4",
+      "ViewModel": "securityuserView"
+    },
+    {
+      "DestinationFolder": "components\\securityuser-view\\edlg",
+      "GeneratorType": "01520-Edlg.component.html",
+      "GeneratorSript": "EditDlgFormForView.html.t4",
+      "ViewModel": "securityuserView"
+    },
+    {
+      "DestinationFolder": "components\\securityuser-view\\edlg",
+      "GeneratorType": "01520-Edlg.component.ts",
+      "GeneratorSript": "EditDlgFormForView.ts.t4",
+      "ViewModel": "securityuserView"
+    },
+    {
+      "DestinationFolder": "components\\securityuser-view",
+      "GeneratorType": "01550-E.module.ts",
+      "GeneratorSript": "eformModuleForView.ts.t4",
+      "ViewModel": "securityuserView"
+    },
+
+    {
+      "DestinationFolder": "components\\securityrole-view\\eform",
+      "GeneratorType": "01500-Eform.component.css",
+      "GeneratorSript": "EditFormForView.css.t4",
+      "ViewModel": "securityroleView"
+    },
+    {
+      "DestinationFolder": "components\\securityrole-view\\eform",
+      "GeneratorType": "01500-Eform.component.html",
+      "GeneratorSript": "EditFormForView.html.t4",
+      "ViewModel": "securityroleView"
+    },
+    {
+      "DestinationFolder": "components\\securityrole-view\\eform",
+      "GeneratorType": "01500-Eform.component.ts",
+      "GeneratorSript": "EditFormForView.ts.t4",
+      "ViewModel": "securityroleView"
+    },
+    {
+      "DestinationFolder": "components\\securityrole-view\\edlg",
+      "GeneratorType": "01510-Edlg.interface.ts",
+      "GeneratorSript": "InterfaceForEdlg.ts.t4",
+      "ViewModel": "securityroleView"
+    },
+    {
+      "DestinationFolder": "components\\securityrole-view\\edlg",
+      "GeneratorType": "01520-Edlg.component.css",
+      "GeneratorSript": "EditDlgFormForView.css.t4",
+      "ViewModel": "securityroleView"
+    },
+    {
+      "DestinationFolder": "components\\securityrole-view\\edlg",
+      "GeneratorType": "01520-Edlg.component.html",
+      "GeneratorSript": "EditDlgFormForView.html.t4",
+      "ViewModel": "securityroleView"
+    },
+    {
+      "DestinationFolder": "components\\securityrole-view\\edlg",
+      "GeneratorType": "01520-Edlg.component.ts",
+      "GeneratorSript": "EditDlgFormForView.ts.t4",
+      "ViewModel": "securityroleView"
+    },
+    {
+      "DestinationFolder": "components\\securityrole-view",
+      "GeneratorType": "01550-E.module.ts",
+      "GeneratorSript": "eformModuleForView.ts.t4",
+      "ViewModel": "securityroleView"
+    },
+
+    {
+      "DestinationFolder": "components\\securityuser2role-view\\eform",
+      "GeneratorType": "01500-Eform.component.css",
+      "GeneratorSript": "EditFormForView.css.t4",
+      "ViewModel": "securityuser2roleView"
+    },
+    {
+      "DestinationFolder": "components\\securityuser2role-view\\eform",
+      "GeneratorType": "01500-Eform.component.html",
+      "GeneratorSript": "EditFormForView.html.t4",
+      "ViewModel": "securityuser2roleView"
+    },
+    {
+      "DestinationFolder": "components\\securityuser2role-view\\eform",
+      "GeneratorType": "01500-Eform.component.ts",
+      "GeneratorSript": "EditFormForView.ts.t4",
+      "ViewModel": "securityuser2roleView"
+    },
+    {
+      "DestinationFolder": "components\\securityuser2role-view\\edlg",
+      "GeneratorType": "01510-Edlg.interface.ts",
+      "GeneratorSript": "InterfaceForEdlg.ts.t4",
+      "ViewModel": "securityuser2roleView"
+    },
+    {
+      "DestinationFolder": "components\\securityuser2role-view\\edlg",
+      "GeneratorType": "01520-Edlg.component.css",
+      "GeneratorSript": "EditDlgFormForView.css.t4",
+      "ViewModel": "securityuser2roleView"
+    },
+    {
+      "DestinationFolder": "components\\securityuser2role-view\\edlg",
+      "GeneratorType": "01520-Edlg.component.html",
+      "GeneratorSript": "EditDlgFormForView.html.t4",
+      "ViewModel": "securityuser2roleView"
+    },
+    {
+      "DestinationFolder": "components\\securityuser2role-view\\edlg",
+      "GeneratorType": "01520-Edlg.component.ts",
+      "GeneratorSript": "EditDlgFormForView.ts.t4",
+      "ViewModel": "securityuser2roleView"
+    },
+    {
+      "DestinationFolder": "components\\securityuser2role-view",
+      "GeneratorType": "01550-E.module.ts",
+      "GeneratorSript": "eformModuleForView.ts.t4",
+      "ViewModel": "securityuser2roleView"
+    },
+
+    {
+      "DestinationFolder": "components\\securitydashboard-view\\lform",
+      "GeneratorType": "01600-Lform.component.css",
+      "GeneratorSript": "ListFormForView.css.t4",
+      "ViewModel": "securitydashboardView"
+    },
+    {
+      "DestinationFolder": "components\\securitydashboard-view\\lform",
+      "GeneratorType": "01600-Lform.component.html",
+      "GeneratorSript": "ListFormForView.html.t4",
+      "ViewModel": "securitydashboardView"
+    },
+    {
+      "DestinationFolder": "components\\securitydashboard-view\\lform",
+      "GeneratorType": "01600-Lform.component.ts",
+      "GeneratorSript": "ListFormForView.ts.t4",
+      "ViewModel": "securitydashboardView"
+    },
+    {
+      "DestinationFolder": "components\\securitydashboard-view\\ldlg",
+      "GeneratorType": "01620-Ldlg.component.css",
+      "GeneratorSript": "ListDlgFormForView.css.t4",
+      "ViewModel": "securitydashboardView"
+    },
+    {
+      "DestinationFolder": "components\\securitydashboard-view\\ldlg",
+      "GeneratorType": "01620-Ldlg.component.html",
+      "GeneratorSript": "ListDlgFormForView.html.t4",
+      "ViewModel": "securitydashboardView"
+    },
+    {
+      "DestinationFolder": "components\\securitydashboard-view\\ldlg",
+      "GeneratorType": "01620-Ldlg.component.ts",
+      "GeneratorSript": "ListDlgFormForView.ts.t4",
+      "ViewModel": "securitydashboardView"
+    },
+    {
+      "DestinationFolder": "components\\securitydashboard-view",
+      "GeneratorType": "01650-L.module.ts",
+      "GeneratorSript": "lformModuleForView.ts.t4",
+      "ViewModel": "securitydashboardView"
+    },
+
+    {
+      "DestinationFolder": "components\\securitymodel-view\\lform",
+      "GeneratorType": "01600-Lform.component.css",
+      "GeneratorSript": "ListFormForView.css.t4",
+      "ViewModel": "securitymodelView"
+    },
+    {
+      "DestinationFolder": "components\\securitymodel-view\\lform",
+      "GeneratorType": "01600-Lform.component.html",
+      "GeneratorSript": "ListFormForView.html.t4",
+      "ViewModel": "securitymodelView"
+    },
+    {
+      "DestinationFolder": "components\\securitymodel-view\\lform",
+      "GeneratorType": "01600-Lform.component.ts",
+      "GeneratorSript": "ListFormForView.ts.t4",
+      "ViewModel": "securitymodelView"
+    },
+    {
+      "DestinationFolder": "components\\securitymodel-view\\ldlg",
+      "GeneratorType": "01620-Ldlg.component.css",
+      "GeneratorSript": "ListDlgFormForView.css.t4",
+      "ViewModel": "securitymodelView"
+    },
+    {
+      "DestinationFolder": "components\\securitymodel-view\\ldlg",
+      "GeneratorType": "01620-Ldlg.component.html",
+      "GeneratorSript": "ListDlgFormForView.html.t4",
+      "ViewModel": "securitymodelView"
+    },
+    {
+      "DestinationFolder": "components\\securitymodel-view\\ldlg",
+      "GeneratorType": "01620-Ldlg.component.ts",
+      "GeneratorSript": "ListDlgFormForView.ts.t4",
+      "ViewModel": "securitymodelView"
+    },
+    {
+      "DestinationFolder": "components\\securitymodel-view",
+      "GeneratorType": "01650-L.module.ts",
+      "GeneratorSript": "lformModuleForView.ts.t4",
+      "ViewModel": "securitymodelView"
+    },
+
+    {
+      "DestinationFolder": "components\\securityuser-view\\lform",
+      "GeneratorType": "01600-Lform.component.css",
+      "GeneratorSript": "ListFormForView.css.t4",
+      "ViewModel": "securityuserView"
+    },
+    {
+      "DestinationFolder": "components\\securityuser-view\\lform",
+      "GeneratorType": "01600-Lform.component.html",
+      "GeneratorSript": "ListFormForView.html.t4",
+      "ViewModel": "securityuserView"
+    },
+    {
+      "DestinationFolder": "components\\securityuser-view\\lform",
+      "GeneratorType": "01600-Lform.component.ts",
+      "GeneratorSript": "ListFormForView.ts.t4",
+      "ViewModel": "securityuserView"
+    },
+    {
+      "DestinationFolder": "components\\securityuser-view\\ldlg",
+      "GeneratorType": "01620-Ldlg.component.css",
+      "GeneratorSript": "ListDlgFormForView.css.t4",
+      "ViewModel": "securityuserView"
+    },
+    {
+      "DestinationFolder": "components\\securityuser-view\\ldlg",
+      "GeneratorType": "01620-Ldlg.component.html",
+      "GeneratorSript": "ListDlgFormForView.html.t4",
+      "ViewModel": "securityuserView"
+    },
+    {
+      "DestinationFolder": "components\\securityuser-view\\ldlg",
+      "GeneratorType": "01620-Ldlg.component.ts",
+      "GeneratorSript": "ListDlgFormForView.ts.t4",
+      "ViewModel": "securityuserView"
+    },
+    {
+      "DestinationFolder": "components\\securityuser-view",
+      "GeneratorType": "01650-L.module.ts",
+      "GeneratorSript": "lformModuleForView.ts.t4",
+      "ViewModel": "securityuserView"
+    },
+
+    {
+      "DestinationFolder": "components\\securityrole-view\\lform",
+      "GeneratorType": "01600-Lform.component.css",
+      "GeneratorSript": "ListFormForView.css.t4",
+      "ViewModel": "securityroleView"
+    },
+    {
+      "DestinationFolder": "components\\securityrole-view\\lform",
+      "GeneratorType": "01600-Lform.component.html",
+      "GeneratorSript": "ListFormForView.html.t4",
+      "ViewModel": "securityroleView"
+    },
+    {
+      "DestinationFolder": "components\\securityrole-view\\lform",
+      "GeneratorType": "01600-Lform.component.ts",
+      "GeneratorSript": "ListFormForView.ts.t4",
+      "ViewModel": "securityroleView"
+    },
+    {
+      "DestinationFolder": "components\\securityrole-view\\ldlg",
+      "GeneratorType": "01620-Ldlg.component.css",
+      "GeneratorSript": "ListDlgFormForView.css.t4",
+      "ViewModel": "securityroleView"
+    },
+    {
+      "DestinationFolder": "components\\securityrole-view\\ldlg",
+      "GeneratorType": "01620-Ldlg.component.html",
+      "GeneratorSript": "ListDlgFormForView.html.t4",
+      "ViewModel": "securityroleView"
+    },
+    {
+      "DestinationFolder": "components\\securityrole-view\\ldlg",
+      "GeneratorType": "01620-Ldlg.component.ts",
+      "GeneratorSript": "ListDlgFormForView.ts.t4",
+      "ViewModel": "securityroleView"
+    },
+    {
+      "DestinationFolder": "components\\securityrole-view",
+      "GeneratorType": "01650-L.module.ts",
+      "GeneratorSript": "lformModuleForView.ts.t4",
+      "ViewModel": "securityroleView"
+    },
+
+    {
+      "DestinationFolder": "components\\securityuser2role-view\\lform",
+      "GeneratorType": "01600-Lform.component.css",
+      "GeneratorSript": "ListFormForView.css.t4",
+      "ViewModel": "securityuser2roleView"
+    },
+    {
+      "DestinationFolder": "components\\securityuser2role-view\\lform",
+      "GeneratorType": "01600-Lform.component.html",
+      "GeneratorSript": "ListFormForView.html.t4",
+      "ViewModel": "securityuser2roleView"
+    },
+    {
+      "DestinationFolder": "components\\securityuser2role-view\\lform",
+      "GeneratorType": "01600-Lform.component.ts",
+      "GeneratorSript": "ListFormForView.ts.t4",
+      "ViewModel": "securityuser2roleView"
+    },
+    {
+      "DestinationFolder": "components\\securityuser2role-view\\ldlg",
+      "GeneratorType": "01620-Ldlg.component.css",
+      "GeneratorSript": "ListDlgFormForView.css.t4",
+      "ViewModel": "securityuser2roleView"
+    },
+    {
+      "DestinationFolder": "components\\securityuser2role-view\\ldlg",
+      "GeneratorType": "01620-Ldlg.component.html",
+      "GeneratorSript": "ListDlgFormForView.html.t4",
+      "ViewModel": "securityuser2roleView"
+    },
+    {
+      "DestinationFolder": "components\\securityuser2role-view\\ldlg",
+      "GeneratorType": "01620-Ldlg.component.ts",
+      "GeneratorSript": "ListDlgFormForView.ts.t4",
+      "ViewModel": "securityuser2roleView"
+    },
+    {
+      "DestinationFolder": "components\\securityuser2role-view",
+      "GeneratorType": "01650-L.module.ts",
+      "GeneratorSript": "lformModuleForView.ts.t4",
+      "ViewModel": "securityuser2roleView"
+    },
+
+    {
+      "DestinationFolder": "components\\securitymodel-view\\chkform",
+      "GeneratorType": "02200-Checkedmodel.component.css",
+      "GeneratorSript": "CheckedmodelFormForView.css.t4",
+      "ViewModel": "securitymodelView"
+    },
+    {
+      "DestinationFolder": "components\\securitymodel-view\\chkform",
+      "GeneratorType": "02200-Checkedmodel.component.html",
+      "GeneratorSript": "CheckedmodelFormForView.html.t4",
+      "ViewModel": "securitymodelView"
+    },
+    {
+      "DestinationFolder": "components\\securitymodel-view\\chkform",
+      "GeneratorType": "02200-Checkedmodel.component.ts",
+      "GeneratorSript": "CheckedmodelFormForView.ts.t4",
+      "ViewModel": "securitymodelView"
+    },
+    {
+      "DestinationFolder": "components\\securitymodel-view",
+      "GeneratorType": "02202-Chckmdl.module.ts",
+      "GeneratorSript": "ChckmdlModuleForView.ts.t4",
+      "ViewModel": "securitymodelView"
+    },
+
+    {
+      "DestinationFolder": "components\\securitydashboard-view\\chkform",
+      "GeneratorType": "02205-Checkeddashboard.component.css",
+      "GeneratorSript": "CheckeddashboardFormForView.css.t4",
+      "ViewModel": "securitydashboardView"
+    },
+    {
+      "DestinationFolder": "components\\securitydashboard-view\\chkform",
+      "GeneratorType": "02205-Checkeddashboard.component.html",
+      "GeneratorSript": "CheckeddashboardFormForView.html.t4",
+      "ViewModel": "securitydashboardView"
+    },
+    {
+      "DestinationFolder": "components\\securitydashboard-view\\chkform",
+      "GeneratorType": "02205-Checkeddashboard.component.ts",
+      "GeneratorSript": "CheckeddashboardFormForView.ts.t4",
+      "ViewModel": "securitydashboardView"
+    },
+    {
+      "DestinationFolder": "components\\securitydashboard-view",
+      "GeneratorType": "02207-Chckdshbd.module.ts",
+      "GeneratorSript": "ChckdshbdModuleForView.ts.t4",
+      "ViewModel": "securitydashboardView"
+    },
+
+    {
+      "DestinationFolder": "components\\securityrole-view\\chkform",
+      "GeneratorType": "02210-Checkedrole.component.css",
+      "GeneratorSript": "CheckedroleFormForView.css.t4",
+      "ViewModel": "securityroleView"
+    },
+    {
+      "DestinationFolder": "components\\securityrole-view\\chkform",
+      "GeneratorType": "02210-Checkedrole.component.html",
+      "GeneratorSript": "CheckedroleForView.html.t4",
+      "ViewModel": "securityroleView"
+    },
+    {
+      "DestinationFolder": "components\\securityrole-view\\chkform",
+      "GeneratorType": "02210-Checkedrole.component.ts",
+      "GeneratorSript": "CheckedroleForView.ts.t4",
+      "ViewModel": "securityroleView"
+    },
+    {
+      "DestinationFolder": "components\\securityrole-view",
+      "GeneratorType": "02212-Chckrole.module.ts",
+      "GeneratorSript": "ChckroleModuleForView.ts.t4",
+      "ViewModel": "securityroleView"
+    },
+
+    {
+      "DestinationFolder": "components\\securitypermission-view\\lform",
+      "GeneratorType": "01600-Lform.component.css",
+      "GeneratorSript": "ListFormForView.css.t4",
+      "ViewModel": "securitypermissionView"
+    },
+    {
+      "DestinationFolder": "components\\securitypermission-view\\lform",
+      "GeneratorType": "01600-Lform.component.html",
+      "GeneratorSript": "SecListFormForView.html.t4",
+      "ViewModel": "securitypermissionView"
+    },
+    {
+      "DestinationFolder": "components\\securitypermission-view\\lform",
+      "GeneratorType": "01600-Lform.component.ts",
+      "GeneratorSript": "SecListFormForView.ts.t4",
+      "ViewModel": "securitypermissionView"
+    },
+    {
+      "DestinationFolder": "components\\securitypermission-view",
+      "GeneratorType": "01650-L.module.ts",
+      "GeneratorSript": "securityModuleForView.ts.t4",
+      "ViewModel": "securitypermissionView"
+    },
+
+    {
+      "DestinationFolder": "components\\securityrole-view\\o2m",
+      "GeneratorType": "01700-O2m.component.css",
+      "GeneratorSript": "O2mFormForView.css.t4",
+      "ViewModel": "securityroleView"
+    },
+    {
+      "DestinationFolder": "components\\securityrole-view\\o2m",
+      "GeneratorType": "01700-O2m.component.html",
+      "GeneratorSript": "O2mFormForView.html.t4",
+      "ViewModel": "securityroleView"
+    },
+    {
+      "DestinationFolder": "components\\securityrole-view\\o2m",
+      "GeneratorType": "01700-O2m.component.ts",
+      "GeneratorSript": "O2mFormForView.ts.t4",
+      "ViewModel": "securityroleView"
+    },
+    {
+      "DestinationFolder": "components\\securityrole-view",
+      "GeneratorType": "01750-O.module.ts",
+      "GeneratorSript": "one2manyformModuleForView.ts.t4",
+      "ViewModel": "securityroleView"
+    }
+
+
+  ]
+
+}

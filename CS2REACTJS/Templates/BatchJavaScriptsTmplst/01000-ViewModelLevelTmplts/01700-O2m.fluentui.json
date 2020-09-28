@@ -1,0 +1,55 @@
+{
+  "Description": [
+    "",
+    "                                BEFORE YOU START !!!",
+    "1.",
+    "Please make sure that you have already run the following scripts for the current ViewModel",
+    "                                01100-.interface.tsx",
+    "                                01200-Page.interface.tsx",
+    "                                01300-Filter.interface.tsx",
+    "                                01400-.service.tsx",
+    "                                01420-Sform.component.tsx",
+    "                                01440-Sdlg.component.tsx",
+    "                                01500-Eform.component.tsx",
+    "                                01520-Edlg.component.tsx",
+    "                                01600-Lform.component.tsx",
+    "                                01620-Ldlg.component.tsx",
+    "",
+    "                                AND",
+    "",
+    "Please make sure that you have already run the following scripts for all DETAIL ViewModels",
+    "                                01100-.interface.tsx",
+    "                                01200-Page.interface.tsx",
+    "                                01300-Filter.interface.tsx",
+    "                                01400-.service.tsx",
+    "                                01420-Sform.component.tsx",
+    "                                01440-Sdlg.component.tsx",
+    "                                01500-Eform.component.tsx",
+    "                                01520-Edlg.component.tsx",
+    "                                01600-Lform.component.tsx",
+    "                                01620-Ldlg.component.tsx",
+    "",
+    "2.",
+    "Please make sure that you selected src\\components\\your-view-model-name folder",
+    "  where [your-view-model-name] is a name of currently selected ViewModel",
+    "",
+    ""
+  ],
+  "BatchItems": [
+    {
+      "DestinationFolder": "interfaces",
+      "GeneratorType": "01698-O2m-state.interface.tsx",
+      "GeneratorSript": "O2m-state.interface.tsx.t4"
+    },
+    {
+      "DestinationFolder": "interfaces",
+      "GeneratorType": "01699-O2m-props.interface.tsx",
+      "GeneratorSript": "O2m-props.interface.tsx.t4"
+    },
+    {
+      "DestinationFolder": "components\\o2m",
+      "GeneratorType": "01700-O2m.component.tsx",
+      "GeneratorSript": "O2m.component.fluentui.tsx.t4"
+    }
+  ]
+}

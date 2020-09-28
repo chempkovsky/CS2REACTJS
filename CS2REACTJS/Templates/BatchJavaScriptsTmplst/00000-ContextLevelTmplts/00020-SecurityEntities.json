@@ -1,0 +1,72 @@
+{
+  "Description": [
+    "",
+    "                                BEFORE YOU START !!!",
+    "",
+    "1.",
+    "Please make sure that you selected the folder of your C# Entity Framework project",
+    "  given script generates Entities for the security",
+    "",
+    "Do not be surprised",
+    "The script for each entity is run twice.", 
+    "Not all references are available the first time scripts are run. It's about master detail links.",
+    "But the second time all the references are in the place.",
+    ""
+  ],
+  "BatchItems": [
+    {
+      "DestinationFolder": "",
+      "GeneratorType": "00300-securityrole.cs",
+      "GeneratorSript": "approle.cs.t4"
+    },
+    {
+      "DestinationFolder": "",
+      "GeneratorType": "00310-securityuser.cs",
+      "GeneratorSript": "appuser.cs.t4"
+    },
+    {
+      "DestinationFolder": "",
+      "GeneratorType": "00320-securityuser2role.cs",
+      "GeneratorSript": "appuser2role.cs.t4"
+    },
+
+    {
+      "DestinationFolder": "",
+      "GeneratorType": "00330-securitymodel.cs",
+      "GeneratorSript": "appmodel.cs.t4"
+    },
+    {
+      "DestinationFolder": "",
+      "GeneratorType": "00340-securitydashboard.cs",
+      "GeneratorSript": "appdashboard.cs.t4"
+    },
+    {
+      "DestinationFolder": "",
+      "GeneratorType": "00300-securityrole.cs",
+      "GeneratorSript": "approle.cs.t4"
+    },
+    {
+      "DestinationFolder": "",
+      "GeneratorType": "00310-securityuser.cs",
+      "GeneratorSript": "appuser.cs.t4"
+    },
+    {
+      "DestinationFolder": "",
+      "GeneratorType": "00320-securityuser2role.cs",
+      "GeneratorSript": "appuser2role.cs.t4"
+    },
+
+    {
+      "DestinationFolder": "",
+      "GeneratorType": "00330-securitymodel.cs",
+      "GeneratorSript": "appmodel.cs.t4"
+    },
+    {
+      "DestinationFolder": "",
+      "GeneratorType": "00340-securitydashboard.cs",
+      "GeneratorSript": "appdashboard.cs.t4"
+    }
+
+  ]
+
+}

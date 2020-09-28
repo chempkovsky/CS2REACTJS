@@ -1,0 +1,475 @@
+﻿<#@ template language="C#" HostSpecific="True" Debug="True" #>
+<#@ output extension="tsx" #>
+<#@ assembly name="System.Core" #>
+<#@ import namespace="System" #>
+<#@ import namespace="System.IO" #>
+<#@ import namespace="System.Linq" #>
+<#@ import namespace="System.Collections" #>
+<#@ import namespace="System.Collections.Generic" #>
+<#@ import namespace="System.Text" #>
+<#@ import namespace="CS2REACTJS" #>
+<#@ import namespace="CS2REACTJS.Model" #>
+<#@ import namespace="CS2REACTJS.Model.Serializable" #>
+<#@ parameter type="CS2REACTJS.Model.Serializable.ModelViewSerializable" name="Model" #>
+<#@ parameter type="CS2REACTJS.Model.Serializable.DbContextSerializable" name="Context" #>
+<#
+
+    string edlgComponentDataModelFolder             = "01520-Edlg.component.tsx";
+    string edlgComponentDataModelClassName          = GetModelComponentClassName(Model, edlgComponentDataModelFolder);
+
+    string viewInterfaceFolder                      = "01100-.interface.tsx";
+
+    string edlgStateDataModelFolder                 = "01518-Edlg-state.interface.tsx";
+    string edlgStateDataModelClassName              = GetModelInterfaceName(Model, edlgStateDataModelFolder);
+
+    string edlgPropsDataModelFolder                 = "01519-Edlg-props.interface.tsx";
+    string edlgPropsDataModelClassName              = GetModelInterfaceName(Model, edlgPropsDataModelFolder);
+
+    string eformComponentDataModelFolder            = "01500-Eform.component.tsx";
+    string eformComponentDataModelClassName         = GetModelComponentClassName(Model, eformComponentDataModelFolder);
+
+    string eformModeEnumlFolder                     = "00025-eform-mode.enum.tsx";
+    string eformModeEnumName                        = GetContextEnumClassName(Context, eformModeEnumlFolder);
+
+    string webServiceFilterRsltDataModelFolder      = "00052-web-service-filter-rslt.interface.tsx";
+    string webServiceFilterRsltDataModelClassName   = GetContextInterfaceName(Context, webServiceFilterRsltDataModelFolder);
+
+    string webServiceFilterEventDataModelFolder      = "00062-web-service-filter-event.interface.tsx";
+    string webServiceFilterEventDataModelClassName   = GetContextInterfaceName(Context, webServiceFilterEventDataModelFolder);
+
+    string EformModePropName                        = "eformMode";
+    string HiddenFilterPropName                     = "hiddenFilter";
+    string FormControlModelPropName                 = "eformControlModel";
+    string BeforeSubmitPropName                     = "beforeSubmit";
+    string AfterSubmitPropName                      = "afterSubmit";
+    string OnContMenuItemMethodName                 = "onContMenuItem";
+    string OnCloseMethodName                        = "onClose";
+    string CaptionPropName                          = "caption";
+    string ContMenuItemsPropName                    = "contMenuItems";
+
+#>
+
+import React, { Component, createRef, Suspense, lazy } from 'react';
+import { Dialog, DialogType, PrimaryButton, DialogFooter, DefaultButton }  from '@fluentui/react';
+
+import <#= edlgPropsDataModelClassName #> from "<#= GetFolderName(Model, edlgPropsDataModelFolder, edlgComponentDataModelFolder) #>";
+import <#= edlgStateDataModelClassName #> from "<#= GetFolderName(Model, edlgStateDataModelFolder, edlgComponentDataModelFolder) #>";
+import <#= webServiceFilterRsltDataModelClassName #> from "<#= GetCommonFolderName(Model, Context, webServiceFilterRsltDataModelFolder, edlgComponentDataModelFolder) #>";
+import <#= eformModeEnumName #> from "<#= GetCommonFolderName(Model, Context, eformModeEnumlFolder, edlgComponentDataModelFolder) #>";
+import <#= webServiceFilterEventDataModelClassName #> from "<#= GetCommonFolderName(Model, Context, webServiceFilterEventDataModelFolder, edlgComponentDataModelFolder) #>";
+import <#= GetInterfaceName(Model) #> from '<#= GetFolderName(Model, viewInterfaceFolder, edlgComponentDataModelFolder) #>';
+const  <#= eformComponentDataModelClassName #> = lazy(() => import('<#= GetFolderName(Model, eformComponentDataModelFolder, edlgComponentDataModelFolder) #>'));
+
+
+export default class <#= edlgComponentDataModelClassName #>  extends Component<<#= edlgPropsDataModelClassName #>, <#= edlgStateDataModelClassName #>> {
+    constructor(props: <#= edlgPropsDataModelClassName #>) {
+        super(props);
+        this.state = {
+            ref: createRef<any>(), // createRef<<#= eformComponentDataModelClassName #>>(),
+            <#= CaptionPropName #>: '',
+            <#= HiddenFilterPropName #>: [],
+            <#= EformModePropName #>: <#= eformModeEnumName #>.<#= GetInputTypeToEnumName(3) #>,
+            <#= FormControlModelPropName #>: null,
+            <#= ContMenuItemsPropName #>: [],
+        }
+        this.<#= OnCloseMethodName #> = this.<#= OnCloseMethodName #>.bind(this);
+        this.<#= AfterSubmitPropName #> = this.<#= AfterSubmitPropName #>.bind(this);
+        this.<#= BeforeSubmitPropName #> = this.<#= BeforeSubmitPropName #>.bind(this);
+        this.<#= OnContMenuItemMethodName #> = this.<#= OnContMenuItemMethodName #>.bind(this);
+    }
+    static getDerivedStateFromProps(nwprps: <#= edlgPropsDataModelClassName #>, oldstt: <#= edlgStateDataModelClassName #>): any {
+        let isNotOpen = true;
+        if(nwprps.open) {
+            isNotOpen = false;
+        }
+        let rslt: { [key: string]: any; } = {};
+        if (isNotOpen) {
+            if(oldstt.<#= CaptionPropName #> !== '') rslt['<#= CaptionPropName #>'] = '';
+            if(oldstt.<#= HiddenFilterPropName #>.length > 0) rslt['<#= HiddenFilterPropName #>'] = [];
+            if(oldstt.<#= EformModePropName #> !== <#= eformModeEnumName #>.<#= GetInputTypeToEnumName(3) #>) rslt['<#= EformModePropName #>'] = <#= eformModeEnumName #>.<#= GetInputTypeToEnumName(3) #>;
+            if(!(oldstt.<#= FormControlModelPropName #> === null)) rslt['<#= FormControlModelPropName #>'] = null;
+            if(!(oldstt.<#= ContMenuItemsPropName #>.length > 0)) rslt['<#= ContMenuItemsPropName #>'] = [];
+            return rslt;
+        }
+        if(nwprps.<#= CaptionPropName #>) {
+            if(nwprps.<#= CaptionPropName #> !== oldstt.<#= CaptionPropName #>) rslt['<#= CaptionPropName #>'] = nwprps.<#= CaptionPropName #>;
+        } else {
+            if (oldstt.<#= CaptionPropName #> !== '') rslt['<#= CaptionPropName #>'] = '';
+        }
+        if(nwprps.<#= HiddenFilterPropName #>) {
+            if ((nwprps.<#= HiddenFilterPropName #> !== oldstt.<#= HiddenFilterPropName #>) && ((nwprps.<#= HiddenFilterPropName #>.length > 0) || (oldstt.<#= HiddenFilterPropName #>.length > 0))) {
+                rslt['<#= HiddenFilterPropName #>'] = nwprps.<#= HiddenFilterPropName #>;
+            }
+        } else {
+            if (oldstt.<#= HiddenFilterPropName #>.length > 0) rslt['<#= HiddenFilterPropName #>'] = [];
+        }
+        if (nwprps.<#= EformModePropName #>) {
+            if(nwprps.<#= EformModePropName #> !== oldstt.<#= EformModePropName #>) rslt['<#= EformModePropName #>'] = nwprps.<#= EformModePropName #>;
+        } else {
+            if(oldstt.<#= EformModePropName #> !== <#= eformModeEnumName #>.<#= GetInputTypeToEnumName(3) #>) rslt['<#= EformModePropName #>'] = <#= eformModeEnumName #>.<#= GetInputTypeToEnumName(3) #>;
+        }
+        if(nwprps.<#= FormControlModelPropName #>) {
+            if ( (oldstt.<#= FormControlModelPropName #> === null) || (nwprps.<#= FormControlModelPropName #> !== oldstt.<#= FormControlModelPropName #>) ) rslt['<#= FormControlModelPropName #>'] = nwprps.<#= FormControlModelPropName #>;
+        } else {
+            if (!(oldstt.<#= FormControlModelPropName #> === null)) rslt['<#= FormControlModelPropName #>'] = null;
+        }
+        if(nwprps.<#= ContMenuItemsPropName #>) {
+            if ((nwprps.<#= ContMenuItemsPropName #> !== oldstt.<#= ContMenuItemsPropName #>) && ((nwprps.<#= ContMenuItemsPropName #>.length > 0) || (oldstt.<#= ContMenuItemsPropName #>.length > 0))) {
+                rslt['<#= ContMenuItemsPropName #>'] = nwprps.<#= ContMenuItemsPropName #>;
+            }
+        } else {
+            if(oldstt.<#= ContMenuItemsPropName #>.length > 0) rslt['<#= ContMenuItemsPropName #>'] = [];
+        }
+        return rslt;
+    }
+    <#= OnContMenuItemMethodName #>(v: <#= webServiceFilterEventDataModelClassName #>): void {
+        if (this.props.<#= OnContMenuItemMethodName #>) this.props.<#= OnContMenuItemMethodName #>(v);
+    }
+    <#= BeforeSubmitPropName #>(sender: any, value: <#= GetInterfaceName(Model) #>|null) : void {
+        if (this.props.<#= BeforeSubmitPropName #>) this.props.<#= BeforeSubmitPropName #>(sender, value);
+    }
+    <#= AfterSubmitPropName #>(sender: any, hasError: boolean, value: <#= GetInterfaceName(Model) #>|null): void {
+        if (this.props.<#= AfterSubmitPropName #>) this.props.<#= AfterSubmitPropName #>(sender, hasError, value);
+        if ((!hasError) && (this.props.<#= OnCloseMethodName #>)) {
+            this.props.<#= OnCloseMethodName #>(true, value);
+        }
+    }
+    <#= OnCloseMethodName #>(r: boolean) {
+        if (this.props.<#= OnCloseMethodName #>) {
+            if(!r) {
+                this.props.<#= OnCloseMethodName #>(false)
+            } else {
+                if(this.state.ref.current){
+                    this.state.ref.current.doSubmit();
+                }
+            }
+        }
+    }
+
+    render () {
+        return (
+            <Dialog
+                dialogContentProps={{type: DialogType.normal}}
+                maxWidth={'100vw'}
+                minWidth={ this.props.maxWidth ? this.props.maxWidth : undefined  }
+
+                hidden={ this.props.open ? false : true }
+                onDismiss={ () => this.<#= OnCloseMethodName #>(false) } >
+                    <Suspense fallback={<div>Loading...</div>}>
+                        <<#= eformComponentDataModelClassName #>
+                            ref={this.state.ref}
+                            caption = { this.state.<#= CaptionPropName #> }
+                            contMenuItems = { this.state.<#= ContMenuItemsPropName #> }
+                            <#= EformModePropName #> = { this.state.<#= EformModePropName #> }
+                            <#= HiddenFilterPropName #> = { this.state.<#= HiddenFilterPropName #> }
+                            <#= FormControlModelPropName #> = { this.state.<#= FormControlModelPropName #> }
+                            <#= OnContMenuItemMethodName #> = { this.<#= OnContMenuItemMethodName #> }
+                            <#= BeforeSubmitPropName #> = { this.<#= BeforeSubmitPropName #> }
+                            <#= AfterSubmitPropName #> = { this.<#= AfterSubmitPropName #> }
+                        ></<#= eformComponentDataModelClassName #>>
+                    </Suspense>
+                <DialogFooter>
+                  <DefaultButton onClick={ ()=>this.<#= OnCloseMethodName #>(false) }  text='Cancel' />
+                  <PrimaryButton  onClick={ ()=>this.<#= OnCloseMethodName #>(true) } text='Ok'  />
+                </DialogFooter>
+            </Dialog>
+        );
+    }
+}
+
+
+<#+
+    string GetInterfaceName(ModelViewSerializable model) {
+        return "I"+model.ViewName;
+    }
+    string GetInputTypeToEnumName(int inputType) {
+        switch(inputType) {
+            case 1:
+                return "AddMode";
+            case 2:
+                return "UpdateMode";
+            default:
+                return "DeleteMode";
+        }
+    }
+    string GetModelInterfaceName(ModelViewSerializable model, string fileType) {
+        string result="";
+        if ((model == null) || string.IsNullOrEmpty(fileType)) {
+            return result;
+        }
+        if (model.CommonStaffs == null) {
+            return result;
+        }
+        CommonStaffSerializable refItem= 
+            model.CommonStaffs.Where(c => c.FileType == fileType).FirstOrDefault();
+        if (refItem == null) {
+            return result;
+        }
+        if(string.IsNullOrEmpty(refItem.FileName)) {
+            return result;
+        }
+        string fn = refItem.FileName.Replace(".interface","-interface");
+        StringBuilder sb = new StringBuilder();
+        bool toUpper = true;
+        foreach (char c in fn)
+        {
+            if( c == '-' )
+            {
+                toUpper = true;
+            } else
+            {
+                if (toUpper)
+                {
+                    sb.Append(Char.ToUpper(c));
+                    toUpper = false;
+                }
+                else
+                {
+                    sb.Append(c);
+                }
+            }
+                
+        }
+        return "I"+sb.ToString();
+    }
+    string GetModelClassName(ModelViewSerializable model, string fileType) {
+        string result="";
+        if ((model == null) || string.IsNullOrEmpty(fileType)) {
+            return result;
+        }
+        if (model.CommonStaffs == null) {
+            return result;
+        }
+        CommonStaffSerializable refItem= 
+            model.CommonStaffs.Where(c => c.FileType == fileType).FirstOrDefault();
+        if (refItem == null) {
+            return result;
+        }
+        if(string.IsNullOrEmpty(refItem.FileName)) {
+            return result;
+        }
+        string fn = refItem.FileName;
+        StringBuilder sb = new StringBuilder();
+        bool toUpper = true;
+        foreach (char c in fn)
+        {
+            if( c == '-' )
+            {
+                toUpper = true;
+            } else
+            {
+                if (toUpper)
+                {
+                    sb.Append(Char.ToUpper(c));
+                    toUpper = false;
+                }
+                else
+                {
+                    sb.Append(c);
+                }
+            }
+                
+        }
+        return sb.ToString();
+    }
+    string GetFolderName(ModelViewSerializable model, string refFolder, string currFolder) {
+        string result="./";
+        if ((model == null) || string.IsNullOrEmpty(refFolder) || string.IsNullOrEmpty(currFolder)) {
+            return result;
+        }
+        if (model.CommonStaffs == null) {
+            return result;
+        }
+        CommonStaffSerializable refItem= 
+            model.CommonStaffs.Where(c => c.FileType == refFolder).FirstOrDefault();
+        CommonStaffSerializable curItem= 
+            model.CommonStaffs.Where(c => c.FileType == currFolder).FirstOrDefault();
+        if ((refItem == null) || (curItem == null)) {
+            return result;
+        }
+        string[] refFolders  = new string[] {};
+        if(!string.IsNullOrEmpty(refItem.FileFolder)) {
+            refFolders  = refItem.FileFolder.Split(new string[] { "\\" }, StringSplitOptions.None);
+        }
+        string[] currFolders = new string[]{};
+        if(!string.IsNullOrEmpty(curItem.FileFolder)) {
+            currFolders  = curItem.FileFolder.Split(new string[] { "\\" }, StringSplitOptions.None);
+        }
+        int refLen = refFolders.Length;
+        int currLen = currFolders.Length;
+        int minLen = refLen < currLen ? refLen : currLen;
+        int cnt= 0;
+        for(int i = 0; i < minLen; i++) {
+            if ( !refFolders[i].Equals(currFolders[i], StringComparison.OrdinalIgnoreCase) ) break;
+            cnt++;
+        }
+        if(currLen > cnt) {
+            result += string.Join("", Enumerable.Repeat("../", currLen - cnt));
+        }
+        if(refLen > cnt) {
+            result += string.Join("/", refFolders, cnt, refLen - cnt) + "/";
+        }
+        result += refItem.FileName;
+        return result;
+    }
+    string GetModelComponentClassName(ModelViewSerializable model, string fileType) {
+        string result="";
+        if ((model == null) || string.IsNullOrEmpty(fileType) ) {
+            return result;
+        }
+        if (model.CommonStaffs == null) {
+            return result;
+        }
+        CommonStaffSerializable refItem= 
+            model.CommonStaffs.Where(c => c.FileType == fileType).FirstOrDefault();
+        if (refItem == null) {
+            return result;
+        }
+        if(string.IsNullOrEmpty(refItem.FileName)) {
+            return result;
+        }
+        string fn = refItem.FileName.Replace(".component","-component");
+        StringBuilder sb = new StringBuilder();
+        bool toUpper = true;
+        foreach (char c in fn)
+        {
+            if( c == '-' )
+            {
+                toUpper = true;
+            } else
+            {
+                if (toUpper)
+                {
+                    sb.Append(Char.ToUpper(c));
+                    toUpper = false;
+                }
+                else
+                {
+                    sb.Append(c);
+                }
+            }
+        }
+        return sb.ToString();
+    }
+    string GetCommonFolderName(ModelViewSerializable model, DbContextSerializable context,  string refFolder, string currFolder) {
+        string result="./";
+        if ((model == null) || (context == null) || string.IsNullOrEmpty(refFolder) || string.IsNullOrEmpty(currFolder)) {
+            return result;
+        }
+        if ((model.CommonStaffs == null) || (context.CommonStaffs == null)) {
+            return result;
+        }
+        CommonStaffSerializable refItem= 
+            context.CommonStaffs.Where(c => c.FileType == refFolder).FirstOrDefault();
+        CommonStaffSerializable curItem= 
+            model.CommonStaffs.Where(c => c.FileType == currFolder).FirstOrDefault();
+        if ((refItem == null) || (curItem == null)) {
+            return result;
+        }
+        string[] refFolders  = new string[] {};
+        if(!string.IsNullOrEmpty(refItem.FileFolder)) {
+            refFolders  = refItem.FileFolder.Split(new string[] { "\\" }, StringSplitOptions.None);
+        }
+        string[] currFolders = new string[]{};
+        if(!string.IsNullOrEmpty(curItem.FileFolder)) {
+            currFolders  = curItem.FileFolder.Split(new string[] { "\\" }, StringSplitOptions.None);
+        }
+        int refLen = refFolders.Length;
+        int currLen = currFolders.Length;
+        int minLen = refLen < currLen ? refLen : currLen;
+        int cnt= 0;
+        for(int i = 0; i < minLen; i++) {
+            if ( !refFolders[i].Equals(currFolders[i], StringComparison.OrdinalIgnoreCase) ) break;
+            cnt++;
+        }
+        if(currLen > cnt) {
+            result += string.Join("",Enumerable.Repeat("../", currLen - cnt));
+        }
+        if(refLen > cnt) {
+            result += string.Join("/", refFolders, cnt, refLen - cnt) + "/";
+        }
+        result += refItem.FileName;
+        return result;
+    }
+    string GetContextInterfaceName(DbContextSerializable context, string fileType) {
+        string result="";
+        if ((context == null) || string.IsNullOrEmpty(fileType)) {
+            return result;
+        }
+        if (context.CommonStaffs == null) {
+            return result;
+        }
+        CommonStaffSerializable refItem= 
+            context.CommonStaffs.Where(c => c.FileType == fileType).FirstOrDefault();
+        if (refItem == null) {
+            return result;
+        }
+        if(string.IsNullOrEmpty(refItem.FileName)) {
+            return result;
+        }
+        string fn = refItem.FileName.Replace(".interface","-interface");
+        StringBuilder sb = new StringBuilder();
+        bool toUpper = true;
+        foreach (char c in fn)
+        {
+            if( c == '-' )
+            {
+                toUpper = true;
+            } else
+            {
+                if (toUpper)
+                {
+                    sb.Append(Char.ToUpper(c));
+                    toUpper = false;
+                }
+                else
+                {
+                    sb.Append(c);
+                }
+            }
+                
+        }
+        return "I"+sb.ToString();
+    }
+    string GetContextEnumClassName(DbContextSerializable context, string fileType) {
+        string result="";
+        if ((context == null) || string.IsNullOrEmpty(fileType)) {
+            return result;
+        }
+        if (context.CommonStaffs == null) {
+            return result;
+        }
+        CommonStaffSerializable refItem= 
+            context.CommonStaffs.Where(c => c.FileType == fileType).FirstOrDefault();
+        if (refItem == null) {
+            return result;
+        }
+        if(string.IsNullOrEmpty(refItem.FileName)) {
+            return result;
+        }
+        string fn = refItem.FileName.Replace(".enum","");
+        StringBuilder sb = new StringBuilder();
+        bool toUpper = true;
+        foreach (char c in fn)
+        {
+            if( c == '-' )
+            {
+                toUpper = true;
+            } else
+            {
+                if (toUpper)
+                {
+                    sb.Append(Char.ToUpper(c));
+                    toUpper = false;
+                }
+                else
+                {
+                    sb.Append(c);
+                }
+            }
+                
+        }
+        return sb.ToString();
+    }
+
+#>

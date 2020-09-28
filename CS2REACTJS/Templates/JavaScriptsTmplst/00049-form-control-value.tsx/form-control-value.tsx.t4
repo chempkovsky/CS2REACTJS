@@ -1,0 +1,292 @@
+﻿<#@ template language="C#" HostSpecific="True" Debug="True" #>
+<#@ output extension="tsx" #>
+<#@ assembly name="System.Core" #>
+<#@ import namespace="System" #>
+<#@ import namespace="System.IO" #>
+<#@ import namespace="System.Linq" #>
+<#@ import namespace="System.Collections" #>
+<#@ import namespace="System.Collections.Generic" #>
+<#@ import namespace="System.Text" #>
+<#@ import namespace="CS2REACTJS" #>
+<#@ import namespace="CS2REACTJS.Model" #>
+<#@ import namespace="CS2REACTJS.Model.Serializable" #>
+<#@ parameter type="CS2REACTJS.Model.Serializable.ModelViewSerializable" name="Model" #>
+<#@ parameter type="CS2REACTJS.Model.Serializable.DbContextSerializable" name="Context" #>
+<#
+
+    string formControlValueFolder           = "00049-form-control-value.tsx";
+    string formControlValueClassName        = GetModelClassName(Model, formControlValueFolder);
+
+    string validationErrorsFolder           = "00046-validation-errors.tsx";
+    string validationErrorsClassName        = GetModelInterfaceName(Model, validationErrorsFolder);
+
+    string validatorFnFolder                = "00047-validator-fn.tsx";
+    string validatorFnClassName             = GetModelInterfaceName(Model, validatorFnFolder);
+
+#>
+
+import <#= validationErrorsClassName #> from "<#= GetFolderName(Model, validationErrorsFolder, formControlValueFolder) #>";
+import <#= validatorFnClassName #> from "<#= GetFolderName(Model, validatorFnFolder, formControlValueFolder) #>";
+
+export default class <#= formControlValueClassName #> {
+    touched: boolean = false;
+    value: any=null;
+    errors: <#= validationErrorsClassName #>={};
+    validators: Array<<#= validatorFnClassName #>> = [];
+    disabled: boolean = false;
+    constructor(val: any, dsbld?: boolean, vldtrs?: Array<<#= validatorFnClassName #>>) {
+        this.ResetVal(val);
+        if(vldtrs) {
+            this.Validators = vldtrs;
+        }
+        if(dsbld) {
+            this.disabled = true;
+        } else {
+            this.disabled = false;
+        }
+    }
+    ResetVal(val: any): void {
+        if (typeof val === 'undefined') {
+            this.value = null;   
+        } else {
+            this.value = val;
+        }
+    }
+    public get Value(): any {
+        return this.value;
+    }
+    public set Value(val: any) {
+        this.ResetVal(val);
+        this.Validate();
+    }
+    public get ValForInput(): any {
+        if(typeof this.value === 'undefined') return '';
+        if(this.value === null) return '';
+        return this.value;
+    }
+    public get Disabled(): boolean {
+        return this.disabled;
+    }
+    public set Disabled(val: boolean) {
+        if(val) {
+            this.disabled = true;
+        } else {
+            this.disabled = false;
+        }
+   }
+
+    public get Errors(): <#= validationErrorsClassName #> {
+        return this.errors;
+    }
+    public set Errors(val: <#= validationErrorsClassName #>) {
+        if(val)
+            this.errors = val;
+        else 
+            this.errors = {};
+    }
+    public get Validators(): Array<<#= validatorFnClassName #>> {
+        return this.validators;
+    }
+    public set Validators(val: Array<<#= validatorFnClassName #>>) {
+        this.validators = val;
+    }
+    public get Valid(): boolean {
+        return (Object.keys(this.errors).length < 1);
+    }
+    public get Invalid(): boolean {
+        return (Object.keys(this.errors).length > 0);
+    }
+    public get Touched(): boolean {
+        return this.touched;
+    }
+    public set Touched(val: boolean) {
+        this.touched = val;
+    }
+    public get InvalidEx(): boolean {
+        return this.Touched && this.Invalid;
+    }
+    public Validate() {
+        this.errors = {};
+        this.validators.forEach(v=> {
+            if(v) {
+                let r: <#= validationErrorsClassName #>|null =  v(this.value)
+                if(r) this.errors = {...this.errors, ...r};
+            }
+        })
+    }
+    public static getValidationErrorMessageEx(errs?: <#= validationErrorsClassName #>|null): string {
+        let rslt: string = 'Validation Error. ';
+        if(errs) {
+            Object.keys(errs).forEach(k => {
+                switch(k) {
+                  case 'maxlength':
+                    rslt +=' Required max length. ' + errs[k].requiredLength;
+                    break;
+                  case 'minlength':
+                    rslt +=' Required min length: ' + errs[k].requiredLength;
+                    break;
+                  case 'required':
+                    rslt +=' Required field. ' ;
+                    break;
+                  case 'max':
+                    rslt +=' The value must be less than ' + errs[k].max;
+                    break;
+                  case 'min':
+                    rslt +=' Value must be greater than ' + errs[k].min;
+                    break;
+                  case 'pattern':
+                    rslt +=' Icorrect format.' ;
+                    break;
+                  case 'matDatepickerMin':
+                    rslt +=' Value must be greater than ' + errs[k].min;
+                    break;
+                  case 'matDatepickerMax':
+                    rslt +=' The value must be less than ' + errs[k].max;
+                    break;
+                  case 'matDatepickerParse':
+                    rslt +=' Icorrect date format.' ;
+                    break;
+                  default:
+                    rslt +=' Icorrect format.' ;
+                    break;
+                }
+              });
+        }
+        return rslt;
+    }
+    public static getValidationErrorMessage(fc: <#= formControlValueClassName #>): string {
+        let rslt: string = 'Validation Error. ';
+        if (typeof fc === 'undefined') {
+          return rslt;
+        }
+        if (fc === null) {
+          return rslt;
+        }
+        return <#= formControlValueClassName #>.getValidationErrorMessageEx(fc.Errors);
+   } // end of getErrorMessage
+};
+
+
+<#+
+    string GetModelClassName(ModelViewSerializable model, string fileType) {
+        string result="";
+        if ((model == null) || string.IsNullOrEmpty(fileType)) {
+            return result;
+        }
+        if (model.CommonStaffs == null) {
+            return result;
+        }
+        CommonStaffSerializable refItem= 
+            model.CommonStaffs.Where(c => c.FileType == fileType).FirstOrDefault();
+        if (refItem == null) {
+            return result;
+        }
+        if(string.IsNullOrEmpty(refItem.FileName)) {
+            return result;
+        }
+        string fn = refItem.FileName;
+        StringBuilder sb = new StringBuilder();
+        bool toUpper = true;
+        foreach (char c in fn)
+        {
+            if( c == '-' )
+            {
+                toUpper = true;
+            } else
+            {
+                if (toUpper)
+                {
+                    sb.Append(Char.ToUpper(c));
+                    toUpper = false;
+                }
+                else
+                {
+                    sb.Append(c);
+                }
+            }
+                
+        }
+        return sb.ToString();
+    }
+    string GetModelInterfaceName(ModelViewSerializable model, string fileType) {
+        string result="";
+        if ((model == null) || string.IsNullOrEmpty(fileType)) {
+            return result;
+        }
+        if (model.CommonStaffs == null) {
+            return result;
+        }
+        CommonStaffSerializable refItem= 
+            model.CommonStaffs.Where(c => c.FileType == fileType).FirstOrDefault();
+        if (refItem == null) {
+            return result;
+        }
+        if(string.IsNullOrEmpty(refItem.FileName)) {
+            return result;
+        }
+        string fn = refItem.FileName.Replace(".interface","-interface");
+        StringBuilder sb = new StringBuilder();
+        bool toUpper = true;
+        foreach (char c in fn)
+        {
+            if( c == '-' )
+            {
+                toUpper = true;
+            } else
+            {
+                if (toUpper)
+                {
+                    sb.Append(Char.ToUpper(c));
+                    toUpper = false;
+                }
+                else
+                {
+                    sb.Append(c);
+                }
+            }
+                
+        }
+        return "I"+sb.ToString();
+    }
+    string GetFolderName(ModelViewSerializable model, string refFolder, string currFolder) {
+        string result="./";
+        if ((model == null) || string.IsNullOrEmpty(refFolder) || string.IsNullOrEmpty(currFolder)) {
+            return result;
+        }
+        if (model.CommonStaffs == null) {
+            return result;
+        }
+        CommonStaffSerializable refItem= 
+            model.CommonStaffs.Where(c => c.FileType == refFolder).FirstOrDefault();
+        CommonStaffSerializable curItem= 
+            model.CommonStaffs.Where(c => c.FileType == currFolder).FirstOrDefault();
+        if ((refItem == null) || (curItem == null)) {
+            return result;
+        }
+        string[] refFolders  = new string[] {};
+        if(!string.IsNullOrEmpty(refItem.FileFolder)) {
+            refFolders  = refItem.FileFolder.Split(new string[] { "\\" }, StringSplitOptions.None);
+        }
+        string[] currFolders = new string[]{};
+        if(!string.IsNullOrEmpty(curItem.FileFolder)) {
+            currFolders  = curItem.FileFolder.Split(new string[] { "\\" }, StringSplitOptions.None);
+        }
+        int refLen = refFolders.Length;
+        int currLen = currFolders.Length;
+        int minLen = refLen < currLen ? refLen : currLen;
+        int cnt= 0;
+        for(int i = 0; i < minLen; i++) {
+            if ( !refFolders[i].Equals(currFolders[i], StringComparison.OrdinalIgnoreCase) ) break;
+            cnt++;
+        }
+        if(currLen > cnt) {
+            result += string.Join("", Enumerable.Repeat("../", currLen - cnt));
+        }
+        if(refLen > cnt) {
+            result += string.Join("/", refFolders, cnt, refLen - cnt) + "/";
+        }
+        result += refItem.FileName;
+        return result;
+    }
+
+#>

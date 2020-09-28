@@ -1,0 +1,21 @@
+{
+  "Description": [
+    "",
+    "                                BEFORE YOU START !!!",
+    "",
+    "1.",
+    "Please make sure that you selected the folder of your C# db context project",
+    "  given script generates db context for the security",
+    "",
+    ""
+  ],
+  "BatchItems": [
+    {
+      "DestinationFolder": "",
+      "GeneratorType": "00350-securitydbcontext.cs",
+      "GeneratorSript": "securitydbcontext.cs.t4"
+    }
+
+  ]
+
+}

@@ -1,0 +1,295 @@
+﻿<#@ template language="C#" HostSpecific="True" Debug="True" #>
+<#@ output extension="tsx" #>
+<#@ assembly name="System.Core" #>
+<#@ import namespace="System" #>
+<#@ import namespace="System.IO" #>
+<#@ import namespace="System.Linq" #>
+<#@ import namespace="System.Collections" #>
+<#@ import namespace="System.Collections.Generic" #>
+<#@ import namespace="System.Text" #>
+<#@ import namespace="CS2REACTJS" #>
+<#@ import namespace="CS2REACTJS.Model" #>
+<#@ import namespace="CS2REACTJS.Model.Serializable" #>
+<#@ parameter type="CS2REACTJS.Model.Serializable.ModelViewSerializable" name="Model" #>
+<#@ parameter type="CS2REACTJS.Model.Serializable.DbContextSerializable" name="Context" #>
+
+<#
+
+    string reditPropsDataModelFolder                    = "01819-Redit-props.interface.tsx";
+    string reditPropsDataModelClassName                 = GetModelInterfaceName(Model, reditPropsDataModelFolder);
+
+    string eformPropsDataModelFolder                    = "01499-Eform-props.interface.tsx";
+    string eformPropsDataModelClassName                 = GetModelInterfaceName(Model, eformPropsDataModelFolder);
+
+    string viewInterfaceFolder                          = "01100-.interface.tsx";
+
+    string webServiceFilterRsltDataModelFolder          = "00052-web-service-filter-rslt.interface.tsx";
+    string webServiceFilterRsltDataModelClassName       = GetContextInterfaceName(Context, webServiceFilterRsltDataModelFolder);
+
+    string webServiceFilterEventDataModelFolder         = "00062-web-service-filter-event.interface.tsx";
+    string webServiceFilterEventDataModelClassName      = GetContextInterfaceName(Context, webServiceFilterEventDataModelFolder);
+
+    string webServiceFilterMenuDataModelFolder          = "00063-web-service-filter-menu.interface.tsx";
+    string webServiceFilterMenuDataModelClassName       = GetContextInterfaceName(Context, webServiceFilterMenuDataModelFolder);
+
+
+    string EformModePropName                        = "eformMode";
+    string HiddenFilterPropName                     = "hiddenFilter";
+    string FormControlModelPropName                 = "eformControlModel";
+    string OnContMenuItemMethodName                 = "onContMenuItem";
+    string OnCloseMethodName                        = "onClose";
+    string CaptionPropName                          = "caption";
+    string ContMenuItemsPropName                    = "contMenuItems";
+    string BeforeSubmitPropName                     = "beforeSubmit";
+    string AfterSubmitPropName                      = "afterSubmit";
+    string OnBackBtnMethodName                      = "onBackBtn";
+    string ShowBackBtnPropName                      = "showBackBtn";
+    string ShowAddFltItemPropName                   = "showAddFltItem";
+    string MaxHeightPropName                        = "maxHeight";
+    string FilterMaxHeightPropName                  = "filterMaxHeight";
+    string ShowFilterPropName                       = "showFilter";
+    string RowMenuItemsPropName                     = "rowMenuItems";
+    string TableMenuItemsPropName                   = "tableMenuItems";
+    string SelectedRowPropName                      = "selectedRow";
+    string ApplyFilterMethodName                    = "applyFilter";
+    string CanAddPropName                           = "canAdd";
+    string CanUpdPropName                           = "canUpdate";
+    string CanDelPropName                           = "canDelete";
+    string OnRowMenuItemMethodName                  = "onRowMenuItem";
+    string OnTableMenuItemMethodName                = "onTableMenuItem";
+
+
+#>
+
+import { RouteComponentProps } from 'react-router-dom';
+import <#= eformPropsDataModelClassName #> from '<#= GetFolderName(Model, eformPropsDataModelFolder, reditPropsDataModelFolder) #>';
+import <#= webServiceFilterMenuDataModelClassName #> from "<#= GetCommonFolderName(Model, Context, webServiceFilterMenuDataModelFolder, reditPropsDataModelFolder) #>";
+import <#= webServiceFilterRsltDataModelClassName #> from "<#= GetCommonFolderName(Model, Context, webServiceFilterRsltDataModelFolder, reditPropsDataModelFolder) #>";
+import <#= webServiceFilterEventDataModelClassName #> from "<#= GetCommonFolderName(Model, Context, webServiceFilterEventDataModelFolder, reditPropsDataModelFolder) #>";
+import <#= GetInterfaceName(Model) #> from '<#= GetFolderName(Model, viewInterfaceFolder, reditPropsDataModelFolder) #>';
+
+
+export default interface <#= reditPropsDataModelClassName #> extends RouteComponentProps<any> {
+    <#= CaptionPropName #>?: string;
+    <#= ContMenuItemsPropName #>?: Array<<#= webServiceFilterMenuDataModelClassName #>>;
+    <#= OnContMenuItemMethodName #>?: (v: <#= webServiceFilterEventDataModelClassName #>) => void;
+    <#= HiddenFilterPropName #>?: Array<<#= webServiceFilterRsltDataModelClassName #>>;
+    <#= BeforeSubmitPropName #>?: (sender: any, value: <#= GetInterfaceName(Model) #>|null) => void;
+    <#= AfterSubmitPropName #>?: (sender: any, hasError: boolean, value: <#= GetInterfaceName(Model) #>|null) => void;
+}
+
+
+<#+
+
+    string GetInterfaceName(ModelViewSerializable model) {
+        return "I"+model.ViewName;
+    }
+    string GetInterfacePageName(ModelViewSerializable model) {
+        return "I"+model.PageViewName;
+    }
+    string GetInterfaceFilterName(ModelViewSerializable model) {
+        return "I"+model.ViewName + "Filter";
+    }
+    string GetFolderName(ModelViewSerializable model, string refFolder, string currFolder) {
+        string result="./";
+        if ((model == null) || string.IsNullOrEmpty(refFolder) || string.IsNullOrEmpty(currFolder)) {
+            return result;
+        }
+        if (model.CommonStaffs == null) {
+            return result;
+        }
+        CommonStaffSerializable refItem= 
+            model.CommonStaffs.Where(c => c.FileType == refFolder).FirstOrDefault();
+        CommonStaffSerializable curItem= 
+            model.CommonStaffs.Where(c => c.FileType == currFolder).FirstOrDefault();
+        if ((refItem == null) || (curItem == null)) {
+            return result;
+        }
+        string[] refFolders  = new string[] {};
+        if(!string.IsNullOrEmpty(refItem.FileFolder)) {
+            refFolders  = refItem.FileFolder.Split(new string[] { "\\" }, StringSplitOptions.None);
+        }
+        string[] currFolders = new string[]{};
+        if(!string.IsNullOrEmpty(curItem.FileFolder)) {
+            currFolders  = curItem.FileFolder.Split(new string[] { "\\" }, StringSplitOptions.None);
+        }
+        int refLen = refFolders.Length;
+        int currLen = currFolders.Length;
+        int minLen = refLen < currLen ? refLen : currLen;
+        int cnt= 0;
+        for(int i = 0; i < minLen; i++) {
+            if ( !refFolders[i].Equals(currFolders[i], StringComparison.OrdinalIgnoreCase) ) break;
+            cnt++;
+        }
+        if(currLen > cnt) {
+            result += string.Join("",Enumerable.Repeat("../", currLen - cnt));
+        }
+        if(refLen > cnt) {
+            result += string.Join("/", refFolders, cnt, refLen - cnt) + "/";
+        }
+        result += refItem.FileName;
+        return result;
+    }
+    string GetModelInterfaceName(ModelViewSerializable model, string fileType) {
+        string result="";
+        if ((model == null) || string.IsNullOrEmpty(fileType)) {
+            return result;
+        }
+        if (model.CommonStaffs == null) {
+            return result;
+        }
+        CommonStaffSerializable refItem= 
+            model.CommonStaffs.Where(c => c.FileType == fileType).FirstOrDefault();
+        if (refItem == null) {
+            return result;
+        }
+        if(string.IsNullOrEmpty(refItem.FileName)) {
+            return result;
+        }
+        string fn = refItem.FileName.Replace(".interface","-interface");
+        StringBuilder sb = new StringBuilder();
+        bool toUpper = true;
+        foreach (char c in fn)
+        {
+            if( c == '-' )
+            {
+                toUpper = true;
+            } else
+            {
+                if (toUpper)
+                {
+                    sb.Append(Char.ToUpper(c));
+                    toUpper = false;
+                }
+                else
+                {
+                    sb.Append(c);
+                }
+            }
+                
+        }
+        return "I"+sb.ToString();
+    }
+    string GetContextInterfaceName(DbContextSerializable context, string fileType) {
+        string result="";
+        if ((context == null) || string.IsNullOrEmpty(fileType)) {
+            return result;
+        }
+        if (context.CommonStaffs == null) {
+            return result;
+        }
+        CommonStaffSerializable refItem= 
+            context.CommonStaffs.Where(c => c.FileType == fileType).FirstOrDefault();
+        if (refItem == null) {
+            return result;
+        }
+        if(string.IsNullOrEmpty(refItem.FileName)) {
+            return result;
+        }
+        string fn = refItem.FileName.Replace(".interface","-interface");
+        StringBuilder sb = new StringBuilder();
+        bool toUpper = true;
+        foreach (char c in fn)
+        {
+            if( c == '-' )
+            {
+                toUpper = true;
+            } else
+            {
+                if (toUpper)
+                {
+                    sb.Append(Char.ToUpper(c));
+                    toUpper = false;
+                }
+                else
+                {
+                    sb.Append(c);
+                }
+            }
+                
+        }
+        return "I"+sb.ToString();
+    }
+
+    string GetCommonFolderName(ModelViewSerializable model, DbContextSerializable context,  string refFolder, string currFolder) {
+        string result="./";
+        if ((model == null) || (context == null) || string.IsNullOrEmpty(refFolder) || string.IsNullOrEmpty(currFolder)) {
+            return result;
+        }
+        if ((model.CommonStaffs == null) || (context.CommonStaffs == null)) {
+            return result;
+        }
+        CommonStaffSerializable refItem= 
+            context.CommonStaffs.Where(c => c.FileType == refFolder).FirstOrDefault();
+        CommonStaffSerializable curItem= 
+            model.CommonStaffs.Where(c => c.FileType == currFolder).FirstOrDefault();
+        if ((refItem == null) || (curItem == null)) {
+            return result;
+        }
+        string[] refFolders  = new string[] {};
+        if(!string.IsNullOrEmpty(refItem.FileFolder)) {
+            refFolders  = refItem.FileFolder.Split(new string[] { "\\" }, StringSplitOptions.None);
+        }
+        string[] currFolders = new string[]{};
+        if(!string.IsNullOrEmpty(curItem.FileFolder)) {
+            currFolders  = curItem.FileFolder.Split(new string[] { "\\" }, StringSplitOptions.None);
+        }
+        int refLen = refFolders.Length;
+        int currLen = currFolders.Length;
+        int minLen = refLen < currLen ? refLen : currLen;
+        int cnt= 0;
+        for(int i = 0; i < minLen; i++) {
+            if ( !refFolders[i].Equals(currFolders[i], StringComparison.OrdinalIgnoreCase) ) break;
+            cnt++;
+        }
+        if(currLen > cnt) {
+            result += string.Join("",Enumerable.Repeat("../", currLen - cnt));
+        }
+        if(refLen > cnt) {
+            result += string.Join("/", refFolders, cnt, refLen - cnt) + "/";
+        }
+        result += refItem.FileName;
+        return result;
+    }
+    string GetContextEnumClassName(DbContextSerializable context, string fileType) {
+        string result="";
+        if ((context == null) || string.IsNullOrEmpty(fileType)) {
+            return result;
+        }
+        if (context.CommonStaffs == null) {
+            return result;
+        }
+        CommonStaffSerializable refItem= 
+            context.CommonStaffs.Where(c => c.FileType == fileType).FirstOrDefault();
+        if (refItem == null) {
+            return result;
+        }
+        if(string.IsNullOrEmpty(refItem.FileName)) {
+            return result;
+        }
+        string fn = refItem.FileName.Replace(".enum","");
+        StringBuilder sb = new StringBuilder();
+        bool toUpper = true;
+        foreach (char c in fn)
+        {
+            if( c == '-' )
+            {
+                toUpper = true;
+            } else
+            {
+                if (toUpper)
+                {
+                    sb.Append(Char.ToUpper(c));
+                    toUpper = false;
+                }
+                else
+                {
+                    sb.Append(c);
+                }
+            }
+                
+        }
+        return sb.ToString();
+    }
+
+#>

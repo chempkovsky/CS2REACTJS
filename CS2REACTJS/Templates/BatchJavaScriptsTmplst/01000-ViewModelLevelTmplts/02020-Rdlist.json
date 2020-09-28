@@ -1,0 +1,60 @@
+{
+  "Description": [
+    "",
+    "                                BEFORE YOU START !!!",
+    "1.",
+    "Please make sure that you have already run the following scripts for the current ViewModel",
+    "                                01100-.interface.tsx",
+    "                                01200-Page.interface.tsx",
+    "                                01300-Filter.interface.tsx",
+    "                                01400-.service.tsx",
+    "                                01420-Sform.component.tsx",
+    "                                01440-Sdlg.component.tsx",
+    "                                01500-Eform.component.tsx",
+    "                                01520-Edlg.component.tsx",
+    "",
+    "                                AND",
+    "",
+    "Please make sure that you have already run the following scripts for all MASTER ViewModels",
+    "                                01100-.interface.tsx",
+    "                                01200-Page.interface.tsx",
+    "                                01300-Filter.interface.tsx",
+    "                                01400-.service.tsx",
+    "                                01420-Sform.component.tsx",
+    "                                01440-Sdlg.component.tsx",
+    "",
+    "2.",
+    "Please make sure that you selected src\\components\\your-view-model-name folder",
+    "  where [your-view-model-name] is a name of currently selected ViewModel",
+    "",
+    "",
+    ""
+  ],
+  "BatchItems": [
+    {
+      "DestinationFolder": "interfaces",
+      "GeneratorType": "01596-List-state.interface.tsx",
+      "GeneratorSript": "List-state.interface.tsx.t4"
+    },
+    {
+      "DestinationFolder": "interfaces",
+      "GeneratorType": "01598-Lform-state.interface.tsx",
+      "GeneratorSript": "Lform-state.interface.tsx.t4"
+    },
+    {
+      "DestinationFolder": "interfaces",
+      "GeneratorType": "02018-Rdlist-state.interface.tsx",
+      "GeneratorSript": "Rdlist-state.interface.tsx.t4"
+    },
+    {
+      "DestinationFolder": "interfaces",
+      "GeneratorType": "02019-Rdlist-props.interface.tsx",
+      "GeneratorSript": "Rdlist-props.interface.tsx.t4"
+    },
+    {
+      "DestinationFolder": "components\\rdlist",
+      "GeneratorType": "02020-Rdlist.component.tsx",
+      "GeneratorSript": "Rdlist.component.tsx.t4"
+    }
+  ]
+}

@@ -1,0 +1,503 @@
+﻿<#@ template language="C#" HostSpecific="True" Debug="True" #>
+<#@ output extension="tsx" #>
+<#@ assembly name="System.Core" #>
+<#@ import namespace="System" #>
+<#@ import namespace="System.IO" #>
+<#@ import namespace="System.Linq" #>
+<#@ import namespace="System.Collections" #>
+<#@ import namespace="System.Collections.Generic" #>
+<#@ import namespace="System.Text" #>
+<#@ import namespace="CS2REACTJS" #>
+<#@ import namespace="CS2REACTJS.Model" #>
+<#@ import namespace="CS2REACTJS.Model.Serializable" #>
+<#@ parameter type="CS2REACTJS.Model.Serializable.ModelViewSerializable" name="Model" #>
+<#@ parameter type="CS2REACTJS.Model.Serializable.DbContextSerializable" name="Context" #>
+<#
+
+
+    string webServiceFilterItemDataModelFolder      = "00060-web-service-filter-item.tsx";
+    string webServiceFilterItemDataModelClassName   = GetModelClassName(Model, webServiceFilterItemDataModelFolder);
+
+    string fxFlexBaseRowCssClassFolder              = "00030-fx-flex-base-row.css";
+    string fxFlexBaseRowCssClassName                = GetModelCssClassName(Model, fxFlexBaseRowCssClassFolder);
+
+    string colFlexFunctionFolder                    = "00040-col-flex.tsx";
+    string colFlexFunctionName                      = GetModelFunctionName(Model, colFlexFunctionFolder);
+    string rowFlexFunctionFolder                    = "00043-row-flex.tsx";
+    string rowFlexFunctionName                      = GetModelFunctionName(Model, rowFlexFunctionFolder);
+    string currFlexScreenFunctionFolder             = "00044-curr-flex-screen.tsx";
+    string currFlexScreenFunctionName               = GetModelFunctionName(Model, currFlexScreenFunctionFolder);
+
+    string webServiceFilterItemPropsDataModelFolder      = "00056-web-service-filter-item-props.interface.tsx";
+    string webServiceFilterItemPropsDataModelClassName   = GetModelInterfaceName(Model, webServiceFilterItemPropsDataModelFolder);
+    string webServiceFilterItemStateDataModelFolder      = "00055-web-service-filter-item-state.interface.tsx";
+    string webServiceFilterItemStateDataModelClassName   = GetModelInterfaceName(Model, webServiceFilterItemStateDataModelFolder);
+    string webServiceFilterDefDataModelFolder            = "00050-web-service-filter-def.interface.tsx";
+    string webServiceFilterDefDataModelClassName         = GetModelInterfaceName(Model, webServiceFilterDefDataModelFolder);
+    string webServiceFilterOperatorDataModelFolder      = "00051-web-service-filter-operator.interface.tsx";
+    string webServiceFilterOperatorDataModelClassName   = GetModelInterfaceName(Model, webServiceFilterOperatorDataModelFolder);
+
+
+
+#>
+
+import React, { Component, CSSProperties } from 'react';
+import { IconButton, FontIcon, TextField, TooltipHost, ComboBox, IComboBoxOption, IComboBox, BaseButton, Button, getTheme } from '@fluentui/react';
+import '<#= GetFolderName(Model, fxFlexBaseRowCssClassFolder, webServiceFilterItemDataModelFolder) #>.css';
+
+import <#= colFlexFunctionName #> from "<#= GetFolderName(Model, colFlexFunctionFolder, webServiceFilterItemDataModelFolder) #>";
+import <#= rowFlexFunctionName #> from "<#= GetFolderName(Model, rowFlexFunctionFolder, webServiceFilterItemDataModelFolder) #>";
+import <#= currFlexScreenFunctionName #> from "<#= GetFolderName(Model, currFlexScreenFunctionFolder, webServiceFilterItemDataModelFolder) #>";
+import <#= webServiceFilterItemPropsDataModelClassName #> from "<#= GetFolderName(Model, webServiceFilterItemPropsDataModelFolder, webServiceFilterItemDataModelFolder) #>";
+import <#= webServiceFilterItemStateDataModelClassName #> from "<#= GetFolderName(Model, webServiceFilterItemStateDataModelFolder, webServiceFilterItemDataModelFolder) #>";
+import <#= webServiceFilterDefDataModelClassName #> from "<#= GetFolderName(Model, webServiceFilterDefDataModelFolder, webServiceFilterItemDataModelFolder) #>";
+import <#= webServiceFilterOperatorDataModelClassName #> from "<#= GetFolderName(Model, webServiceFilterOperatorDataModelFolder, webServiceFilterItemDataModelFolder) #>";
+
+// import { initializeIcons }  from '@fluentui/react';
+// initializeIcons();
+
+const scheme = getTheme()
+
+export default class <#= webServiceFilterItemDataModelClassName #> extends Component<<#= webServiceFilterItemPropsDataModelClassName #>, <#= webServiceFilterItemStateDataModelClassName #>> {
+    constructor(props: <#= webServiceFilterItemPropsDataModelClassName #>) {
+        super(props);
+        this.state = {
+            fltrName: '',
+            fltrDataType: '', 
+            fltrOperator: 'eq',
+            fltrValue: null,
+            fltrError: undefined,
+            fltrText: undefined,
+            fltrMaxLen: undefined,
+            fltrMin: undefined,
+            fltrMax: undefined,
+            fltrStep: undefined,
+            fltrType: undefined,
+            fltrPattern: undefined,
+            cachedfltrs: [],
+            cachedopers: []
+        };
+        this.hasErr = this.hasErr.bind(this);
+        this.handleClNmChange = this.handleClNmChange.bind(this);
+        this.handleOpChange = this.handleOpChange.bind(this);
+        this.handleValChange = this.handleValChange.bind(this);
+        this.handleDel = this.handleDel.bind(this);
+        this.getErrorMessage = this.getErrorMessage.bind(this);
+        this.handleClNmChangeEx = this.handleClNmChangeEx.bind(this);
+    }
+    static getDerivedStateFromProps(nwprps: <#= webServiceFilterItemPropsDataModelClassName #>, oldstt: <#= webServiceFilterItemStateDataModelClassName #>): any {
+        let cfltrs: Array<<#= webServiceFilterDefDataModelClassName #>> = [];
+        let copers: Array<<#= webServiceFilterOperatorDataModelClassName #>> = [];
+        if(nwprps.fltrs)  cfltrs = nwprps.fltrs;
+        if(nwprps.opers)  copers = nwprps.opers;
+        let cflt = (cfltrs !== oldstt.cachedfltrs) && (oldstt.cachedfltrs.length > 0);
+        cflt = cflt ? cflt : oldstt.cachedfltrs.length !== cfltrs.length;
+        if (!cflt) {
+            cflt = (copers !== oldstt.cachedopers) && (oldstt.cachedopers.length > 0);
+            cflt = cflt ? cflt : oldstt.cachedopers.length !== copers.length;
+        }
+        if (!cflt) return null;
+        let fltrOp: string='';
+        if (copers.length > 0) fltrOp = copers[0].oName;
+        return  {
+            fltrName: '',
+            fltrDataType: '', 
+            fltrOperator: fltrOp,
+            fltrValue: null,
+            fltrError: undefined,
+            fltrText: undefined,
+            fltrMaxLen: undefined,
+            fltrMin: undefined,
+            fltrMax: undefined,
+            fltrStep: undefined,
+            fltrType: undefined,
+            fltrPattern: undefined,
+            cachedfltrs: cfltrs,
+            cachedopers: copers
+        }
+    }
+    defFltItm: <#= webServiceFilterDefDataModelClassName #> = {fltrName: '', fltrCaption: '--No filter--',  fltrDataType: '', fltrMaxLen: null, fltrMin: null, fltrMax: null };
+    hasErr() {
+        if(this.state.fltrError) { return true; } else { return false; }
+    }
+    handleClNmChangeEx(itm: <#= webServiceFilterDefDataModelClassName #>): void {
+        this.setState<'fltrName'>( {  fltrName: itm.fltrName } );
+        this.setState<'fltrDataType'>( { fltrDataType: itm.fltrDataType } );
+        this.setState<'fltrMaxLen'>( { fltrMaxLen: itm.fltrMaxLen ? itm.fltrMaxLen : undefined } );
+        this.setState<'fltrMin'>( { fltrMin: itm.fltrMin ? itm.fltrMin : undefined } );
+        this.setState<'fltrMax'>( { fltrMax: itm.fltrMax ? itm.fltrMax : undefined } );
+        let pttrn: RegExp | undefined | string = undefined;
+        let step:string | number | undefined  = undefined;
+        let atype: string = 'text';
+        switch(itm.fltrDataType) {
+            case '':
+                break;
+            case 'int16':
+            case 'int32':
+            case 'int64':
+            case 'uint16':
+            case 'uint32':
+            case 'uint64':
+                step= 0;
+                atype='number';
+                pttrn = '^[-+]?\\d+$';
+                break;
+            case 'double':
+            case 'decimal':
+            case 'single':
+                step= 0.00001;
+                atype='number';
+                pttrn = '^[+-]?([0-9]+([.][0-9]*)?|[.][0-9]+)$';
+                break;
+            case 'guid':
+                //pttrn =/(?im)^[{(]?[0-9A-F]{8}[-]?(?:[0-9A-F]{4}[-]?){3}[0-9A-F]{12}[)}]?$/;
+                break;
+            case 'datetime':
+                atype='datetime-local'
+                break;
+            case 'date':
+                atype='date'
+                break;
+            default:
+                break;
+        }
+        this.setState<'fltrValue'>( { fltrValue: '' } );
+        if(itm.fltrName === this.defFltItm.fltrName) {
+            this.setState<'fltrError'>( { fltrError: undefined } );
+        } else {
+            this.setState<'fltrError'>( { fltrError: 'Filter item will not be applied: Val is required' } );
+        }
+        this.setState<'fltrText'>( { fltrText: undefined } );
+        this.setState<'fltrStep'>( { fltrStep: step } );
+        this.setState<'fltrType'>( { fltrType: atype } );
+        this.setState<'fltrPattern'>( { fltrPattern: pttrn } );
+    }
+    handleClNmChange(ev: React.FormEvent<IComboBox>, option?: IComboBoxOption): void {
+        let val: string = '';
+        if(option) {
+            if(option?.key) {
+                val = option?.key as string;
+            }
+        }
+        let itm: <#= webServiceFilterDefDataModelClassName #> | undefined;
+        if(this.props.fltrs)
+            itm = this.props.fltrs?.find((e,i,a) => {return (e.fltrName === val);
+        });       
+        if(typeof itm === 'undefined') {
+            itm = this.defFltItm;
+        }
+        this.handleClNmChangeEx(itm);
+    }
+    handleOpChange(ev: React.FormEvent<IComboBox>, option?: IComboBoxOption): void {
+        let val: string = '';
+        if(option) {
+            if(option?.key) {
+                val = option?.key as string;
+            }
+        }
+        this.setState<'fltrOperator'>( { fltrOperator: val } );
+    };
+    getErrorMessage(fc: HTMLInputElement): string|undefined {
+        let rslt: string = 'Filter item will not be applied:';
+        if (typeof fc === 'undefined') {
+          return rslt;
+        }
+        if (fc === null) {
+          return rslt;
+        }
+        const vs: ValidityState = fc.validity;
+        if(vs.valid) {
+            return undefined;
+        }
+        if(vs.badInput) {
+            rslt +=' Bad input detected. ';
+        }
+        if(vs.customError) {
+            rslt +=' Custom Error detected. ';
+        }
+        if(vs.patternMismatch) {
+            rslt +=' Icorrect format. ';
+        }
+        if(vs.rangeOverflow) {
+            rslt +=' Val should be less than ' + (this.state.fltrMax ? this.state.fltrMax: '') + '. ';
+        }
+        if(vs.rangeUnderflow) {
+            rslt +=' Val should be reater than ' + (this.state.fltrMin ? this.state.fltrMin: '') + '. ';
+        }
+        if(vs.stepMismatch) {
+            rslt +=' Val does not fit the rules determined by the step. ';
+        }
+        if(vs.tooLong) {
+            rslt +=' Val exceeds the specified MAX length. ';
+        }
+        if(vs.tooShort) {
+            rslt +=' Val fails to meet the specified MIN length. ';
+        }
+        if(vs.typeMismatch) {
+            rslt +=' Icorrect format. ';
+        }
+        if(vs.valueMissing) {
+            rslt +=' Val is required. ';
+        }
+        return rslt;
+    }
+    handleValChange(event: React.FormEvent<HTMLInputElement | HTMLTextAreaElement>, newValue?: string | undefined): void {
+        this.setState<'fltrValue'>( {fltrValue: newValue });
+        this.setState<'fltrError'>( {fltrError: this.getErrorMessage(event.target as HTMLInputElement) });    
+        if (this.state.fltrType && this.state.fltrMaxLen) {
+            if(this.state.fltrType === 'text') 
+                this.setState<'fltrText'>( {fltrText: '(' + (newValue ? newValue.length : '0') + ' of ' + this.state.fltrMaxLen + ')' });  
+        }
+    }
+    handleDel(event: React.MouseEvent<HTMLDivElement | HTMLAnchorElement | HTMLButtonElement | BaseButton | Button | HTMLSpanElement, MouseEvent>) {
+        if(this.props.onDelete) this.props.onDelete(this);
+    }
+    stl1:  CSSProperties = <#= colFlexFunctionName #>({ dflt: '1%' })  as  CSSProperties;
+    stl3:  CSSProperties = <#= colFlexFunctionName #>({ dflt: '3%' })  as  CSSProperties;
+    stl99: CSSProperties = <#= colFlexFunctionName #>({ dflt: '99%' }) as  CSSProperties;
+
+    render () {
+        const currscrn =  this.props.scrn ? this.props.scrn : <#= currFlexScreenFunctionName #>();
+        let fltrs: Array<<#= webServiceFilterDefDataModelClassName #>> = [
+            this.defFltItm
+        ];
+        if (this.props.fltrs) {
+            this.props.fltrs.forEach(v=>fltrs.push(v))
+        }
+        return(
+        <div className="<#= fxFlexBaseRowCssClassName #>" style={<#= rowFlexFunctionName #>({ scrn: currscrn, dflt: 'row', xs: 'column', sm: 'column' }) as CSSProperties}>
+            <span className="<#= fxFlexBaseRowCssClassName #>" style={<#= colFlexFunctionName #>({ scrn: currscrn, dflt: '41%', xs: '93%', sm: '97%' })  as CSSProperties} >
+                <span style={this.stl1}></span>
+                <span  style={this.stl99}>
+                    <ComboBox label="Column name" useComboBoxAsMenuWidth
+                        allowFreeform={false}
+                        autoComplete="off"
+                        disabled={false}
+                        selectedKey={this.state.fltrName}
+                        onChange={this.handleClNmChange}
+                        options={ fltrs.map( (f,i) => { return { key: f.fltrName, text: f.fltrCaption }} ) }
+                        />
+                </span>
+            </span>
+            <div className="<#= fxFlexBaseRowCssClassName #>" style={<#= colFlexFunctionName #>({ scrn: currscrn, dflt: '59%', xs: '93%', sm: '97%' }) as CSSProperties}>
+                <span style={this.stl1}></span>
+                <span   style={<#= colFlexFunctionName #>({ scrn: currscrn, dflt: '25%', xs: '35%' })}>
+                    <ComboBox  label="Operator" useComboBoxAsMenuWidth
+                        allowFreeform={false}
+                        autoComplete="off"
+                        disabled={false}
+                        selectedKey={this.state.fltrOperator}
+                        onChange={this.handleOpChange}
+                        options={ this.props.opers ? this.props.opers?.map( (op,i) =>  { return { key: op.oName, text: op.oCaption } } ): [] }
+                    />
+                </span>
+                <span style={this.stl1}></span>
+                <span   style={<#= colFlexFunctionName #>({ scrn: currscrn, dflt: '60%', xs: '50%' })}>
+                    <TextField label="Filter value"
+                        value={ (this.state.fltrValue===null) ? '' : this.state.fltrValue }
+                        required
+                        placeholder="Filter value..."
+                        errorMessage={ this.state.fltrError }
+                        description={ this.hasErr() ? undefined : this.state.fltrText }
+                        onChange={ this.handleValChange }
+                        type={ this.state.fltrType }
+                        step={ this.state.fltrStep }
+                        maxLength={ this.state.fltrMaxLen }
+                        min={ this.state.fltrMin }
+                        max={ this.state.fltrMax }
+                        pattern={ this.state.fltrPattern }
+                    />
+                </span>
+                <span style={this.stl3}>
+                    <TooltipHost content="Delete Filter Item">
+                         <IconButton onClick={this.handleDel} style={{marginTop:'3vh'}}>
+                            <FontIcon iconName= 'Delete' style={{ color: scheme.semanticColors.errorIcon }}  ></FontIcon>
+                         </IconButton>
+                     </TooltipHost>
+                </span>
+            </div>
+        </div>
+    )}
+}
+
+<#+
+    string GetModelInterfaceName(ModelViewSerializable model, string fileType) {
+        string result="";
+        if ((model == null) || string.IsNullOrEmpty(fileType)) {
+            return result;
+        }
+        if (model.CommonStaffs == null) {
+            return result;
+        }
+        CommonStaffSerializable refItem= 
+            model.CommonStaffs.Where(c => c.FileType == fileType).FirstOrDefault();
+        if (refItem == null) {
+            return result;
+        }
+        if(string.IsNullOrEmpty(refItem.FileName)) {
+            return result;
+        }
+        string fn = refItem.FileName.Replace(".interface","-interface");
+        StringBuilder sb = new StringBuilder();
+        bool toUpper = true;
+        foreach (char c in fn)
+        {
+            if( c == '-' )
+            {
+                toUpper = true;
+            } else
+            {
+                if (toUpper)
+                {
+                    sb.Append(Char.ToUpper(c));
+                    toUpper = false;
+                }
+                else
+                {
+                    sb.Append(c);
+                }
+            }
+                
+        }
+        return "I"+sb.ToString();
+    }
+    string GetFolderName(ModelViewSerializable model, string refFolder, string currFolder) {
+        string result="./";
+        if ((model == null) || string.IsNullOrEmpty(refFolder) || string.IsNullOrEmpty(currFolder)) {
+            return result;
+        }
+        if (model.CommonStaffs == null) {
+            return result;
+        }
+        CommonStaffSerializable refItem= 
+            model.CommonStaffs.Where(c => c.FileType == refFolder).FirstOrDefault();
+        CommonStaffSerializable curItem= 
+            model.CommonStaffs.Where(c => c.FileType == currFolder).FirstOrDefault();
+        if ((refItem == null) || (curItem == null)) {
+            return result;
+        }
+        string[] refFolders  = new string[] {};
+        if(!string.IsNullOrEmpty(refItem.FileFolder)) {
+            refFolders  = refItem.FileFolder.Split(new string[] { "\\" }, StringSplitOptions.None);
+        }
+        string[] currFolders = new string[]{};
+        if(!string.IsNullOrEmpty(curItem.FileFolder)) {
+            currFolders  = curItem.FileFolder.Split(new string[] { "\\" }, StringSplitOptions.None);
+        }
+        int refLen = refFolders.Length;
+        int currLen = currFolders.Length;
+        int minLen = refLen < currLen ? refLen : currLen;
+        int cnt= 0;
+        for(int i = 0; i < minLen; i++) {
+            if ( !refFolders[i].Equals(currFolders[i], StringComparison.OrdinalIgnoreCase) ) break;
+            cnt++;
+        }
+        if(currLen > cnt) {
+            result += string.Join("", Enumerable.Repeat("../", currLen - cnt));
+        }
+        if(refLen > cnt) {
+            result += string.Join("/", refFolders, cnt, refLen - cnt) + "/";
+        }
+        result += refItem.FileName;
+        return result;
+    }
+    string GetModelFunctionName(ModelViewSerializable model, string fileType) {
+        string result="";
+        if ((model == null) || string.IsNullOrEmpty(fileType)) {
+            return result;
+        }
+        if (model.CommonStaffs == null) {
+            return result;
+        }
+        CommonStaffSerializable refItem= 
+            model.CommonStaffs.Where(c => c.FileType == fileType).FirstOrDefault();
+        if (refItem == null) {
+            return result;
+        }
+        if(string.IsNullOrEmpty(refItem.FileName)) {
+            return result;
+        }
+        string fn = refItem.FileName;
+        StringBuilder sb = new StringBuilder();
+        bool toUpper = true;
+        foreach (char c in fn)
+        {
+            if( c == '-' )
+            {
+                toUpper = true;
+            } else
+            {
+                if (toUpper)
+                {
+                    sb.Append(Char.ToUpper(c));
+                    toUpper = false;
+                }
+                else
+                {
+                    sb.Append(c);
+                }
+            }
+                
+        }
+        return sb.ToString();
+    }
+    string GetModelClassName(ModelViewSerializable model, string fileType) {
+        string result="";
+        if ((model == null) || string.IsNullOrEmpty(fileType)) {
+            return result;
+        }
+        if (model.CommonStaffs == null) {
+            return result;
+        }
+        CommonStaffSerializable refItem= 
+            model.CommonStaffs.Where(c => c.FileType == fileType).FirstOrDefault();
+        if (refItem == null) {
+            return result;
+        }
+        if(string.IsNullOrEmpty(refItem.FileName)) {
+            return result;
+        }
+        string fn = refItem.FileName;
+        StringBuilder sb = new StringBuilder();
+        bool toUpper = true;
+        foreach (char c in fn)
+        {
+            if( c == '-' )
+            {
+                toUpper = true;
+            } else
+            {
+                if (toUpper)
+                {
+                    sb.Append(Char.ToUpper(c));
+                    toUpper = false;
+                }
+                else
+                {
+                    sb.Append(c);
+                }
+            }
+                
+        }
+        return sb.ToString();
+    }
+    string GetModelCssClassName(ModelViewSerializable model, string fileType) {
+        string result="";
+        if ((model == null) || string.IsNullOrEmpty(fileType)) {
+            return result;
+        }
+        if (model.CommonStaffs == null) {
+            return result;
+        }
+        CommonStaffSerializable refItem= 
+            model.CommonStaffs.Where(c => c.FileType == fileType).FirstOrDefault();
+        if (refItem == null) {
+            return result;
+        }
+        if(string.IsNullOrEmpty(refItem.FileName)) {
+            return result;
+        }
+        return refItem.FileName;
+    }
+
+#>

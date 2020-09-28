@@ -1,0 +1,53 @@
+{
+  "Description": [
+    "",
+    "                                BEFORE YOU START !!!",
+    "1.",
+    "Please make sure that you have already run the following batch for the current ViewModel",
+    "                                11100-SecurityInterfasesBatch.json",
+    "                                11401-SecurityWebApiService.json (NOT 11400 !!!!)",
+    "",
+    "2.",
+    "Please make sure that you have already run the following batch for securitymodel-view",
+    "                                12200-SecurityChkMform.json",
+    "",
+    "3.",
+    "Please make sure that you have already run the following batch for securitydashboard-view",
+    "                                12205-SecurityChkDform.json",
+    "",
+    "4.",
+    "Please make sure that you selected src\\components\\your-view-model-name folder",
+    "  where [your-view-model-name] is a name of currently selected ViewModel",
+    "",
+    "5.",
+    " 12215-lform.json batch must be run for: ",
+    "     securitypermission-view",
+    "",
+    "6.",
+    " do NOT run this batch for: ",
+    "     securityrole-view",
+    "     securitymodel-view",
+    "     securitydashboard-view",
+    "     securityuser-view",
+    "     securityuser2role-view",
+    "",
+    ""
+  ],
+  "BatchItems": [
+    {
+      "DestinationFolder": "interfaces",
+      "GeneratorType": "01598-Lform-state.interface.tsx",
+      "GeneratorSript": "SecLform-state.interface.tsx.t4"
+    },
+    {
+      "DestinationFolder": "interfaces",
+      "GeneratorType": "01599-Lform-props.interface.tsx",
+      "GeneratorSript": "Lform-props.interface.tsx.t4"
+    },
+    {
+      "DestinationFolder": "lform",
+      "GeneratorType": "01600-Lform.component.tsx",
+      "GeneratorSript": "SecLform.component.fluentui.tsx.t4"
+    }
+  ]
+}

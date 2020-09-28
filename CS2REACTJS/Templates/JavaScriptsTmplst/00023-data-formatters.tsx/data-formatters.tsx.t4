@@ -1,0 +1,141 @@
+﻿<#@ template language="C#" HostSpecific="True" Debug="True" #>
+<#@ output extension="tsx" #>
+<#@ assembly name="System.Core" #>
+<#@ import namespace="System" #>
+<#@ import namespace="System.Linq" #>
+<#@ import namespace="System.Collections" #>
+<#@ import namespace="System.Collections.Generic" #>
+<#@ import namespace="System.Text" #>
+<#@ import namespace="CS2REACTJS" #>
+<#@ import namespace="CS2REACTJS.Model" #>
+<#@ import namespace="CS2REACTJS.Model.Serializable" #>
+<#@ parameter type="CS2REACTJS.Model.Serializable.ModelViewSerializable" name="Model" #>
+<#@ parameter type="CS2REACTJS.Model.Serializable.DbContextSerializable" name="Context" #>
+<#
+
+    string dataFormattersModelFolder                = "00023-data-formatters.tsx";
+    string BinaryFormatterDataModelClassName        = "BinaryFormatter";
+    string CurrencyFormatterDataModelClassName      = "CurrencyFormatter";
+    string NumberFormatPropsDataModelClassName      = "NumberFormatProps";
+    string DateTimeToStringFunctionName             = "DtTm2Str";
+    string CurrencyToStringFunctionName             = "Currency2Str";
+#>
+
+import React from 'react';
+import NumberFormat from 'react-number-format';
+import { format } from 'date-fns';
+
+export interface <#= NumberFormatPropsDataModelClassName #> {
+  inputRef: (instance: NumberFormat | null) => void;
+  onChange: (event: { target: { name: string; value: string } }) => void;
+  name?: string;
+}
+
+
+export function <#= BinaryFormatterDataModelClassName #>(props: <#= NumberFormatPropsDataModelClassName #>) {
+  const { inputRef, onChange, ...other } = props;
+  const  SEPARATOR: string = ' ';
+  const transform = (value: string) => {
+    return  parseInt((value || '0').toString(), 10).toString(2).replace(/\B(?=(\d{4})+(?!\d))/g, SEPARATOR);
+  };
+  const parse = (value: string) => {
+    return parseInt( ((value || '0').toString()).split(SEPARATOR).join(''), 2).toString(10);
+  };
+  return (
+    <NumberFormat
+      {...other}
+      getInputRef={inputRef}
+      onValueChange={(values) => {
+        onChange({
+          target: {
+            name: props.name ? props.name : '',
+            value: values.value,
+          },
+        });
+      }}
+      isNumericString
+      removeFormatting={parse}
+      format={transform}
+    />
+  );
+}
+
+export function <#= CurrencyFormatterDataModelClassName #>(props: <#= NumberFormatPropsDataModelClassName #>) {
+  const { inputRef, onChange, ...other } = props;
+  return (
+    <NumberFormat
+      {...other}
+      getInputRef={inputRef}
+      onValueChange={(values) => {
+        onChange({
+          target: {
+            name: props.name ? props.name : '',
+            value: values.value,
+          },
+        });
+      }}
+      isNumericString
+      thousandSeparator={true} prefix={'$'}
+      decimalScale={2}
+    />
+  );
+}
+
+export function <#= DateTimeToStringFunctionName #>(val: any, frmtStr: string): string {
+  if(val) {
+    return format(Date.parse(val),frmtStr)
+  }
+  return '';
+}
+
+export function <#= CurrencyToStringFunctionName #>(val: any, prefixStr: string): any {
+  if(val) {
+    return <NumberFormat value={val} displayType={'text'} thousandSeparator={true} prefix={prefixStr} />
+  }
+  return '';
+}
+
+
+
+<#+
+    string GetModelInterfaceName(ModelViewSerializable model, string fileType) {
+        string result="";
+        if ((model == null) || string.IsNullOrEmpty(fileType)) {
+            return result;
+        }
+        if (model.CommonStaffs == null) {
+            return result;
+        }
+        CommonStaffSerializable refItem= 
+            model.CommonStaffs.Where(c => c.FileType == fileType).FirstOrDefault();
+        if (refItem == null) {
+            return result;
+        }
+        if(string.IsNullOrEmpty(refItem.FileName)) {
+            return result;
+        }
+        string fn = refItem.FileName.Replace(".interface","-interface");
+        StringBuilder sb = new StringBuilder();
+        bool toUpper = true;
+        foreach (char c in fn)
+        {
+            if( c == '-' )
+            {
+                toUpper = true;
+            } else
+            {
+                if (toUpper)
+                {
+                    sb.Append(Char.ToUpper(c));
+                    toUpper = false;
+                }
+                else
+                {
+                    sb.Append(c);
+                }
+            }
+                
+        }
+        return "I"+sb.ToString();
+    }
+#>

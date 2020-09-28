@@ -1,0 +1,53 @@
+{
+  "Description": [
+    "",
+    "                                BEFORE YOU START !!!",
+    "1.",
+    "Please make sure that you have already run the following scripts for the current ViewModel",
+    "                                01100-.interface.tsx",
+    "                                01200-Page.interface.tsx",
+    "                                01300-Filter.interface.tsx",
+    "                                01400-.service.tsx",
+    "",
+    "2.",
+    "Please make sure that you selected src\\components\\your-view-model-name folder",
+    "  where [your-view-model-name] is a name of currently selected ViewModel",
+    "",
+    "3.",
+    " 14200-AspNetChkMform.json batch must be run for: ",
+    "     aspnetmodel-view",
+    "",
+    "4.",
+    " do NOT run this batch for: ",
+    "     aspnetdashboard-view",
+    "     aspnetrole-view",
+    "     aspnetrolemask-view",
+    "     aspnetuser-view",
+    "     aspnetusermask-view",
+    "     aspnetuserroles-view",
+    "",
+    ""
+  ],
+  "BatchItems": [
+    {
+      "DestinationFolder": "interfaces",
+      "GeneratorType": "02198-Checkedmodel-state.interface.tsx",
+      "GeneratorSript": "Checkedmodel-state.interface.tsx.t4"
+    },
+    {
+      "DestinationFolder": "interfaces",
+      "GeneratorType": "02199-Checkedmodel-props.interface.tsx",
+      "GeneratorSript": "Checkedmodel-props.interface.tsx.t4"
+    },
+    {
+      "DestinationFolder": "components\\chkform",
+      "GeneratorType": "02200-Checkedmodel.component.css",
+      "GeneratorSript": "Checkedmodel.component.css.t4"
+    },
+    {
+      "DestinationFolder": "components\\chkform",
+      "GeneratorType": "02200-Checkedmodel.component.tsx",
+      "GeneratorSript": "Checkedmodel.component.fluentui.tsx.t4"
+    }
+  ]
+}

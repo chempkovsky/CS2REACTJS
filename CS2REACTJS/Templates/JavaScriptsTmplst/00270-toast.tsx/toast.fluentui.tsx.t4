@@ -1,0 +1,220 @@
+﻿<#@ template language="C#" HostSpecific="True" Debug="True" #>
+<#@ output extension="tsx" #>
+<#@ assembly name="System.Core" #>
+<#@ import namespace="System" #>
+<#@ import namespace="System.IO" #>
+<#@ import namespace="System.Linq" #>
+<#@ import namespace="System.Collections" #>
+<#@ import namespace="System.Collections.Generic" #>
+<#@ import namespace="System.Text" #>
+<#@ import namespace="CS2REACTJS" #>
+<#@ import namespace="CS2REACTJS.Model" #>
+<#@ import namespace="CS2REACTJS.Model.Serializable" #>
+<#@ parameter type="CS2REACTJS.Model.Serializable.ModelViewSerializable" name="Model" #>
+<#@ parameter type="CS2REACTJS.Model.Serializable.DbContextSerializable" name="Context" #>
+<#
+
+    
+    string toastDataModelFolder                 = "00270-toast.tsx";
+    string toastDataModelClassName              = GetModelClassName(Model, toastDataModelFolder);
+
+
+#>
+
+import React, { Component } from "react";
+import  { MessageBar, MessageBarType, mergeStyleSets, Stack, StackItem } from '@fluentui/react';
+//import  {  getTheme } from '@fluentui/react';
+// const scheme = getTheme();
+
+const styles = mergeStyleSets({
+    toast: {
+        position: 'absolute',
+        zIndex: 100000,
+        width: '320px',
+        right: 20,
+        top: 78,
+  },
+});
+
+interface IToastItemInterface {
+     messageType: MessageBarType; 
+     message: string; 
+}
+
+interface IToastStateInterface {
+    notifications: Array<IToastItemInterface>;
+}
+
+export default class <#= toastDataModelClassName #>  extends Component<any, IToastStateInterface> {
+    constructor(props: any) {
+        super(props);
+        this.state = {
+            notifications:[],
+        }
+        this.addItem = this.addItem.bind(this);
+        this.removeItem = this.removeItem.bind(this);
+    }
+    removeItem(itm: IToastItemInterface) {
+        let ntfctns = [ ...this.state.notifications];
+        const i = ntfctns.indexOf(itm);
+        if(i > -1) {
+            ntfctns.splice(i, 1);
+            this.setState({notifications: ntfctns})
+        }
+    }
+    addItem(message: string, timeOut: boolean, messageType?: MessageBarType) {
+        let tp: MessageBarType = MessageBarType.warning;
+        if (!(typeof messageType === 'undefined')) {
+            if(messageType !== null) {
+                tp =  messageType;
+            }
+        }
+        const titm: IToastItemInterface = {messageType: tp, message: message  };
+        let ntfctns = [ ...this.state.notifications];
+        ntfctns.push(titm);
+        this.setState({notifications: ntfctns});
+        if(timeOut) {
+            setTimeout(() => {
+                this.removeItem(titm)
+            }, 4000);
+        }
+    }
+    render() {
+        return (
+            <Stack horizontal={false}  tokens={{childrenGap:8}} className={styles.toast} >
+                {this.state.notifications.length ? (
+                    this.state.notifications.map((item, index) => (
+                        <StackItem  key={index}>
+                            <MessageBar key={index} dismissButtonAriaLabel="Close" isMultiline={true} messageBarType={item.messageType} onDismiss={()=>this.removeItem(item)}>
+                                { item.message }
+                            </MessageBar>
+                        </StackItem>
+                    ))
+                ) : null}            
+            </Stack>
+    )}
+}
+
+<#+
+    string GetModelInterfaceName(ModelViewSerializable model, string fileType) {
+        string result="";
+        if ((model == null) || string.IsNullOrEmpty(fileType)) {
+            return result;
+        }
+        if (model.CommonStaffs == null) {
+            return result;
+        }
+        CommonStaffSerializable refItem= 
+            model.CommonStaffs.Where(c => c.FileType == fileType).FirstOrDefault();
+        if (refItem == null) {
+            return result;
+        }
+        if(string.IsNullOrEmpty(refItem.FileName)) {
+            return result;
+        }
+        string fn = refItem.FileName.Replace(".interface","-interface");
+        StringBuilder sb = new StringBuilder();
+        bool toUpper = true;
+        foreach (char c in fn)
+        {
+            if( c == '-' )
+            {
+                toUpper = true;
+            } else
+            {
+                if (toUpper)
+                {
+                    sb.Append(Char.ToUpper(c));
+                    toUpper = false;
+                }
+                else
+                {
+                    sb.Append(c);
+                }
+            }
+                
+        }
+        return "I"+sb.ToString();
+    }
+    string GetModelClassName(ModelViewSerializable model, string fileType) {
+        string result="";
+        if ((model == null) || string.IsNullOrEmpty(fileType)) {
+            return result;
+        }
+        if (model.CommonStaffs == null) {
+            return result;
+        }
+        CommonStaffSerializable refItem= 
+            model.CommonStaffs.Where(c => c.FileType == fileType).FirstOrDefault();
+        if (refItem == null) {
+            return result;
+        }
+        if(string.IsNullOrEmpty(refItem.FileName)) {
+            return result;
+        }
+        string fn = refItem.FileName;
+        StringBuilder sb = new StringBuilder();
+        bool toUpper = true;
+        foreach (char c in fn)
+        {
+            if( c == '-' )
+            {
+                toUpper = true;
+            } else
+            {
+                if (toUpper)
+                {
+                    sb.Append(Char.ToUpper(c));
+                    toUpper = false;
+                }
+                else
+                {
+                    sb.Append(c);
+                }
+            }
+                
+        }
+        return sb.ToString();
+    }
+    string GetFolderName(ModelViewSerializable model, string refFolder, string currFolder) {
+        string result="./";
+        if ((model == null) || string.IsNullOrEmpty(refFolder) || string.IsNullOrEmpty(currFolder)) {
+            return result;
+        }
+        if (model.CommonStaffs == null) {
+            return result;
+        }
+        CommonStaffSerializable refItem= 
+            model.CommonStaffs.Where(c => c.FileType == refFolder).FirstOrDefault();
+        CommonStaffSerializable curItem= 
+            model.CommonStaffs.Where(c => c.FileType == currFolder).FirstOrDefault();
+        if ((refItem == null) || (curItem == null)) {
+            return result;
+        }
+        string[] refFolders  = new string[] {};
+        if(!string.IsNullOrEmpty(refItem.FileFolder)) {
+            refFolders  = refItem.FileFolder.Split(new string[] { "\\" }, StringSplitOptions.None);
+        }
+        string[] currFolders = new string[]{};
+        if(!string.IsNullOrEmpty(curItem.FileFolder)) {
+            currFolders  = curItem.FileFolder.Split(new string[] { "\\" }, StringSplitOptions.None);
+        }
+        int refLen = refFolders.Length;
+        int currLen = currFolders.Length;
+        int minLen = refLen < currLen ? refLen : currLen;
+        int cnt= 0;
+        for(int i = 0; i < minLen; i++) {
+            if ( !refFolders[i].Equals(currFolders[i], StringComparison.OrdinalIgnoreCase) ) break;
+            cnt++;
+        }
+        if(currLen > cnt) {
+            result += string.Join("", Enumerable.Repeat("../", currLen - cnt));
+        }
+        if(refLen > cnt) {
+            result += string.Join("/", refFolders, cnt, refLen - cnt) + "/";
+        }
+        result += refItem.FileName;
+        return result;
+    }
+
+#>

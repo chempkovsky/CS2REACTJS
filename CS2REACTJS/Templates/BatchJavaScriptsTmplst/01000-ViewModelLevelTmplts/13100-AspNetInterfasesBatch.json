@@ -1,0 +1,74 @@
+{
+  "Description": [
+    "",
+    "                                BEFORE YOU START !!!",
+    "",
+    "1.",
+    "1.1.",
+    " Please import the common staff from the application context repository",
+    " into the current context (or aspnet context).",
+    " You must remember, that imported common staff is not persistent yet",
+    " until you click save button.",
+    " To make Save button available you should generate any item",
+    " So your steps are as follows",
+    "     Import common staff from the application context repository",
+    "     Do not close the Wizard",
+    "     Generate any interface for aspnet...-view",
+    "     Save generated code",
+    "     OR",
+    "     Import common staff from the application context repository",
+    "     Do not close the Wizard",
+    "     Run current batch for one of the aspnet view",
+    "     And that's it",
+    "1.2.",
+    " Here is How to import the common staff from the application context repository:",
+    "     1.2.01. Right-click the folder of one of the aspnet...-view",
+    "     1.2.02. In the context menu choose Add",
+    "     1.2.03. Choose 4 JavaScripts Wizard",
+    "     1.2.04. On the first Wizard's Form after invitation select aspnet context and click next",
+    "     1.2.05. On the SELECT VIEW Wizard's form choose '==Context==' and click next",
+    "     1.2.06. On the ACTION TYPE Wizard's form click 'import common staff' button and choose",
+    "             application context repository file.",
+    "     1.2.07. You find application context repository file in the solution folder.",
+    "     1.2.08. On the ACTION TYPE Wizard's form click back button.",
+    "     1.2.09. On the SELECT VIEW Wizard's form choose the View of the step 1.2.01. and click next",
+    "     1.2.10. Run current '13100-AspNetInterfasesBatch.json'",
+    "",
+    "2.",
+    " aspnet interfaces batch must be run for: ",
+    "     aspnetdashboard-view",
+    "     aspnetmodel-view",
+    "     aspnetrole-view",
+    "     aspnetrolemask-view",
+    "     aspnetuser-view",
+    "     aspnetusermask-view",
+    "     aspnetuserroles-view",
+    "",
+    "3.",
+    " Code generation order is not important for interfaces:",
+    "  (Which ViewModel is the first, which ViewModel is the next, and which ViewModel is the last)",
+    "",
+    "4.",
+    " Please make sure that you selected src\\components\\your-view-model-name folder",
+    "   where [your-view-model-name] is a name of currently selected ViewModel",
+    ""
+  ],
+  "BatchItems": [
+    {
+      "DestinationFolder": "interfaces",
+      "GeneratorType": "01100-.interface.tsx",
+      "GeneratorSript": "interface.tsx.t4"
+    },
+    {
+      "DestinationFolder": "interfaces",
+      "GeneratorType": "01200-Page.interface.tsx",
+      "GeneratorSript": "Page.interface.tsx.t4"
+    },
+    {
+      "DestinationFolder": "interfaces",
+      "GeneratorType": "01300-Filter.interface.tsx",
+      "GeneratorSript": "Filter.interface.tsx.t4"
+    }
+  ]
+
+}

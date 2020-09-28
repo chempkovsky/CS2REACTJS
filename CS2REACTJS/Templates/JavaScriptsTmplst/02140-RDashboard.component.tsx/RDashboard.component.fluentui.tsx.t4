@@ -1,0 +1,659 @@
+﻿<#@ template language="C#" HostSpecific="True" Debug="True" #>
+<#@ output extension="tsx" #>
+<#@ assembly name="System.Core" #>
+<#@ import namespace="System" #>
+<#@ import namespace="System.Linq" #>
+<#@ import namespace="System.Collections" #>
+<#@ import namespace="System.Collections.Generic" #>
+<#@ import namespace="System.Text" #>
+<#@ import namespace="CS2REACTJS" #>
+<#@ import namespace="CS2REACTJS.Model" #>
+<#@ import namespace="CS2REACTJS.Model.Serializable" #>
+<#@ parameter type="CS2REACTJS.Model.Serializable.ModelViewSerializable" name="Model" #>
+<#@ parameter type="CS2REACTJS.Model.Serializable.DbContextSerializable" name="Context" #>
+
+<#
+    
+    string rDashboardDataModelFolder                = "02140-RDashboard.component.tsx";
+    string rDashboardDataModelClassName             = GetModelComponentClassName(Model, rDashboardDataModelFolder);
+
+    string rDashboardCssDataModelFolder             = "02140-RDashboard.component.css";
+
+    string rDashboardStateDataModelFolder           = "02139-RDashboard-state.interface.tsx";
+    string rDashboardStateDataModelClassName        = GetModelInterfaceName(Model, rDashboardStateDataModelFolder);
+
+    string lformComponentDataModelFolder            = "01600-Lform.component.tsx";
+    string lformComponentDataModelClassName         = GetModelComponentClassName(Model, lformComponentDataModelFolder);
+
+    string o2mComponentDataModelFolder              = "01700-O2m.component.tsx";
+    string o2mComponentDataModelClassName           = GetModelComponentClassName(Model, o2mComponentDataModelFolder);
+
+    string rroutingComponentDataModelFolder        = "01940-Rrouting.component.tsx";
+    string rroutingComponentDataModelClassName     = GetModelComponentClassName(Model, rroutingComponentDataModelFolder);
+
+    string appGlblSettingsContextFolder             = "00029-app-glbl-settings.context.tsx";
+    string appGlblSettingsContextClassName          = GetContextContextName(Context, appGlblSettingsContextFolder);
+
+    string webServiceFilterEventDataModelFolder      = "00062-web-service-filter-event.interface.tsx";
+    string webServiceFilterEventDataModelClassName   = GetContextInterfaceName(Context, webServiceFilterEventDataModelFolder);
+
+    string webServiceFilterMenuDataModelFolder      = "00063-web-service-filter-menu.interface.tsx";
+    string webServiceFilterMenuDataModelClassName   = GetContextInterfaceName(Context, webServiceFilterMenuDataModelFolder);
+
+    string currFlexScreenFunctionFolder             = "00044-curr-flex-screen.tsx";
+    string currFlexScreenFunctionName               = GetContextFunctionName(Context, currFlexScreenFunctionFolder);
+
+
+    string CanAddPropName                           = "canAdd";
+    string CanUpdPropName                           = "canUpdate";
+    string CanDelPropName                           = "canDelete";
+    string ShowAddFltItemPropName                   = "showAddFltItem";
+    string ShowFilterPropName                       = "showFilter";
+    string CaptionPropName                          = "caption";
+    string CanAddDetailPropName                     = "canDetailAdd";
+    string CanUpdDetailPropName                     = "canDetailUpdate";
+    string CanDelDetailPropName                     = "canDetailDelete";
+    string ShowDetailAddFltItemPropName             = "showDetailAddFltItem";
+    string ShowDetailFilterPropName                 = "showDetailFilter";
+    string ContMenuItemsPropName                    = "contMenuItems";
+    string OnContMenuItemMethodName                 = "onContMenuItem";
+    string MaxHeightPropName                        = "maxHeight";
+    string FilterMaxHeightPropName                  = "filterMaxHeight";
+    string ShowBackBtnPropName                      = "showBackBtn";
+
+
+    string curBreakPointPropName                    = "curBp";
+
+    string lfExpPropName                            = "lfExp";
+    string lfColsPropName                           = "lfcols";
+    string lfRowsPropName                           = "lfrows";
+    string lfcontainerMenuItemsPropName             = "lfContMenuItems";
+    string lfMaxHeightPropName                      = "lfMaxHeight";
+    string lfFilterMaxHeightPropName                = "lfFilterMaxHeight";
+
+    string o2mExpPropName                           = "o2mExp";
+    string o2mColsPropName                          = "o2mcols";
+    string o2mRowsPropName                          = "o2mrows";
+    string o2mcontainerMenuItemsPropName            = "o2mContMenuItems";
+    string o2mMaxHeightPropName                     = "o2mMaxHeight";
+    string o2mFilterMaxHeightPropName               = "o2mFilterMaxHeight";
+
+    string rtExpPropName                            = "rtExp";
+    string rtColsPropName                           = "rtcols";
+    string rtRowsPropName                           = "rtrows";
+    string rtcontainerMenuItemsPropName             = "rtContMenuItems";
+    string rtMaxHeightPropName                      = "rtMaxHeight";
+    string rtFilterMaxHeightPropName                = "rtFilterMaxHeight";
+
+#>
+
+import React, { Component, Suspense, lazy  } from 'react';
+import { Route } from 'react-router-dom';
+import { getTheme } from '@fluentui/react';
+import '<#= GetFolderName(Model, rDashboardCssDataModelFolder, rDashboardDataModelFolder)#>.css';
+import <#= rDashboardStateDataModelClassName #>  from '<#= GetFolderName(Model, rDashboardStateDataModelFolder, rDashboardDataModelFolder)#>';
+import <#= appGlblSettingsContextClassName #> from '<#= GetCommonFolderName(Model, Context, appGlblSettingsContextFolder, rDashboardDataModelFolder) #>';
+import <#= webServiceFilterMenuDataModelClassName #> from "<#= GetCommonFolderName(Model, Context, webServiceFilterMenuDataModelFolder, rDashboardDataModelFolder) #>";
+import <#= webServiceFilterEventDataModelClassName #> from "<#= GetCommonFolderName(Model, Context, webServiceFilterEventDataModelFolder, rDashboardDataModelFolder) #>";
+import <#= currFlexScreenFunctionName #> from "<#= GetCommonFolderName(Model, Context, currFlexScreenFunctionFolder, rDashboardDataModelFolder) #>";
+<# if (isComponentGenerated(Model, lformComponentDataModelFolder)) { #>
+const  <#= lformComponentDataModelClassName #>  = lazy(() => import('<#= GetFolderName(Model, lformComponentDataModelFolder, rDashboardDataModelFolder)#>'));
+<# } #>
+<# if (isComponentGenerated(Model, o2mComponentDataModelFolder)) { #>
+const  <#= o2mComponentDataModelClassName #>  = lazy(() => import('<#= GetFolderName(Model, o2mComponentDataModelFolder, rDashboardDataModelFolder)#>'));
+<# } #>
+<# if (isComponentGenerated(Model, rroutingComponentDataModelFolder)) { #>
+const  <#= rroutingComponentDataModelClassName #>  = lazy(() => import('<#= GetFolderName(Model, rroutingComponentDataModelFolder, rDashboardDataModelFolder)#>'));
+<# } #>
+const scheme = getTheme();
+
+export default class <#= rDashboardDataModelClassName #> extends Component<any, <#= rDashboardStateDataModelClassName #>> {
+    static contextType = <#= appGlblSettingsContextClassName #>;
+
+    <#= lfExpPropName #>: boolean = false;
+    <#= lfMaxHeightPropName #>: Array<number> = [6,6,12];
+    <#= lfFilterMaxHeightPropName #>: Array<number> = [1,1,2];
+    <#= lfColsPropName #>: Array<number> = [1,1,2,1,1,2];
+    <#= lfRowsPropName #>: Array<number> = [1,1,1,1,1,2];
+
+    <#= o2mExpPropName #>: boolean = false;
+    <#= o2mMaxHeightPropName #>: Array<number> = [5,5,5];
+    <#= o2mFilterMaxHeightPropName #>: Array<number> = [1,1,1];
+    <#= o2mColsPropName #>: Array<number> = [1,1,2,1,1,2];
+    <#= o2mRowsPropName #>: Array<number> = [2,2,2,1,1,1];
+
+    <#= rtExpPropName #>: boolean = false;
+    <#= rtMaxHeightPropName #>: Array<number> = [6,6,12];
+    <#= rtFilterMaxHeightPropName #>: Array<number> = [1,1,2];
+    <#= rtColsPropName #>: Array<number> = [1,1,2,1,1,2];
+    <#= rtRowsPropName #>: Array<number> = [1,1,1,1,1,2];
+
+
+    constructor(props: any) {
+        super(props);
+        this.state = {
+            <#= curBreakPointPropName #>: 1,
+
+            <#= lfExpPropName #>: false,
+            <#= lfMaxHeightPropName #>: [6,6,12],
+            <#= lfFilterMaxHeightPropName #>: [1,1,2],
+            <#= lfColsPropName #>: [1,1,2,1,1,2],
+            <#= lfRowsPropName #>: [1,1,1,1,1,2],
+            <#= lfcontainerMenuItemsPropName #>: [  {id: '<#= lfcontainerMenuItemsPropName #>', caption: 'expand(collapse)', iconName: 'FullScreen', iconColor: scheme.semanticColors.menuIcon, enabled: true } ],
+
+            <#= o2mExpPropName #>: false,
+            <#= o2mMaxHeightPropName #>: [5,5,5],
+            <#= o2mFilterMaxHeightPropName #>: [1,1,1],
+            <#= o2mColsPropName #>: [1,1,2,1,1,2],
+            <#= o2mRowsPropName #>: [2,2,2,1,1,1],
+            <#= o2mcontainerMenuItemsPropName #>: [  {id: '<#= o2mcontainerMenuItemsPropName #>', caption: 'expand(collapse)', iconName: 'FullScreen', iconColor: scheme.semanticColors.menuIcon, enabled: true } ], 
+
+            <#= rtExpPropName #>: false,
+            <#= rtMaxHeightPropName #>: [6,6,12],
+            <#= rtFilterMaxHeightPropName #>: [1,1,2],
+            <#= rtColsPropName #>: [1,1,2,1,1,2],
+            <#= rtRowsPropName #>: [1,1,1,1,1,2],
+            <#= rtcontainerMenuItemsPropName #>: [  {id: '<#= rtcontainerMenuItemsPropName #>', caption: 'expand(collapse)', iconName: 'FullScreen', iconColor: scheme.semanticColors.menuIcon, enabled: true } ],
+        }
+        this.<#= OnContMenuItemMethodName #> = this.<#= OnContMenuItemMethodName #>.bind(this);
+        this.updateSettings = this.updateSettings.bind(this);
+        this.handleResize = this.handleResize.bind(this);
+    }
+
+    updateSettings() {
+<# if (!isComponentGenerated(Model, lformComponentDataModelFolder)) { #> /* the module "<#= lformComponentDataModelFolder #>" has not been generated for the selected model <# } #>
+        this.<#= lfColsPropName #>[0] = this.<#= lfExpPropName #> ? this.<#= lfColsPropName #>[3] : this.<#= lfColsPropName #>[this.state.<#= curBreakPointPropName #>] * this.<#= lfColsPropName #>[3];
+        this.<#= lfRowsPropName #>[0] = this.<#= lfExpPropName #> ? this.<#= lfRowsPropName #>[3] : this.<#= lfRowsPropName #>[this.state.<#= curBreakPointPropName #>] * this.<#= lfRowsPropName #>[3];
+        this.setState({<#= lfColsPropName #>: this.<#= lfColsPropName #>, <#= lfRowsPropName #>: this.<#= lfRowsPropName #>});
+<# if (!isComponentGenerated(Model, lformComponentDataModelFolder)) { #> */ <# } #>
+<# if (!isComponentGenerated(Model, o2mComponentDataModelFolder)) { #> /* the module "<#= o2mComponentDataModelFolder #>" has not been generated for the selected model <# } #>
+        this.<#= o2mColsPropName #>[0] = this.<#= o2mExpPropName #> ? this.<#= o2mColsPropName #>[3] : this.<#= o2mColsPropName #>[this.state.<#= curBreakPointPropName #>] * this.<#= o2mColsPropName #>[3];
+        this.<#= o2mRowsPropName #>[0] = this.<#= o2mExpPropName #> ? this.<#= o2mRowsPropName #>[3] : this.<#= o2mRowsPropName #>[this.state.<#= curBreakPointPropName #>] * this.<#= o2mRowsPropName #>[3];
+        this.setState({<#= o2mColsPropName #>: this.<#= o2mColsPropName #>, <#= o2mRowsPropName #>: this.<#= o2mRowsPropName #>});
+<# if (!isComponentGenerated(Model, o2mComponentDataModelFolder)) { #> */ <# } #>
+<# if (!isComponentGenerated(Model, rroutingComponentDataModelFolder)) { #> /* the module "<#= rroutingComponentDataModelFolder #>" is not generated for the selected model <# } #>
+        this.<#= rtColsPropName #>[0] = this.<#= rtExpPropName #> ? this.<#= rtColsPropName #>[3] : this.<#= rtColsPropName #>[this.state.<#= curBreakPointPropName #>] * this.<#= rtColsPropName #>[3];
+        this.<#= rtRowsPropName #>[0] = this.<#= rtExpPropName #> ? this.<#= rtRowsPropName #>[3] : this.<#= rtRowsPropName #>[this.state.<#= curBreakPointPropName #>] * this.<#= rtRowsPropName #>[3];
+        this.setState({<#= rtColsPropName #>: this.<#= rtColsPropName #>, <#= rtRowsPropName #>: this.<#= rtRowsPropName #>});
+<# if (!isComponentGenerated(Model, rroutingComponentDataModelFolder)) { #> */ <# } #>
+    }
+
+
+    <#= OnContMenuItemMethodName #>(cmi: <#= webServiceFilterEventDataModelClassName #>) {
+        let setDefault = true;
+        if (cmi) {
+            if(cmi.id === '<#= lfcontainerMenuItemsPropName #>') {
+                this.<#= lfExpPropName #> = !this.<#= lfExpPropName #>;
+                if(this.<#= lfExpPropName #>) {
+                    setDefault = false;
+                    this.<#= lfColsPropName #>[3] = this.<#= lfColsPropName #>[5];
+                    this.<#= lfRowsPropName #>[3] = this.<#= lfRowsPropName #>[5];
+                    this.<#= lfMaxHeightPropName #>[0] = this.<#= lfMaxHeightPropName #>[2];
+                    this.<#= lfFilterMaxHeightPropName #>[0] = this.<#= lfFilterMaxHeightPropName #>[2];
+                    this.setState({<#= lfColsPropName #>: this.<#= lfColsPropName #>, <#= lfRowsPropName #>: this.<#= lfRowsPropName #>, <#= lfMaxHeightPropName #>: this.<#= lfMaxHeightPropName #>, <#= lfFilterMaxHeightPropName #>: this.<#= lfFilterMaxHeightPropName #>});
+<# if ((!isComponentGenerated(Model, o2mComponentDataModelFolder)) && isComponentGenerated(Model, lformComponentDataModelFolder)) { #> /* the module "<#= o2mComponentDataModelFolder #>" is not generated for the selected model <# } #>
+                    this.<#= o2mColsPropName #>[3] = 0;
+                    this.<#= o2mRowsPropName #>[3] = 0;
+                    this.setState({<#= o2mColsPropName #>: this.<#= o2mColsPropName #>, <#= o2mRowsPropName #>: this.<#= o2mRowsPropName #>});
+<# if ((!isComponentGenerated(Model, o2mComponentDataModelFolder))  && isComponentGenerated(Model, lformComponentDataModelFolder)) { #> */ <# } #>
+<# if ((!isComponentGenerated(Model, rroutingComponentDataModelFolder)) && isComponentGenerated(Model, lformComponentDataModelFolder)) { #> /* the module "<#= rroutingComponentDataModelFolder #>" is not generated for the selected model <# } #>
+                    this.<#= rtColsPropName #>[3] = 0;
+                    this.<#= rtRowsPropName #>[3] = 0;
+                    this.setState({<#= rtColsPropName #>: this.<#= rtColsPropName #>, <#= rtRowsPropName #>: this.<#= rtRowsPropName #>});
+<# if ((!isComponentGenerated(Model, rroutingComponentDataModelFolder))  && isComponentGenerated(Model, lformComponentDataModelFolder)) { #> */ <# } #>
+                }
+            } else if(cmi.id === '<#= o2mcontainerMenuItemsPropName #>') {
+                this.<#= o2mExpPropName #> = !this.<#= o2mExpPropName #>;
+                if(this.<#= o2mExpPropName #>) {
+                    setDefault = false;
+<# if ((!isComponentGenerated(Model, lformComponentDataModelFolder)) && isComponentGenerated(Model, o2mComponentDataModelFolder)) { #> /* the module "<#= lformComponentDataModelFolder #>" is not generated for the selected model <# } #>
+                    this.<#= lfColsPropName #>[3] = 0;
+                    this.<#= lfRowsPropName #>[3] = 0;
+                    this.setState({<#= lfColsPropName #>: this.<#= lfColsPropName #>, <#= lfRowsPropName #>: this.<#= lfRowsPropName #>});
+<# if ((!isComponentGenerated(Model, lformComponentDataModelFolder)) && isComponentGenerated(Model, o2mComponentDataModelFolder)) { #> */ <# } #>
+<# if ((!isComponentGenerated(Model, rroutingComponentDataModelFolder)) && isComponentGenerated(Model, o2mComponentDataModelFolder)) { #> /* the module "<#= rroutingComponentDataModelFolder #>" is not generated for the selected model <# } #>
+                    this.<#= rtColsPropName #>[3] = 0;
+                    this.<#= rtRowsPropName #>[3] = 0;
+                    this.setState({<#= rtColsPropName #>: this.<#= rtColsPropName #>, <#= rtRowsPropName #>: this.<#= rtRowsPropName #>});
+<# if ((!isComponentGenerated(Model, rroutingComponentDataModelFolder))  && isComponentGenerated(Model, o2mComponentDataModelFolder)) { #> */ <# } #>
+                    this.<#= o2mColsPropName #>[3] = this.<#= o2mColsPropName #>[5];
+                    this.<#= o2mRowsPropName #>[3] = this.<#= o2mRowsPropName #>[5];
+                    this.<#= o2mMaxHeightPropName #>[0] = this.<#= o2mMaxHeightPropName #>[2];
+                    this.<#= o2mFilterMaxHeightPropName #>[0] = this.<#= o2mFilterMaxHeightPropName #>[2];
+                    this.setState({<#= o2mColsPropName #>: this.<#= o2mColsPropName #>, <#= o2mRowsPropName #>: this.<#= o2mRowsPropName #>, <#= o2mMaxHeightPropName #>: this.<#= o2mMaxHeightPropName #>, <#= o2mFilterMaxHeightPropName #>: this.<#= o2mFilterMaxHeightPropName #>});
+                }
+            } else if(cmi.id === '<#= rtcontainerMenuItemsPropName #>') {
+                this.<#= rtExpPropName #> = !this.<#= rtExpPropName #>;
+                if(this.<#= rtExpPropName #>) {
+                    setDefault = false;
+<# if ((!isComponentGenerated(Model, lformComponentDataModelFolder)) && isComponentGenerated(Model, o2mComponentDataModelFolder)) { #> /* the module "<#= lformComponentDataModelFolder #>" is not generated for the selected model <# } #>
+                    this.<#= lfColsPropName #>[3] = 0;
+                    this.<#= lfRowsPropName #>[3] = 0;
+                    this.setState({<#= lfColsPropName #>: this.<#= lfColsPropName #>, <#= lfRowsPropName #>: this.<#= lfRowsPropName #>});
+<# if ((!isComponentGenerated(Model, lformComponentDataModelFolder)) && isComponentGenerated(Model, o2mComponentDataModelFolder)) { #> */ <# } #>
+<# if ((!isComponentGenerated(Model, o2mComponentDataModelFolder)) && isComponentGenerated(Model, lformComponentDataModelFolder)) { #> /* the module "<#= o2mComponentDataModelFolder #>" is not generated for the selected model <# } #>
+                    this.<#= o2mColsPropName #>[3] = 0;
+                    this.<#= o2mRowsPropName #>[3] = 0;
+                    this.setState({<#= o2mColsPropName #>: this.<#= o2mColsPropName #>, <#= o2mRowsPropName #>: this.<#= o2mRowsPropName #>});
+<# if ((!isComponentGenerated(Model, o2mComponentDataModelFolder))  && isComponentGenerated(Model, lformComponentDataModelFolder)) { #> */ <# } #>
+                    this.<#= rtColsPropName #>[3] = this.<#= rtColsPropName #>[5];
+                    this.<#= rtRowsPropName #>[3] = this.<#= rtRowsPropName #>[5];
+                    this.<#= rtMaxHeightPropName #>[0] = this.<#= rtMaxHeightPropName #>[2];
+                    this.<#= rtFilterMaxHeightPropName #>[0] = this.<#= rtFilterMaxHeightPropName #>[2];
+                    this.setState({<#= rtColsPropName #>: this.<#= rtColsPropName #>, <#= rtRowsPropName #>: this.<#= rtRowsPropName #>, <#= rtMaxHeightPropName #>: this.<#= rtMaxHeightPropName #>, <#= lfFilterMaxHeightPropName #>: this.<#= rtFilterMaxHeightPropName #>});
+                }
+            }
+            if(setDefault) {
+<# if (!isComponentGenerated(Model, lformComponentDataModelFolder)) { #> /* the module "<#= lformComponentDataModelFolder #>" is not generated for the selected model <# } #>
+                this.<#= lfColsPropName #>[3] = this.<#= lfColsPropName #>[4];
+                this.<#= lfRowsPropName #>[3] = this.<#= lfRowsPropName #>[4];
+                this.<#= lfMaxHeightPropName #>[0] = this.<#= lfMaxHeightPropName #>[1];
+                this.<#= lfFilterMaxHeightPropName #>[0] = this.<#= lfFilterMaxHeightPropName #>[1];
+                this.setState({<#= lfColsPropName #>: this.<#= lfColsPropName #>, <#= lfRowsPropName #>: this.<#= lfRowsPropName #>, <#= lfMaxHeightPropName #>: this.<#= lfMaxHeightPropName #>, <#= lfFilterMaxHeightPropName #>: this.<#= lfFilterMaxHeightPropName #>});
+<# if (!isComponentGenerated(Model, lformComponentDataModelFolder)) { #> */ <# } #>
+<# if (!isComponentGenerated(Model, o2mComponentDataModelFolder)) { #> /* the module "<#= o2mComponentDataModelFolder #>" is not generated for the selected model <# } #>
+                this.<#= o2mColsPropName #>[3] = this.<#= o2mColsPropName #>[4];
+                this.<#= o2mRowsPropName #>[3] = this.<#= o2mRowsPropName #>[4];
+                this.<#= o2mMaxHeightPropName #>[0] = this.<#= o2mMaxHeightPropName #>[1];
+                this.<#= o2mFilterMaxHeightPropName #>[0] = this.<#= o2mFilterMaxHeightPropName #>[1];
+                this.setState({<#= o2mColsPropName #>: this.<#= o2mColsPropName #>, <#= o2mRowsPropName #>: this.<#= o2mRowsPropName #>, <#= o2mMaxHeightPropName #>: this.<#= o2mMaxHeightPropName #>, <#= o2mFilterMaxHeightPropName #>: this.<#= o2mFilterMaxHeightPropName #>});
+<# if (!isComponentGenerated(Model, o2mComponentDataModelFolder)) { #> */ <# } #>
+<# if ((!isComponentGenerated(Model, rroutingComponentDataModelFolder)) && isComponentGenerated(Model, lformComponentDataModelFolder)) { #> /* the module "<#= rroutingComponentDataModelFolder #>" is not generated for the selected model <# } #>
+                this.<#= rtColsPropName #>[3] = this.<#= rtColsPropName #>[4];
+                this.<#= rtRowsPropName #>[3] = this.<#= rtRowsPropName #>[4];
+                this.<#= rtMaxHeightPropName #>[0] = this.<#= rtMaxHeightPropName #>[1];
+                this.<#= rtFilterMaxHeightPropName #>[0] = this.<#= rtFilterMaxHeightPropName #>[1];
+                this.setState({<#= rtColsPropName #>: this.<#= rtColsPropName #>, <#= rtRowsPropName #>: this.<#= rtRowsPropName #>, <#= rtMaxHeightPropName #>: this.<#= rtMaxHeightPropName #>, <#= lfFilterMaxHeightPropName #>: this.<#= rtFilterMaxHeightPropName #>});
+<# if ((!isComponentGenerated(Model, rroutingComponentDataModelFolder))  && isComponentGenerated(Model, lformComponentDataModelFolder)) { #> */ <# } #>
+            }
+            this.updateSettings();
+        }
+    }
+    handleResize() {
+        let <#= curBreakPointPropName #> = 2;
+        const cfs: string = <#= currFlexScreenFunctionName #>();
+        if(cfs === 'lg') { <#= curBreakPointPropName #> = 1; }
+        if(<#= curBreakPointPropName #> !== this.state.<#= curBreakPointPropName #>) {
+            this.setState({<#= curBreakPointPropName #>: <#= curBreakPointPropName #>}, this.updateSettings);
+        }
+    }
+    componentDidMount() {
+        window.addEventListener('resize', this.handleResize);
+    }
+    componentWillUnmount() {
+        window.removeEventListener('resize', this.handleResize);
+    }
+    render () {
+        return(
+            <div className="dashboard-grid-container">
+                <h3>Dashboard for <#= Model.ViewName #></h3>
+                <div className="gridlistcls">
+<# if (isComponentGenerated(Model, lformComponentDataModelFolder)) { #> 
+                    <div hidden={this.state.<#= lfColsPropName #>[0] === 0}  
+                         style={{ gridColumnEnd: `span ${this.state.<#= lfColsPropName #>[0]}`, gridRowEnd: `span ${this.state.<#= lfRowsPropName #>[0]}` }}>
+                        <Suspense fallback={<div>Loading...</div>}>
+                         <<#= GetModelComponentClassName(Model, lformComponentDataModelFolder) #>
+                            <#= ContMenuItemsPropName #>={ this.state.<#= lfcontainerMenuItemsPropName #> }
+                            <#= OnContMenuItemMethodName #>={this.<#= OnContMenuItemMethodName #>}
+                            <#= MaxHeightPropName #>={this.state.<#= lfMaxHeightPropName #>[0]} 
+                            <#= FilterMaxHeightPropName #>={this.state.<#= lfFilterMaxHeightPropName #>[0]} 
+                            <#= CaptionPropName #>='List of <#= Model.ViewName #>' 
+                            <#= ShowAddFltItemPropName #>={true} <#= ShowFilterPropName #>={true}
+                            <#= CanAddPropName #>={true} <#= CanUpdPropName #>={true} <#= CanDelPropName #>={true} 
+                        />
+                        </Suspense>
+                    </div>
+<# }  else { #>
+                    {/* the module "<#= lformComponentDataModelFolder #>" has not been generated for the selected model yet. Please generate "<#= lformComponentDataModelFolder #>" before current module. */}
+<# } #>
+<# if (isComponentGenerated(Model, o2mComponentDataModelFolder)) { #>
+
+                    <div hidden={this.state.<#= o2mColsPropName #>[0] === 0}
+                         style={{ gridColumnEnd: `span ${this.state.<#= o2mColsPropName #>[0]}`, gridRowEnd: `span ${this.state.<#= o2mRowsPropName #>[0]}` }}>
+                        <Suspense fallback={<div>Loading...</div>}>
+                         <<#= GetModelComponentClassName(Model, o2mComponentDataModelFolder) #>
+                            <#= ContMenuItemsPropName #>={ this.state.<#= o2mcontainerMenuItemsPropName #> }
+                            <#= OnContMenuItemMethodName #>={this.<#= OnContMenuItemMethodName #>}
+                            <#= MaxHeightPropName #>={this.state.<#= o2mMaxHeightPropName #>[0]}
+                            <#= FilterMaxHeightPropName #>={this.state.<#= o2mFilterMaxHeightPropName #>[0]}
+                            <#= ShowAddFltItemPropName #>={true} <#= ShowFilterPropName #>={true}
+                            <#= CaptionPropName #>='One to many for <#= Model.ViewName #>' 
+                            <#= CanAddPropName #>={false} <#= CanUpdPropName #>={false} <#= CanDelPropName #>={false} 
+                            <#= CanAddDetailPropName #>={true} <#= CanUpdDetailPropName #>={true} <#= CanDelDetailPropName #>={true}
+                            <#= ShowDetailAddFltItemPropName #>={true} <#= ShowDetailFilterPropName #>={true}
+                          />
+                        </Suspense>
+                    </div>
+<# }  else {  #>
+                    {/* the module "<#= o2mComponentDataModelFolder #>" has not been generated for the selected model yet. Please generate "<#= o2mComponentDataModelFolder #>" before current module. */}
+
+<# } #>
+<# if (isComponentGenerated(Model, rroutingComponentDataModelFolder)) { #> 
+
+                    <div  hidden={this.state.<#= rtColsPropName #>[0] === 0}
+                          style={{ gridColumnEnd: `span ${this.state.<#= rtColsPropName #>[0]}`, gridRowEnd: `span ${this.state.<#= rtRowsPropName #>[0]}` }}>
+                          <Route  render={(props) => <Suspense fallback={<div>Loading...</div>}><<#= GetModelComponentClassName(Model, rroutingComponentDataModelFolder) #> {...props} 
+                                <#= ContMenuItemsPropName #>={ this.state.<#= rtcontainerMenuItemsPropName #> }
+                                <#= OnContMenuItemMethodName #>={this.<#= OnContMenuItemMethodName #>}
+                                <#= MaxHeightPropName #>={this.state.<#= rtMaxHeightPropName #>[0]}
+                                <#= FilterMaxHeightPropName #>={this.state.<#= rtFilterMaxHeightPropName #>[0]}
+                                <#= ShowAddFltItemPropName #>={true} <#= ShowFilterPropName #>={true} <#= ShowBackBtnPropName #>={true}
+                                <#= CanAddPropName #>={true} <#= CanUpdPropName #>={true} <#= CanDelPropName #>={true} 
+                          /></Suspense>}/> 
+                    </div>
+<# }  else {  #>
+                    {/* the module "<#= rroutingComponentDataModelFolder #>" has not been generated for the selected model yet. Please generate "<#= rroutingComponentDataModelFolder #>" before current module. */}
+<# } #>
+                </div>
+            </div>
+        );
+    }
+}
+
+<#+
+
+    string GetRtOutletName(ModelViewSerializable model) {
+        string result="rtoutlt";
+        if (model == null) {
+            return result;
+        }
+        return result + model.ViewName.ToLower();
+    }
+    string GetRdOutletName(ModelViewSerializable model) {
+        string result="rdoutlt";
+        if (model == null) {
+            return result;
+        }
+        return result + model.ViewName.ToLower();
+    }
+    bool isComponentGenerated(ModelViewSerializable model, string fileType) {
+        if(model == null) {
+            return false;
+        }
+        if (model.CommonStaffs == null) {
+            return false;
+        }
+        CommonStaffSerializable refItem= 
+            model.CommonStaffs.Where(c => c.FileType == fileType).FirstOrDefault();
+        return refItem != null;
+    }
+    string GetModelComponentClassName(ModelViewSerializable model, string fileType) {
+        string result="";
+        if ((model == null) || string.IsNullOrEmpty(fileType) ) {
+            return result;
+        }
+        if (model.CommonStaffs == null) {
+            return result;
+        }
+        CommonStaffSerializable refItem= 
+            model.CommonStaffs.Where(c => c.FileType == fileType).FirstOrDefault();
+        if (refItem == null) {
+            return result;
+        }
+        if(string.IsNullOrEmpty(refItem.FileName)) {
+            return result;
+        }
+        string fn = refItem.FileName.Replace(".component","-component");
+        StringBuilder sb = new StringBuilder();
+        bool toUpper = true;
+        foreach (char c in fn)
+        {
+            if( c == '-' )
+            {
+                toUpper = true;
+            } else
+            {
+                if (toUpper)
+                {
+                    sb.Append(Char.ToUpper(c));
+                    toUpper = false;
+                }
+                else
+                {
+                    sb.Append(c);
+                }
+            }
+        }
+        return sb.ToString();
+    }
+    string GetFolderName(ModelViewSerializable model, string refFolder, string currFolder) {
+        string result="./";
+        if ((model == null) || string.IsNullOrEmpty(refFolder) || string.IsNullOrEmpty(currFolder)) {
+            return result;
+        }
+        if (model.CommonStaffs == null) {
+            return result;
+        }
+        CommonStaffSerializable refItem= 
+            model.CommonStaffs.Where(c => c.FileType == refFolder).FirstOrDefault();
+        CommonStaffSerializable curItem= 
+            model.CommonStaffs.Where(c => c.FileType == currFolder).FirstOrDefault();
+        if ((refItem == null) || (curItem == null)) {
+            return result;
+        }
+        string[] refFolders  = new string[] {};
+        if(!string.IsNullOrEmpty(refItem.FileFolder)) {
+            refFolders  = refItem.FileFolder.Split(new string[] { "\\" }, StringSplitOptions.None);
+        }
+        string[] currFolders = new string[]{};
+        if(!string.IsNullOrEmpty(curItem.FileFolder)) {
+            currFolders  = curItem.FileFolder.Split(new string[] { "\\" }, StringSplitOptions.None);
+        }
+        int refLen = refFolders.Length;
+        int currLen = currFolders.Length;
+        int minLen = refLen < currLen ? refLen : currLen;
+        int cnt= 0;
+        for(int i = 0; i < minLen; i++) {
+            if ( !refFolders[i].Equals(currFolders[i], StringComparison.OrdinalIgnoreCase) ) break;
+            cnt++;
+        }
+        if(currLen > cnt) {
+            result += string.Join("",Enumerable.Repeat("../", currLen - cnt));
+        }
+        if(refLen > cnt) {
+            result += string.Join("/", refFolders, cnt, refLen - cnt) + "/";
+        }
+        result += refItem.FileName;
+        return result;
+    }
+    string GetContextContextName(DbContextSerializable context, string fileType) {
+        string result="";
+        if ((context == null) || string.IsNullOrEmpty(fileType)) {
+            return result;
+        }
+        if (context.CommonStaffs == null) {
+            return result;
+        }
+        CommonStaffSerializable refItem= 
+            context.CommonStaffs.Where(c => c.FileType == fileType).FirstOrDefault();
+        if (refItem == null) {
+            return result;
+        }
+        if(string.IsNullOrEmpty(refItem.FileName)) {
+            return result;
+        }
+        string fn = refItem.FileName.Replace(".context","-context");
+        StringBuilder sb = new StringBuilder();
+        bool toUpper = true;
+        foreach (char c in fn)
+        {
+            if( c == '-' )
+            {
+                toUpper = true;
+            } else
+            {
+                if (toUpper)
+                {
+                    sb.Append(Char.ToUpper(c));
+                    toUpper = false;
+                }
+                else
+                {
+                    sb.Append(c);
+                }
+            }
+        }
+        return sb.ToString();
+    }
+    string GetCommonFolderName(ModelViewSerializable model, DbContextSerializable context,  string refFolder, string currFolder) {
+        string result="./";
+        if ((model == null) || (context == null) || string.IsNullOrEmpty(refFolder) || string.IsNullOrEmpty(currFolder)) {
+            return result;
+        }
+        if ((model.CommonStaffs == null) || (context.CommonStaffs == null)) {
+            return result;
+        }
+        CommonStaffSerializable refItem= 
+            context.CommonStaffs.Where(c => c.FileType == refFolder).FirstOrDefault();
+        CommonStaffSerializable curItem= 
+            model.CommonStaffs.Where(c => c.FileType == currFolder).FirstOrDefault();
+        if ((refItem == null) || (curItem == null)) {
+            return result;
+        }
+        string[] refFolders  = new string[] {};
+        if(!string.IsNullOrEmpty(refItem.FileFolder)) {
+            refFolders  = refItem.FileFolder.Split(new string[] { "\\" }, StringSplitOptions.None);
+        }
+        string[] currFolders = new string[]{};
+        if(!string.IsNullOrEmpty(curItem.FileFolder)) {
+            currFolders  = curItem.FileFolder.Split(new string[] { "\\" }, StringSplitOptions.None);
+        }
+        int refLen = refFolders.Length;
+        int currLen = currFolders.Length;
+        int minLen = refLen < currLen ? refLen : currLen;
+        int cnt= 0;
+        for(int i = 0; i < minLen; i++) {
+            if ( !refFolders[i].Equals(currFolders[i], StringComparison.OrdinalIgnoreCase) ) break;
+            cnt++;
+        }
+        if(currLen > cnt) {
+            result += string.Join("",Enumerable.Repeat("../", currLen - cnt));
+        }
+        if(refLen > cnt) {
+            result += string.Join("/", refFolders, cnt, refLen - cnt) + "/";
+        }
+        result += refItem.FileName;
+        return result;
+    }
+    string GetContextInterfaceName(DbContextSerializable context, string fileType) {
+        string result="";
+        if ((context == null) || string.IsNullOrEmpty(fileType)) {
+            return result;
+        }
+        if (context.CommonStaffs == null) {
+            return result;
+        }
+        CommonStaffSerializable refItem= 
+            context.CommonStaffs.Where(c => c.FileType == fileType).FirstOrDefault();
+        if (refItem == null) {
+            return result;
+        }
+        if(string.IsNullOrEmpty(refItem.FileName)) {
+            return result;
+        }
+        string fn = refItem.FileName.Replace(".interface","-interface");
+        StringBuilder sb = new StringBuilder();
+        bool toUpper = true;
+        foreach (char c in fn)
+        {
+            if( c == '-' )
+            {
+                toUpper = true;
+            } else
+            {
+                if (toUpper)
+                {
+                    sb.Append(Char.ToUpper(c));
+                    toUpper = false;
+                }
+                else
+                {
+                    sb.Append(c);
+                }
+            }
+                
+        }
+        return "I"+sb.ToString();
+    }
+    string GetContextFunctionName(DbContextSerializable context, string fileType) {
+        string result="";
+        if ((context == null) || string.IsNullOrEmpty(fileType)) {
+            return result;
+        }
+        if (context.CommonStaffs == null) {
+            return result;
+        }
+        CommonStaffSerializable refItem= 
+            context.CommonStaffs.Where(c => c.FileType == fileType).FirstOrDefault();
+        if (refItem == null) {
+            return result;
+        }
+        if(string.IsNullOrEmpty(refItem.FileName)) {
+            return result;
+        }
+        string fn = refItem.FileName;
+        StringBuilder sb = new StringBuilder();
+        bool toUpper = true;
+        foreach (char c in fn)
+        {
+            if( c == '-' )
+            {
+                toUpper = true;
+            } else
+            {
+                if (toUpper)
+                {
+                    sb.Append(Char.ToUpper(c));
+                    toUpper = false;
+                }
+                else
+                {
+                    sb.Append(c);
+                }
+            }
+                
+        }
+        return sb.ToString();
+    }
+    string GetModelInterfaceName(ModelViewSerializable model, string fileType) {
+        string result="";
+        if ((model == null) || string.IsNullOrEmpty(fileType)) {
+            return result;
+        }
+        if (model.CommonStaffs == null) {
+            return result;
+        }
+        CommonStaffSerializable refItem= 
+            model.CommonStaffs.Where(c => c.FileType == fileType).FirstOrDefault();
+        if (refItem == null) {
+            return result;
+        }
+        if(string.IsNullOrEmpty(refItem.FileName)) {
+            return result;
+        }
+        string fn = refItem.FileName.Replace(".interface","-interface");
+        StringBuilder sb = new StringBuilder();
+        bool toUpper = true;
+        foreach (char c in fn)
+        {
+            if( c == '-' )
+            {
+                toUpper = true;
+            } else
+            {
+                if (toUpper)
+                {
+                    sb.Append(Char.ToUpper(c));
+                    toUpper = false;
+                }
+                else
+                {
+                    sb.Append(c);
+                }
+            }
+                
+        }
+        return "I"+sb.ToString();
+    }
+
+#>

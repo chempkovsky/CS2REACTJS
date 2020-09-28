@@ -1,0 +1,1065 @@
+﻿<#@ template language="C#" HostSpecific="True" Debug="True" #>
+<#@ output extension="tsx" #>
+<#@ assembly name="System.Core" #>
+<#@ import namespace="System" #>
+<#@ import namespace="System.IO" #>
+<#@ import namespace="System.Linq" #>
+<#@ import namespace="System.Collections" #>
+<#@ import namespace="System.Collections.Generic" #>
+<#@ import namespace="System.Text" #>
+<#@ import namespace="CS2REACTJS" #>
+<#@ import namespace="CS2REACTJS.Model" #>
+<#@ import namespace="CS2REACTJS.Model.Serializable" #>
+<#@ parameter type="CS2REACTJS.Model.Serializable.ModelViewSerializable" name="Model" #>
+<#@ parameter type="CS2REACTJS.Model.Serializable.DbContextSerializable" name="Context" #>
+<#
+
+    string reditComponentDataModelFolder            = "01820-Redit.component.tsx";
+    string reditComponentDataModelClassName         = GetModelComponentClassName(Model, reditComponentDataModelFolder);
+
+    string viewInterfaceFolder                      = "01100-.interface.tsx";
+
+    string viewServiceFolder                        = "01400-.service.tsx";
+    string viewServiceClassName                     = GetServiceClassName(Model, viewServiceFolder);
+
+    string reditStateDataModelFolder                = "01818-Redit-state.interface.tsx";
+    string reditStateDataModelClassName             = GetModelInterfaceName(Model, reditStateDataModelFolder);
+
+    string reditPropsDataModelFolder                = "01819-Redit-props.interface.tsx";
+    string reditPropsDataModelClassName             = GetModelInterfaceName(Model, reditPropsDataModelFolder);
+
+    string eformComponentDataModelFolder            = "01500-Eform.component.tsx";
+    string eformComponentDataModelClassName         = GetModelComponentClassName(Model, eformComponentDataModelFolder);
+
+    string eformModeEnumlFolder                     = "00025-eform-mode.enum.tsx";
+    string eformModeEnumName                        = GetContextEnumClassName(Context, eformModeEnumlFolder);
+
+    string webServiceFilterRsltDataModelFolder      = "00052-web-service-filter-rslt.interface.tsx";
+    string webServiceFilterRsltDataModelClassName   = GetContextInterfaceName(Context, webServiceFilterRsltDataModelFolder);
+
+    string webServiceFilterEventDataModelFolder     = "00062-web-service-filter-event.interface.tsx";
+    string webServiceFilterEventDataModelClassName  = GetContextInterfaceName(Context, webServiceFilterEventDataModelFolder);
+
+    string appGlblSettingsContextFolder             = "00029-app-glbl-settings.context.tsx";
+    string appGlblSettingsContextClassName          = GetContextContextName(Context, appGlblSettingsContextFolder);
+
+    string routerurltreeFolder                      = "00124-routerurltree.tsx";
+    string routersharedFolder                       = "00122-routershared.tsx";
+
+
+    List<ModelViewPropertyOfVwSerializable> primKeys= GetModelPrimaryKeyProps(Model);
+
+
+    string EformModePropName                        = "eformMode";
+    string HiddenFilterPropName                     = "hiddenFilter";
+    string FormControlModelPropName                 = "eformControlModel";
+    string BeforeSubmitPropName                     = "beforeSubmit";
+    string AfterSubmitPropName                      = "afterSubmit";
+    string OnContMenuItemMethodName                 = "onContMenuItem";
+    string OnCloseMethodName                        = "onClose";
+    string CaptionPropName                          = "caption";
+    string ContMenuItemsPropName                    = "contMenuItems";
+    string ActionParamAddMode                       = "add";
+    string ActionParamUpdateMode                    = "update";
+    string ActionParamDeleteMode                    = "delete";
+    string CachedHiddenFilterPropName               = "cachedHiddenFilter";
+    string MpathPropName                            = "mpath";
+    string MurlPropName                             = "murl";
+    string NavErrorFlagPropName                     = "navErrorFlg";
+    string PostNavAppliedPropName                   = "postNavApplied";
+    string DepthParamName                           = "depth"; 
+    string ShowErrorMethodName                      = "showError";
+    string PermMaskPropName                         = "permMask";
+    string GetOneMethodName                         = "getone";
+    string ActionParamName                          = "mode";  
+    string ActionParamCancelMode                    = "cancel";
+
+
+#>
+
+import React, { Component, createRef, Suspense, lazy } from 'react';
+import Button from '@material-ui/core/Button';
+import Card from '@material-ui/core/Card';
+import CardActions from '@material-ui/core/CardActions';
+import CardContent from '@material-ui/core/CardContent';
+import <#= reditPropsDataModelClassName #> from "<#= GetFolderName(Model, reditPropsDataModelFolder, reditComponentDataModelFolder) #>";
+import <#= reditStateDataModelClassName #> from "<#= GetFolderName(Model, reditStateDataModelFolder, reditComponentDataModelFolder) #>";
+import <#= webServiceFilterRsltDataModelClassName #> from "<#= GetCommonFolderName(Model, Context, webServiceFilterRsltDataModelFolder, reditComponentDataModelFolder) #>";
+import <#= eformModeEnumName #> from "<#= GetCommonFolderName(Model, Context, eformModeEnumlFolder, reditComponentDataModelFolder) #>";
+import <#= GetInterfaceName(Model) #> from '<#= GetFolderName(Model, viewInterfaceFolder, reditComponentDataModelFolder) #>';
+import <#= viewServiceClassName #>  from '<#= GetFolderName(Model, viewServiceFolder, reditComponentDataModelFolder)#>';
+import <#= appGlblSettingsContextClassName #> from '<#= GetCommonFolderName(Model, Context, appGlblSettingsContextFolder, reditComponentDataModelFolder) #>';
+import { DEFAULT_SERIALIZER, UrlTree, UrlSegment } from '<#= GetCommonFolderName(Model, Context, routerurltreeFolder, reditComponentDataModelFolder) #>';
+import { PRIMARY_OUTLET, ParamMap, convertToParamMap, Params } from '<#= GetCommonFolderName(Model, Context, routersharedFolder, reditComponentDataModelFolder) #>';
+const  <#= eformComponentDataModelClassName #> = lazy(() => import('<#= GetFolderName(Model, eformComponentDataModelFolder, reditComponentDataModelFolder) #>'));
+
+
+export default class <#= reditComponentDataModelClassName #>  extends Component<<#= reditPropsDataModelClassName #>, <#= reditStateDataModelClassName #>> {
+    static contextType = <#= appGlblSettingsContextClassName #>;
+    constructor(props: <#= reditPropsDataModelClassName #>) {
+        super(props);
+        this.state = {
+            ref: createRef<any>(), // createRef<<#= eformComponentDataModelClassName #>>(),
+            <#= CaptionPropName #>: '',
+            <#= HiddenFilterPropName #>: [],
+            <#= CachedHiddenFilterPropName #>: [],
+            <#= EformModePropName #>: <#= eformModeEnumName #>.<#= GetInputTypeToEnumName(3) #>,
+            <#= FormControlModelPropName #>: null,
+            <#= MpathPropName #>: '',
+            <#= MurlPropName #>: '',
+            <#= NavErrorFlagPropName #>: false,
+            <#= PostNavAppliedPropName #>: false,
+<#
+    for(int i = 0 ; i < primKeys.Count; i++) {
+#>
+            <#= GetPrimKeyVarName(primKeys[i]) #>: null,
+<#
+    }
+#>
+        }
+        this.<#= OnCloseMethodName #> = this.<#= OnCloseMethodName #>.bind(this);
+        this.<#= AfterSubmitPropName #> = this.<#= AfterSubmitPropName #>.bind(this);
+        this.<#= BeforeSubmitPropName #> = this.<#= BeforeSubmitPropName #>.bind(this);
+        this.onNavError =  this.onNavError.bind(this);
+        this.onPermMask = this.onPermMask.bind(this);
+        this.onPostNav = this.onPostNav.bind(this);
+    }
+    static getDerivedStateFromProps(nwprps: <#= reditPropsDataModelClassName #>, oldstt: <#= reditStateDataModelClassName #>): any {
+        let rslt: { [key: string]: any; } = {};
+
+        if(nwprps.<#= CaptionPropName #>) {
+            if(nwprps.<#= CaptionPropName #> !== oldstt.<#= CaptionPropName #>) rslt['<#= CaptionPropName #>'] = nwprps.<#= CaptionPropName #>;
+        } else {
+            if (oldstt.<#= CaptionPropName #> !== '') rslt['<#= CaptionPropName #>'] = '';
+        }
+
+        let hfchngd: boolean = false;
+        let newhf01: Array<<#= webServiceFilterRsltDataModelClassName #>> = [];
+        if(nwprps.<#= HiddenFilterPropName #>) {
+            if ((nwprps.<#= HiddenFilterPropName #> !== oldstt.<#= CachedHiddenFilterPropName #>) && ((nwprps.<#= HiddenFilterPropName #>.length > 0) || (oldstt.<#= CachedHiddenFilterPropName #>.length > 0))) {
+                rslt['<#= CachedHiddenFilterPropName #>'] = nwprps.<#= HiddenFilterPropName #>;
+                newhf01 = nwprps.<#= HiddenFilterPropName #>;
+                hfchngd=true;
+            }
+        } else {
+            if (oldstt.<#= CachedHiddenFilterPropName #>.length > 0) {
+                rslt['<#= CachedHiddenFilterPropName #>'] = [];
+                hfchngd=true;
+            }
+        }
+        let cpath: string = '';
+        let curl: string = '';
+        if(nwprps.match) {
+            if (nwprps.match.path)   cpath = nwprps.match.path;
+            if (nwprps.match.url)    curl = nwprps.match.url;
+        }
+        let urlchngd: boolean = (cpath !== oldstt.<#= MpathPropName #>) || (curl !== oldstt.<#= MurlPropName #>);
+        if(urlchngd) {
+            rslt['murl'] = curl;
+            rslt['mpath'] = cpath;
+        }
+        if(hfchngd || urlchngd) {
+            rslt['<#= PostNavAppliedPropName #>'] = false;
+            rslt['<#= FormControlModelPropName #>'] = null;
+            let newhf02: Array<<#= webServiceFilterRsltDataModelClassName #>> | null = null;
+            const tr: UrlTree = DEFAULT_SERIALIZER.parse(curl);
+            if(tr.root.hasChildren()) {
+                let cparamMap: ParamMap = convertToParamMap({});
+                if(nwprps.match) {
+                    if (nwprps.match.params) cparamMap = convertToParamMap(nwprps.match.params);
+                }
+                newhf02 = <#= reditComponentDataModelClassName #>.defineHiddenFilter(tr.root.children[PRIMARY_OUTLET].segments, cparamMap, rslt);
+            }
+            if(newhf02 === null) {
+                rslt['<#= HiddenFilterPropName #>'] = newhf01;
+                rslt['<#= NavErrorFlagPropName #>'] = true;
+                return rslt;
+            } else {
+                rslt['<#= HiddenFilterPropName #>'] = newhf02.concat(newhf01);
+                rslt['<#= NavErrorFlagPropName #>'] = false;
+            }
+        }
+        return rslt;
+    }
+    static defineHiddenFilter(url: UrlSegment[],  paramMap: ParamMap, rslt: { [key: string]: any; }): Array<<#= webServiceFilterRsltDataModelClassName #>> | null {
+        let <#= EformModePropName #>: <#= eformModeEnumName #> = <#= eformModeEnumName #>.<#= GetInputTypeToEnumName(3) #>;
+        let hf: Array<<#= webServiceFilterRsltDataModelClassName #>> = [];
+        let len: number = url.length;
+        if(len < 2) {
+            return null;
+        }
+        let mode: string = url[len-1].path;
+        if (mode) {
+            if ('<#= ActionParamAddMode #>'.toLowerCase() === mode) {
+                <#= EformModePropName #> = <#= eformModeEnumName #>.<#= GetInputTypeToEnumName(1) #>;
+                rslt['<#= CaptionPropName #>'] = 'Add item';
+            } else if ('<#= ActionParamUpdateMode #>'.toLowerCase() === mode) {
+                <#= EformModePropName #> = <#= eformModeEnumName #>.<#= GetInputTypeToEnumName(2) #>;
+                rslt['<#= CaptionPropName #>'] = 'Update item';
+            } else if ('<#= ActionParamDeleteMode #>'.toLowerCase() === mode) {
+                <#= EformModePropName #> = <#= eformModeEnumName #>.<#= GetInputTypeToEnumName(3) #>;
+                rslt['<#= CaptionPropName #>'] = 'Delete item';
+            } else {
+                return null;
+            }
+        } else {
+            return null;
+        }
+
+<#
+    if (Model.ForeignKeys != null) {
+        if (Model.ForeignKeys.Count > 0) {
+#>
+        if(paramMap.has('<#= DepthParamName #>')) {
+            // @ts-ignore
+            let depth: number = parseInt(paramMap.get('<#= DepthParamName #>'));
+            if (depth > 1) {
+                let shft: number = 2;
+                if (<#= EformModePropName #> !== <#= eformModeEnumName #>.<#= GetInputTypeToEnumName(1) #>) {
+                    shft = <#= primKeys.Count + 2 #>;
+                }
+                if(shft >= len) {
+                   return null;
+                }
+                let nvgNm: string = url[len - shft].path;
+                if(typeof nvgNm === 'undefined') {
+                    nvgNm = '';
+                }
+                if(nvgNm === null) {
+                    nvgNm = '';
+                }
+                nvgNm = nvgNm.toLowerCase();
+<#
+            {
+                bool genEls = false;
+                foreach(ModelViewForeignKeySerializable modelViewForeignKeySerializable in Model.ForeignKeys) {
+                    if( string.IsNullOrEmpty( modelViewForeignKeySerializable.NavigationName ) || string.IsNullOrEmpty( modelViewForeignKeySerializable.ViewName )) {
+                        continue;
+                    }
+                    if ((modelViewForeignKeySerializable.PrincipalKeyProps == null) || (modelViewForeignKeySerializable.ForeignKeyProps == null) || (modelViewForeignKeySerializable.ScalarProperties == null)) {
+#>
+//
+//error: for the foreignkey <#= modelViewForeignKeySerializable.NavigationName #> can not find Foreign Keys and(or) Principal Keys and(or) Scalar Properties
+//
+<#
+                        continue;
+                    }
+                    if (modelViewForeignKeySerializable.PrincipalKeyProps.Count != modelViewForeignKeySerializable.ForeignKeyProps.Count) {
+#>
+//
+//error: for the foreignkey <#= modelViewForeignKeySerializable.NavigationName #> the number of properties of  ForeignKeys is not equal to the number of properties of PrincipalKeys
+//
+<#
+                        continue;
+                    }
+                    if (modelViewForeignKeySerializable.PrincipalKeyProps.Count < 1) {
+                        continue;
+                    }
+                    ModelViewSerializable masterView = GetViewByName(Context, modelViewForeignKeySerializable.ViewName);
+                    if(masterView == null) {
+#>
+//
+//error: for the foreignkey <#= modelViewForeignKeySerializable.NavigationName #> can not find View by name <#= modelViewForeignKeySerializable.ViewName #> in the context
+//         no code generated for the given foreign key
+//
+<#
+                        continue;
+                    }
+                    bool skipItem = false;
+                    for(int i = 0; i < modelViewForeignKeySerializable.PrincipalKeyProps.Count; i++) {
+                        ModelViewPropertyOfFkSerializable modelViewPropertyOfFkSerializable = 
+                            GetScalarPropByPrincipalKeyProp(modelViewForeignKeySerializable, modelViewForeignKeySerializable.PrincipalKeyProps[i]);
+                        if(modelViewPropertyOfFkSerializable == null) {
+#>
+//
+//error: for the foreignkey <#= modelViewForeignKeySerializable.NavigationName #> The primary key property <#= modelViewForeignKeySerializable.PrincipalKeyProps[i].OriginalPropertyName #> is not included in the View.
+//         no code generated for the given foreign key
+//
+<#
+                            skipItem = true;
+                            break;
+                        }
+                        ModelViewPropertyOfVwSerializable modelViewPropertyOfVwSerializable =
+                            GetScalarPropByOriginalPropertyNameAndForeignKeyNameChain(Model, modelViewForeignKeySerializable.ForeignKeyProps[i].OriginalPropertyName, null);
+                        if ((modelViewPropertyOfVwSerializable == null) && (!modelViewPropertyOfFkSerializable.IsSelected)) {
+#>
+//
+//warning: for the foreignkey <#= modelViewForeignKeySerializable.NavigationName #> The Foreign key property <#= modelViewForeignKeySerializable.ForeignKeyProps[i].OriginalPropertyName #> is not included in the View.
+//         no code generated for the given foreign key
+//
+<#
+                            skipItem = true;
+                            break;
+                        }
+                        ModelViewPropertyOfVwSerializable masterProp = 
+                            GetScalarPropByOriginalPropertyNameAndForeignKeyNameChain(masterView, modelViewForeignKeySerializable.PrincipalKeyProps[i].OriginalPropertyName, null);
+                        if (masterProp == null) {
+#>
+//
+//warning: for the foreignkey <#= modelViewForeignKeySerializable.NavigationName #> The Foreign key property <#= modelViewForeignKeySerializable.ForeignKeyProps[i].OriginalPropertyName #> is not included in the View.
+//         no code generated for the given foreign key
+//
+<#
+                            skipItem = true;
+                            break;
+                        }
+
+                    }
+                    if (skipItem) {
+                        continue;
+                    }
+                    
+                    if (genEls) {
+#>
+                else if ('<#= modelViewForeignKeySerializable.NavigationName #>'.toLowerCase() === nvgNm) {
+<#
+                    } else {
+#>
+                if ('<#= modelViewForeignKeySerializable.NavigationName #>'.toLowerCase() === nvgNm) {
+<#
+                        genEls = true;
+                    }
+#>
+                    if ( (shft + 2 + <#= modelViewForeignKeySerializable.PrincipalKeyProps.Count  #>) >= len ) {
+                        return null;
+                    }
+
+<#
+                    for(int i = 0; i < modelViewForeignKeySerializable.PrincipalKeyProps.Count; i++) {
+                        ModelViewPropertyOfVwSerializable masterProp = 
+                            GetScalarPropByOriginalPropertyNameAndForeignKeyNameChain(masterView, modelViewForeignKeySerializable.PrincipalKeyProps[i].OriginalPropertyName, null);
+                        ModelViewPropertyOfVwSerializable modelViewPropertyOfVwSerializable =
+                            GetScalarPropByOriginalPropertyNameAndForeignKeyNameChain(Model, modelViewForeignKeySerializable.ForeignKeyProps[i].OriginalPropertyName, null);                        
+                        ModelViewPropertyOfFkSerializable modelViewPropertyOfFkSerializable = 
+                            GetScalarPropByPrincipalKeyProp(modelViewForeignKeySerializable, modelViewForeignKeySerializable.PrincipalKeyProps[i]);
+                        if(modelViewPropertyOfVwSerializable == null) {
+                            modelViewPropertyOfVwSerializable = Model.ScalarProperties.Where(p => p.ViewPropertyName == modelViewPropertyOfFkSerializable.ViewPropertyName).FirstOrDefault();
+                        }
+                        string masterName = GetTypeScriptPropertyName(masterProp, masterView);
+                        string detailName = GetTypeScriptPropertyName(modelViewPropertyOfVwSerializable, Model);
+#>
+                    hf.push({
+                        fltrName: '<#= detailName #>',
+                        fltrDataType: '<#= GetCCharpDatatype(modelViewPropertyOfVwSerializable, Model) #>', 
+                        fltrOperator: 'eq',
+                        fltrValue: url[len  - (shft  + <#= modelViewForeignKeySerializable.PrincipalKeyProps.Count - i #>)].path
+                    });
+<#
+                    }
+#>
+                }
+<#
+                } // foreach(ModelViewForeignKeySerializable modelViewForeignKeySerializable in Model.ForeignKeys) {
+            }
+#>
+            }
+        }
+<#
+        } // if (Model.ForeignKeys.Count > 0) {
+    } // if (Model.ForeignKeys != null) {
+#>
+
+        rslt['<#= EformModePropName #>'] = <#= EformModePropName #>;
+        if (<#= EformModePropName #> !== <#= eformModeEnumName #>.<#= GetInputTypeToEnumName(1) #>) {
+            if(<#= 1+primKeys.Count #> >= len) {
+                return null;
+            }
+<#
+    for(int i = 0 ; i < primKeys.Count; i++) {
+#>
+            rslt['<#= GetPrimKeyVarName(primKeys[i]) #>'] = url[len - <#= (1+primKeys.Count) - i #>].path;
+<#
+    }
+#>
+        }
+        return hf;
+    }
+
+    onNavError(): void {
+        let msg = {
+            message:'Incorrect Url.'
+        };
+        this.context.<#= ShowErrorMethodName #>('Navigation Error', msg)
+        if(this.props.history) {
+            this.props.history.push("/");
+        }
+    }
+    onPermMask() {
+        const <#= PermMaskPropName #>: number = this.context.getViewModelMask('<#= Model.ViewName #>');
+        if(this.state.<#= EformModePropName #> === <#= eformModeEnumName #>.<#= GetInputTypeToEnumName(1) #>) {
+            if (!((<#= PermMaskPropName #> & 8) === 8)) {
+                return false;
+            }
+        } else if(this.state.<#= EformModePropName #> === <#= eformModeEnumName #>.<#= GetInputTypeToEnumName(2) #>) {
+            if (!((<#= PermMaskPropName #> & 4) === 4)) {
+                return false;
+            }
+        } else if(this.state.<#= EformModePropName #> === <#= eformModeEnumName #>.<#= GetInputTypeToEnumName(3) #>) {
+            if (!((<#= PermMaskPropName #> & 2) === 2)) {
+                return false;
+            }
+        }
+        return true;
+    }
+    onPostNav() { 
+        if(this.state.<#= EformModePropName #> === <#= eformModeEnumName #>.<#= GetInputTypeToEnumName(1) #>) {
+            this.setState({ <#= FormControlModelPropName #>: null, <#= PostNavAppliedPropName #>: true });
+        } else {
+            // this.setState({ <#= PostNavAppliedPropName #>: true });
+            <#= viewServiceClassName #>.<#= GetOneMethodName #>(this.context <# 
+     foreach(ModelViewPropertyOfVwSerializable primKey in primKeys) {  #>, this.state.<#= GetPrimKeyVarName(primKey) #> <#} #> )
+                .then((res: any) => res.json())
+                .then(
+                    (data: <#= GetInterfaceName(Model) #> ) => { // success path
+                        if(data) {
+                            this.setState({ <#= FormControlModelPropName #>: data, <#= PostNavAppliedPropName #>: true});
+                        } else {
+                            let msg = {
+                                message:'Http request error. No data were returned.'
+                            };
+                            this.context.<#= ShowErrorMethodName #>('http', msg);
+                            this.setState({ <#= FormControlModelPropName #>: null, <#= PostNavAppliedPropName #>: true});
+                            if(this.props.history) {
+                                this.props.history.push("/");
+                            }
+                        }
+                    },
+                    (error: any) => { // error path
+                        this.context.<#= ShowErrorMethodName #>('http', error);
+                        this.onNavError();
+                    }
+                ); 
+        }
+    }
+    componentDidMount() {
+        if(this.state.<#= NavErrorFlagPropName #>) {
+            this.onNavError();
+            return;
+        }
+        if(!this.onPermMask()) {
+            this.onNavError();
+            return;
+        }
+        if(!this.state.<#= PostNavAppliedPropName #>) this.onPostNav();
+    }
+    componentDidUpdate() {
+        if(this.state.<#= NavErrorFlagPropName #>) {
+            this.onNavError();
+            return;
+        }
+        if(!this.onPermMask()) {
+            this.onNavError();
+            return;
+        }
+        if(!this.state.<#= PostNavAppliedPropName #>) this.onPostNav();
+    }
+    <#= BeforeSubmitPropName #>(sender: any, value: <#= GetInterfaceName(Model) #>|null) : void {
+        if (this.props.<#= BeforeSubmitPropName #>) this.props.<#= BeforeSubmitPropName #>(sender, value);
+    }
+    <#= AfterSubmitPropName #>(sender: any, hasError: boolean, value: <#= GetInterfaceName(Model) #>|null): void {
+        if (this.props.<#= AfterSubmitPropName #>) this.props.<#= AfterSubmitPropName #>(sender, hasError, value);
+        if(hasError) return;
+        let shft: number = 1;
+        if (this.state.<#= EformModePropName #> !== <#= eformModeEnumName #>.<#= GetInputTypeToEnumName(1) #>) {
+            shft = <#= primKeys.Count + 1 #>;
+        }
+        let act: string = '<#= ActionParamDeleteMode #>';
+        if(this.state.<#= EformModePropName #> === <#= eformModeEnumName #>.<#= GetInputTypeToEnumName(1) #>) {
+            act = '<#= ActionParamAddMode #>';
+        } else if(this.state.<#= EformModePropName #> === <#= eformModeEnumName #>.<#= GetInputTypeToEnumName(2) #>) {
+            act = '<#= ActionParamUpdateMode #>';
+        }
+        let urlTr: UrlTree|null = null;
+        let url: UrlSegment[] = [];
+        if(this.props.match) {
+            if (this.props.match.url) {
+                urlTr = DEFAULT_SERIALIZER.parse(this.props.match.url);
+                if(urlTr.root.hasChildren()) {
+                    url = urlTr.root.children[PRIMARY_OUTLET].segments;
+                } 
+            }
+        }
+        if(urlTr === null) {
+            this.onNavError();
+            return;
+        }
+        let flt: Params = {
+            <#= ActionParamName #>: act
+        };
+<#
+        if (primKeys.Count > 0) {
+#>
+        if(value) {
+<#
+            foreach(ModelViewPropertyOfVwSerializable primKey in primKeys) {
+#>
+            flt['<#= GetTypeScriptPropertyName(primKey, Model) #>'] = value.<#= GetTypeScriptPropertyName(primKey, Model) #>;
+<#
+            }
+#>
+        }
+<#
+        }
+#>
+        url.splice(url.length - shft, shft);
+        urlTr.queryParams = flt;
+        let rsltStr: string = DEFAULT_SERIALIZER.serialize(urlTr);
+        this.props.history.push(rsltStr);
+    }
+    <#= OnCloseMethodName #>(r: boolean) {
+        if(r) {
+            if(this.state.ref.current){
+                this.state.ref.current.doSubmit();
+            }
+        } else {
+            let urlTr: UrlTree|null = null;
+            let url: UrlSegment[] = [];
+            if(this.props.match) {
+                if (this.props.match.url) {
+                    urlTr = DEFAULT_SERIALIZER.parse(this.props.match.url);
+                    if(urlTr.root.hasChildren()) {
+                        url = urlTr.root.children[PRIMARY_OUTLET].segments;
+                    } 
+                }
+            }
+            if(urlTr === null) {
+                this.onNavError();
+                return;
+            }
+            let flt: Params = {
+                <#= ActionParamName #>: '<#= ActionParamCancelMode #>'
+            };
+            let shft: number = 1;
+            let len: number = url.length;
+            if (this.state.<#= EformModePropName #> !== <#= eformModeEnumName #>.AddMode) {
+                shft = <#= primKeys.Count + 1 #>;
+        <#
+            for(int i = 0 ; i < primKeys.Count; i++) {
+        #>
+                flt['<#= GetTypeScriptPropertyName(primKeys[i], Model) #>'] = url[len - <#= (1+primKeys.Count) - i #>].path;
+        <#
+            }  
+        #> 
+            }
+            url.splice(url.length - shft, shft);
+            urlTr.queryParams = flt;
+            let rsltStr: string = DEFAULT_SERIALIZER.serialize(urlTr);
+            this.props.history.push(rsltStr);
+        }
+    }
+
+    render () {
+        if(!this.state.<#= PostNavAppliedPropName #>) {
+            return (<div></div>);
+        }
+        return (
+            <Card>
+                <CardContent>
+                    <Suspense fallback={<div>Loading...</div>}>
+                        <<#= eformComponentDataModelClassName #>
+                            ref={this.state.ref}
+                            <#= CaptionPropName #> = { this.state.<#= CaptionPropName #> }
+                            <#= EformModePropName #> = { this.state.<#= EformModePropName #> }
+                            <#= HiddenFilterPropName #> = { this.state.<#= HiddenFilterPropName #> }
+                            <#= FormControlModelPropName #> = { this.state.<#= FormControlModelPropName #> }
+                            <#= ContMenuItemsPropName #>  = { this.props.<#= ContMenuItemsPropName #> }
+                            <#= OnContMenuItemMethodName #> = { this.props.<#= OnContMenuItemMethodName #> }
+                            <#= BeforeSubmitPropName #> = { this.<#= BeforeSubmitPropName #> }
+                            <#= AfterSubmitPropName #> = { this.<#= AfterSubmitPropName #> }
+                        ></<#= eformComponentDataModelClassName #>>
+                    </Suspense>
+                </CardContent>
+                <CardActions>
+                  <Button variant="outlined" onClick={ ()=>this.<#= OnCloseMethodName #>(false) }  autoFocus>
+                    Cancel
+                  </Button>
+                  <Button variant="outlined" onClick={ ()=>this.<#= OnCloseMethodName #>(true) }  >
+                    Ok
+                  </Button>
+                </CardActions>
+            </Card>
+        );
+    }
+}
+
+
+<#+
+    string GetPrimKeyVarName(ModelViewPropertyOfVwSerializable pkpModelViewUIFormPropertySerializable) {
+        return "pkp" + pkpModelViewUIFormPropertySerializable.ViewPropertyName;
+    }
+    string GetInterfaceName(ModelViewSerializable model) {
+        return "I"+model.ViewName;
+    }
+    string GetInputTypeToEnumName(int inputType) {
+        switch(inputType) {
+            case 1:
+                return "AddMode";
+            case 2:
+                return "UpdateMode";
+            default:
+                return "DeleteMode";
+        }
+    }
+    public string FirstLetterToLower(string str)
+    {
+        if (str == null)
+            return null;
+        if (str.Length > 1)
+            return char.ToLower(str[0]) + str.Substring(1);
+        return str.ToUpper();
+    }
+    string GetModelInterfaceName(ModelViewSerializable model, string fileType) {
+        string result="";
+        if ((model == null) || string.IsNullOrEmpty(fileType)) {
+            return result;
+        }
+        if (model.CommonStaffs == null) {
+            return result;
+        }
+        CommonStaffSerializable refItem= 
+            model.CommonStaffs.Where(c => c.FileType == fileType).FirstOrDefault();
+        if (refItem == null) {
+            return result;
+        }
+        if(string.IsNullOrEmpty(refItem.FileName)) {
+            return result;
+        }
+        string fn = refItem.FileName.Replace(".interface","-interface");
+        StringBuilder sb = new StringBuilder();
+        bool toUpper = true;
+        foreach (char c in fn)
+        {
+            if( c == '-' )
+            {
+                toUpper = true;
+            } else
+            {
+                if (toUpper)
+                {
+                    sb.Append(Char.ToUpper(c));
+                    toUpper = false;
+                }
+                else
+                {
+                    sb.Append(c);
+                }
+            }
+                
+        }
+        return "I"+sb.ToString();
+    }
+    string GetModelClassName(ModelViewSerializable model, string fileType) {
+        string result="";
+        if ((model == null) || string.IsNullOrEmpty(fileType)) {
+            return result;
+        }
+        if (model.CommonStaffs == null) {
+            return result;
+        }
+        CommonStaffSerializable refItem= 
+            model.CommonStaffs.Where(c => c.FileType == fileType).FirstOrDefault();
+        if (refItem == null) {
+            return result;
+        }
+        if(string.IsNullOrEmpty(refItem.FileName)) {
+            return result;
+        }
+        string fn = refItem.FileName;
+        StringBuilder sb = new StringBuilder();
+        bool toUpper = true;
+        foreach (char c in fn)
+        {
+            if( c == '-' )
+            {
+                toUpper = true;
+            } else
+            {
+                if (toUpper)
+                {
+                    sb.Append(Char.ToUpper(c));
+                    toUpper = false;
+                }
+                else
+                {
+                    sb.Append(c);
+                }
+            }
+                
+        }
+        return sb.ToString();
+    }
+    string GetFolderName(ModelViewSerializable model, string refFolder, string currFolder) {
+        string result="./";
+        if ((model == null) || string.IsNullOrEmpty(refFolder) || string.IsNullOrEmpty(currFolder)) {
+            return result;
+        }
+        if (model.CommonStaffs == null) {
+            return result;
+        }
+        CommonStaffSerializable refItem= 
+            model.CommonStaffs.Where(c => c.FileType == refFolder).FirstOrDefault();
+        CommonStaffSerializable curItem= 
+            model.CommonStaffs.Where(c => c.FileType == currFolder).FirstOrDefault();
+        if ((refItem == null) || (curItem == null)) {
+            return result;
+        }
+        string[] refFolders  = new string[] {};
+        if(!string.IsNullOrEmpty(refItem.FileFolder)) {
+            refFolders  = refItem.FileFolder.Split(new string[] { "\\" }, StringSplitOptions.None);
+        }
+        string[] currFolders = new string[]{};
+        if(!string.IsNullOrEmpty(curItem.FileFolder)) {
+            currFolders  = curItem.FileFolder.Split(new string[] { "\\" }, StringSplitOptions.None);
+        }
+        int refLen = refFolders.Length;
+        int currLen = currFolders.Length;
+        int minLen = refLen < currLen ? refLen : currLen;
+        int cnt= 0;
+        for(int i = 0; i < minLen; i++) {
+            if ( !refFolders[i].Equals(currFolders[i], StringComparison.OrdinalIgnoreCase) ) break;
+            cnt++;
+        }
+        if(currLen > cnt) {
+            result += string.Join("", Enumerable.Repeat("../", currLen - cnt));
+        }
+        if(refLen > cnt) {
+            result += string.Join("/", refFolders, cnt, refLen - cnt) + "/";
+        }
+        result += refItem.FileName;
+        return result;
+    }
+    string GetModelComponentClassName(ModelViewSerializable model, string fileType) {
+        string result="";
+        if ((model == null) || string.IsNullOrEmpty(fileType) ) {
+            return result;
+        }
+        if (model.CommonStaffs == null) {
+            return result;
+        }
+        CommonStaffSerializable refItem= 
+            model.CommonStaffs.Where(c => c.FileType == fileType).FirstOrDefault();
+        if (refItem == null) {
+            return result;
+        }
+        if(string.IsNullOrEmpty(refItem.FileName)) {
+            return result;
+        }
+        string fn = refItem.FileName.Replace(".component","-component");
+        StringBuilder sb = new StringBuilder();
+        bool toUpper = true;
+        foreach (char c in fn)
+        {
+            if( c == '-' )
+            {
+                toUpper = true;
+            } else
+            {
+                if (toUpper)
+                {
+                    sb.Append(Char.ToUpper(c));
+                    toUpper = false;
+                }
+                else
+                {
+                    sb.Append(c);
+                }
+            }
+        }
+        return sb.ToString();
+    }
+    string GetCommonFolderName(ModelViewSerializable model, DbContextSerializable context,  string refFolder, string currFolder) {
+        string result="./";
+        if ((model == null) || (context == null) || string.IsNullOrEmpty(refFolder) || string.IsNullOrEmpty(currFolder)) {
+            return result;
+        }
+        if ((model.CommonStaffs == null) || (context.CommonStaffs == null)) {
+            return result;
+        }
+        CommonStaffSerializable refItem= 
+            context.CommonStaffs.Where(c => c.FileType == refFolder).FirstOrDefault();
+        CommonStaffSerializable curItem= 
+            model.CommonStaffs.Where(c => c.FileType == currFolder).FirstOrDefault();
+        if ((refItem == null) || (curItem == null)) {
+            return result;
+        }
+        string[] refFolders  = new string[] {};
+        if(!string.IsNullOrEmpty(refItem.FileFolder)) {
+            refFolders  = refItem.FileFolder.Split(new string[] { "\\" }, StringSplitOptions.None);
+        }
+        string[] currFolders = new string[]{};
+        if(!string.IsNullOrEmpty(curItem.FileFolder)) {
+            currFolders  = curItem.FileFolder.Split(new string[] { "\\" }, StringSplitOptions.None);
+        }
+        int refLen = refFolders.Length;
+        int currLen = currFolders.Length;
+        int minLen = refLen < currLen ? refLen : currLen;
+        int cnt= 0;
+        for(int i = 0; i < minLen; i++) {
+            if ( !refFolders[i].Equals(currFolders[i], StringComparison.OrdinalIgnoreCase) ) break;
+            cnt++;
+        }
+        if(currLen > cnt) {
+            result += string.Join("",Enumerable.Repeat("../", currLen - cnt));
+        }
+        if(refLen > cnt) {
+            result += string.Join("/", refFolders, cnt, refLen - cnt) + "/";
+        }
+        result += refItem.FileName;
+        return result;
+    }
+    string GetContextInterfaceName(DbContextSerializable context, string fileType) {
+        string result="";
+        if ((context == null) || string.IsNullOrEmpty(fileType)) {
+            return result;
+        }
+        if (context.CommonStaffs == null) {
+            return result;
+        }
+        CommonStaffSerializable refItem= 
+            context.CommonStaffs.Where(c => c.FileType == fileType).FirstOrDefault();
+        if (refItem == null) {
+            return result;
+        }
+        if(string.IsNullOrEmpty(refItem.FileName)) {
+            return result;
+        }
+        string fn = refItem.FileName.Replace(".interface","-interface");
+        StringBuilder sb = new StringBuilder();
+        bool toUpper = true;
+        foreach (char c in fn)
+        {
+            if( c == '-' )
+            {
+                toUpper = true;
+            } else
+            {
+                if (toUpper)
+                {
+                    sb.Append(Char.ToUpper(c));
+                    toUpper = false;
+                }
+                else
+                {
+                    sb.Append(c);
+                }
+            }
+                
+        }
+        return "I"+sb.ToString();
+    }
+    string GetContextEnumClassName(DbContextSerializable context, string fileType) {
+        string result="";
+        if ((context == null) || string.IsNullOrEmpty(fileType)) {
+            return result;
+        }
+        if (context.CommonStaffs == null) {
+            return result;
+        }
+        CommonStaffSerializable refItem= 
+            context.CommonStaffs.Where(c => c.FileType == fileType).FirstOrDefault();
+        if (refItem == null) {
+            return result;
+        }
+        if(string.IsNullOrEmpty(refItem.FileName)) {
+            return result;
+        }
+        string fn = refItem.FileName.Replace(".enum","");
+        StringBuilder sb = new StringBuilder();
+        bool toUpper = true;
+        foreach (char c in fn)
+        {
+            if( c == '-' )
+            {
+                toUpper = true;
+            } else
+            {
+                if (toUpper)
+                {
+                    sb.Append(Char.ToUpper(c));
+                    toUpper = false;
+                }
+                else
+                {
+                    sb.Append(c);
+                }
+            }
+                
+        }
+        return sb.ToString();
+    }
+    List<ModelViewPropertyOfVwSerializable> GetModelPrimaryKeyProps(ModelViewSerializable model) {
+        List<ModelViewPropertyOfVwSerializable> result = new List<ModelViewPropertyOfVwSerializable>();
+        if (model == null)
+        {
+            return result;
+        }
+        if ((model.PrimaryKeyProperties == null) || (model.ScalarProperties == null)) {
+            return result;
+        }
+        foreach(ModelViewKeyPropertySerializable modelViewKeyPropertySerializable in model.PrimaryKeyProperties) {
+            ModelViewPropertyOfVwSerializable prop =
+                model.ScalarProperties.Where(p => p.ViewPropertyName == modelViewKeyPropertySerializable.ViewPropertyName).FirstOrDefault();
+            if(prop != null) {
+                result.Add(prop);
+            } else {
+                if(model.ForeignKeys != null) {
+                    foreach(ModelViewForeignKeySerializable modelViewForeignKeySerializable in model.ForeignKeys) {
+                        if ((modelViewForeignKeySerializable.PrincipalKeyProps != null) && (modelViewForeignKeySerializable.ForeignKeyProps != null)) {
+                            for(int i = 0; i < modelViewForeignKeySerializable.ForeignKeyProps.Count; i++) {
+                                if(modelViewForeignKeySerializable.ForeignKeyProps[i].OriginalPropertyName == modelViewKeyPropertySerializable.OriginalPropertyName ) {
+                                    if(i < modelViewForeignKeySerializable.PrincipalKeyProps.Count) {
+                                        prop =
+                                        model.ScalarProperties.Where(p => 
+                                            (p.OriginalPropertyName == modelViewForeignKeySerializable.PrincipalKeyProps[i].OriginalPropertyName)
+                                            &&
+                                            (p.ForeignKeyName == modelViewForeignKeySerializable.NavigationName)
+                                        ).FirstOrDefault();
+                                    }
+                                }
+                                if(prop != null) break;
+                            }
+                        }
+                        if(prop != null) break;
+                    }
+                    if(prop != null) {
+                        result.Add(prop);
+                    }
+                }
+            }
+        }
+        return result;
+    }
+    ModelViewSerializable GetViewByName(DbContextSerializable context, string ViewName) {
+        if ( (context == null) || (string.IsNullOrEmpty(ViewName)) ) {
+            return null;
+        }
+        return context.ModelViews.Where(v => v.ViewName == ViewName).FirstOrDefault();
+    }
+    ModelViewPropertyOfFkSerializable GetScalarPropByPrincipalKeyProp(ModelViewForeignKeySerializable foreignKey, ModelViewKeyPropertySerializable principalKeyProp) {
+        if ((foreignKey == null) || (principalKeyProp == null)) {
+            return null;
+        }
+        if(foreignKey.ScalarProperties == null) {
+            return null;
+        }
+        return foreignKey.ScalarProperties.Where(p => (p.OriginalPropertyName == principalKeyProp.OriginalPropertyName) && (p.ForeignKeyNameChain == foreignKey.NavigationName)).FirstOrDefault();
+    }
+    ModelViewPropertyOfVwSerializable GetScalarPropByOriginalPropertyNameAndForeignKeyNameChain(ModelViewSerializable model, string originalPropertyName, string foreignKeyNameChain) {
+        if ( (model == null) || (string.IsNullOrEmpty(originalPropertyName)) ) {
+            return null;
+        }
+        if(string.IsNullOrEmpty(foreignKeyNameChain)) {
+            return model.ScalarProperties.Where(p => (p.OriginalPropertyName == originalPropertyName) && (string.IsNullOrEmpty(p.ForeignKeyNameChain))).FirstOrDefault();
+        } else {
+            return model.ScalarProperties.Where(p => (p.OriginalPropertyName == originalPropertyName) && (p.ForeignKeyNameChain==foreignKeyNameChain)).FirstOrDefault();
+        }
+    }
+    string GetTypeScriptPropertyName(ModelViewPropertyOfVwSerializable prop, ModelViewSerializable model) {
+        if ((model == null) || (prop == null)) {
+            return "Noname";
+        }
+        if (model.GenerateJSonAttribute) {
+            return prop.JsonPropertyName;
+        } else {
+            return FirstLetterToLower(prop.ViewPropertyName);
+        }
+    }
+    string GetTypeScriptPropertyNameEx(ModelViewUIFormPropertySerializable prop, ModelViewSerializable model) {
+        ModelViewPropertyOfVwSerializable sclrProp = model.ScalarProperties.Where(p => p.ViewPropertyName == prop.ViewPropertyName).FirstOrDefault();
+        return GetTypeScriptPropertyName(sclrProp, model);
+    }
+    string GetCCharpDatatype(ModelViewPropertyOfVwSerializable prop, ModelViewSerializable model) {
+        if ((prop == null) || (model == null)) return "";
+        return prop.UnderlyingTypeName.ToLower().Replace("system.", "");
+    }
+    string GetCCharpDatatypeEx(ModelViewUIFormPropertySerializable prop, ModelViewSerializable model) {
+        if ((prop == null) || (model == null)) return "";
+        ModelViewPropertyOfVwSerializable sclrProp = model.ScalarProperties.Where(p => p.ViewPropertyName == prop.ViewPropertyName).FirstOrDefault();
+        return GetCCharpDatatype(sclrProp, model);
+    }
+    string GetCCharpDatatypeEx2(ModelViewUIListPropertySerializable prop, ModelViewSerializable model) {
+        if ((prop == null) || (model == null)) return "";
+        ModelViewPropertyOfVwSerializable sclrProp = model.ScalarProperties.Where(p => p.ViewPropertyName == prop.ViewPropertyName).FirstOrDefault();
+        return GetCCharpDatatype(sclrProp, model);
+    }
+    string GetServiceClassName(ModelViewSerializable model, string fileType) {
+        string result="";
+        if ((model == null) || string.IsNullOrEmpty(fileType) ) {
+            return result;
+        }
+        if (model.CommonStaffs == null) {
+            return result;
+        }
+        CommonStaffSerializable refItem= 
+            model.CommonStaffs.Where(c => c.FileType == fileType).FirstOrDefault();
+        if (refItem == null) {
+            return result;
+        }
+        if(string.IsNullOrEmpty(refItem.FileName)) {
+            return result;
+        }
+        string fn = refItem.FileName.Replace(".service","-service");
+        StringBuilder sb = new StringBuilder();
+        bool toUpper = true;
+        foreach (char c in fn)
+        {
+            if( c == '-' )
+            {
+                toUpper = true;
+            } else
+            {
+                if (toUpper)
+                {
+                    sb.Append(Char.ToUpper(c));
+                    toUpper = false;
+                }
+                else
+                {
+                    sb.Append(c);
+                }
+            }
+        }
+        return sb.ToString();
+    }
+    string GetContextContextName(DbContextSerializable context, string fileType) {
+        string result="";
+        if ((context == null) || string.IsNullOrEmpty(fileType)) {
+            return result;
+        }
+        if (context.CommonStaffs == null) {
+            return result;
+        }
+        CommonStaffSerializable refItem= 
+            context.CommonStaffs.Where(c => c.FileType == fileType).FirstOrDefault();
+        if (refItem == null) {
+            return result;
+        }
+        if(string.IsNullOrEmpty(refItem.FileName)) {
+            return result;
+        }
+        string fn = refItem.FileName.Replace(".context","-context");
+        StringBuilder sb = new StringBuilder();
+        bool toUpper = true;
+        foreach (char c in fn)
+        {
+            if( c == '-' )
+            {
+                toUpper = true;
+            } else
+            {
+                if (toUpper)
+                {
+                    sb.Append(Char.ToUpper(c));
+                    toUpper = false;
+                }
+                else
+                {
+                    sb.Append(c);
+                }
+            }
+                
+        }
+        return sb.ToString();
+    }
+
+#>

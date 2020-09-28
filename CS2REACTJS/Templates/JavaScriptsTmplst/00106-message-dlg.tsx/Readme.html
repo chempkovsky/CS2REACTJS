@@ -1,0 +1,146 @@
+﻿<!DOCTYPE html>
+
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="utf-8" />
+    <title>Readme for 00106-message-dlg.tsx</title>
+</head>
+<body>
+    <h3>(Context level) Readme for 00106-message-dlg.tsx</h3>
+
+    <table cellspacing="5" border="1">
+        <tr>
+            <td>
+                Type
+            </td>
+            <td>
+                ReactJs component
+            </td>
+        </tr>
+        <tr>
+            <td>
+                Status
+            </td>
+            <td>
+                <strong style="color:green">Active.</strong>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                Recomended folder
+            </td>
+            <td>
+                /src/shared/components/message-dlg
+            </td>
+        </tr>
+        <tr>
+            <td>
+                Generator group
+            </td>
+            <td>
+                Context level
+            </td>
+        </tr>
+        <tr>
+            <td>
+                Material UI script
+            </td>
+            <td>
+                message-dlg.tsx.t4
+            </td>
+        </tr>
+        <tr>
+            <td>
+                Fluent UI script
+            </td>
+            <td>
+                message-dlg.fluentui.tsx.t4
+            </td>
+        </tr>
+
+    </table>
+
+
+    <h4>
+        <strong>
+            <u>Remark</u>
+        </strong>
+    </h4>
+    Please generate the following list of css classes, interfaces and componeents to implement message dialog UI component:
+
+    <table cellspacing="5" border="1">
+        <tr>
+            <td>
+                Interface
+            </td>
+            <td>
+                00102-message-dlg-state.interface.tsx
+            </td>
+        </tr>
+        <tr>
+            <td>
+                Interface
+            </td>
+            <td>
+                00104-message-dlg-props.interface.tsx
+            </td>
+        </tr>
+        <tr>
+            <td>
+                component
+            </td>
+            <td>
+                00106-message-dlg.tsx
+            </td>
+        </tr>
+    </table>
+    <h4>
+        Here is a sample:
+    </h4>
+
+    <code>
+        <pre>
+
+    interface AppState {
+        openmsg: boolean;
+    }
+
+    interface AppProps {}
+
+
+    class App extends React.Component<AppProps, AppState> {
+      constructor(props: AppProps) {
+        super(props);
+        this.state =  {
+            openmsg: false
+        };    
+        this.onClickMsg = this.onClickMsg.bind(this);
+        this.onCloseMsg = this.onCloseMsg.bind(this);
+      }
+
+
+      onClickMsg() {
+        this.setState<'openmsg'>( { openmsg: true } );
+      }
+      onCloseMsg(v: boolean) {
+        this.setState<'openmsg'>( { openmsg: false } );
+      }
+
+      render() {
+        return (
+            &lt;div&gt;
+                &lt;div&gt;
+                  &lt;MessageDlg message={'this is a message'} open={this.state.openmsg} onClose={this.onCloseMsg}&gt;&lt;/MessageDlg&gt;
+                  &lt;p/&gt;
+                  &lt;button onClick={this.onClickMsg} >MessageDlg&lt;/button&gt;
+              &lt;/div&gt;
+          &lt;/div&gt;
+        )};
+
+
+    </pre>
+    </code>
+
+
+</body>
+</html>

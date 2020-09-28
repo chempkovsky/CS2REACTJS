@@ -1,0 +1,245 @@
+﻿<#@ template language="C#" HostSpecific="True" Debug="True" #>
+<#@ output extension="tsx" #>
+<#@ assembly name="System.Core" #>
+<#@ import namespace="System" #>
+<#@ import namespace="System.IO" #>
+<#@ import namespace="System.Linq" #>
+<#@ import namespace="System.Collections" #>
+<#@ import namespace="System.Collections.Generic" #>
+<#@ import namespace="System.Text" #>
+<#@ import namespace="CS2REACTJS" #>
+<#@ import namespace="CS2REACTJS.Model" #>
+<#@ import namespace="CS2REACTJS.Model.Serializable" #>
+<#@ parameter type="CS2REACTJS.Model.Serializable.ModelViewSerializable" name="Model" #>
+<#@ parameter type="CS2REACTJS.Model.Serializable.DbContextSerializable" name="Context" #>
+<#
+
+    string columnSelectorDlgDataModelFolder             = "00099-column-selector-dlg.tsx";
+    string columnSelectorDlgDataModelClassName          = GetModelClassName(Model, columnSelectorDlgDataModelFolder);
+
+    string columnSelectorDataModelFolder                = "00090-column-selector.tsx";
+    string columnSelectorDataModelClassName             = GetModelClassName(Model, columnSelectorDataModelFolder);
+
+    string columnSelectorDlgStateDataModelFolder        = "00092-column-selector-dlg-state.interface.tsx";
+    string columnSelectorDlgStateDataModelClassName     = GetModelInterfaceName(Model, columnSelectorDlgStateDataModelFolder);
+    string columnSelectorDlgPropsDataModelFolder        = "00094-column-selector-dlg-props.interface.tsx";
+    string columnSelectorDlgPropsDataModelClassName     = GetModelInterfaceName(Model, columnSelectorDlgPropsDataModelFolder);
+    string columnSelectorItemDataModelFolder            = "00080-column-selector-item.interface.tsx";
+    string columnSelectorItemDataModelClassName         = GetModelInterfaceName(Model, columnSelectorItemDataModelFolder);
+
+#>
+
+import React, { Component, createRef } from 'react';
+import Button from '@material-ui/core/Button';
+import DialogTitle from '@material-ui/core/DialogTitle';
+import DialogContent from '@material-ui/core/DialogContent';
+import DialogActions from '@material-ui/core/DialogActions';
+import Dialog, { DialogProps } from '@material-ui/core/Dialog';
+
+
+import <#= columnSelectorDlgStateDataModelClassName #> from "<#= GetFolderName(Model, columnSelectorDlgStateDataModelFolder, columnSelectorDlgDataModelFolder) #>";
+import <#= columnSelectorDlgPropsDataModelClassName #> from "<#= GetFolderName(Model, columnSelectorDlgPropsDataModelFolder, columnSelectorDlgDataModelFolder) #>";
+import <#= columnSelectorDataModelClassName #> from "<#= GetFolderName(Model, columnSelectorDataModelFolder, columnSelectorDlgDataModelFolder) #>";
+import <#= columnSelectorItemDataModelClassName #> from "<#= GetFolderName(Model, columnSelectorItemDataModelFolder, columnSelectorDlgDataModelFolder) #>";
+
+
+export default class <#= columnSelectorDlgDataModelClassName #>  extends Component<<#= columnSelectorDlgPropsDataModelClassName #>, <#= columnSelectorDlgStateDataModelClassName #>> {
+
+    constructor(props: <#= columnSelectorDlgPropsDataModelClassName #>) {
+        super(props);
+        this.state = {
+            ref: createRef<any>(), // createRef<<#= columnSelectorDataModelClassName #>>(),
+            colums: [],
+            cachedColums: []
+        }
+        this.handleClose = this.handleClose.bind(this)
+    }
+    static getDerivedStateFromProps(nwprps: <#= columnSelectorDlgPropsDataModelClassName #>, oldstt: <#= columnSelectorDlgStateDataModelClassName #>): any {
+        let isNotOpen = true;
+        if(nwprps.open) {
+            isNotOpen = false;
+        }
+        if (isNotOpen) {
+            if(oldstt.colums.length > 0) {
+                return {
+                    colums: []
+                }
+            } else {
+                return null;
+            }
+        }
+        let ccolums: Array<<#= columnSelectorItemDataModelClassName #>> = [];
+        if(nwprps.colums) ccolums = nwprps.colums;
+        if (oldstt.colums.length === ccolums.length) return null;
+        return  {
+            colums: ccolums.map( x =>  { return {name: x.name, caption: x.caption, checked: x.checked} } ),
+            cachedColums: ccolums
+        }
+    }
+
+    handleClose(r: boolean) {
+        if (this.props.onClose) {
+            if(!r) {
+                this.props.onClose(false)
+            } else {
+                if(this.state.ref.current){
+                    this.props.onClose(true, this.state.ref.current.state.colums.map(x => {return { name: x.name, caption: x.caption, checked: x.checked }}))
+                }
+            }
+        }
+    }
+
+    render () {
+        return (
+            <Dialog
+                fullWidth={true}
+                maxWidth={ this.props.maxWidth ? (this.props.maxWidth as DialogProps['maxWidth']) : false  }
+                open={ this.props.open ? true : false }
+                onClose={ () => this.handleClose(false) }
+                aria-labelledby="alert-dialog-title"
+                aria-describedby="alert-dialog-description">
+                <DialogTitle id="alert-dialog-slide-title">{this.props.caption}</DialogTitle>
+                <DialogContent>
+                    <<#= columnSelectorDataModelClassName #>
+                        ref={this.state.ref}
+                        columsToSelect={this.state.colums}
+                    ></<#= columnSelectorDataModelClassName #>>
+                </DialogContent>
+                <DialogActions>
+                  <Button variant="outlined" onClick={ ()=>this.handleClose(false) }  autoFocus>
+                    Cancel
+                  </Button>
+                  <Button variant="outlined" onClick={ ()=>this.handleClose(true) }  >
+                    Ok
+                  </Button>
+                </DialogActions>
+            </Dialog>
+        );
+    }
+
+}
+
+
+<#+
+    string GetModelInterfaceName(ModelViewSerializable model, string fileType) {
+        string result="";
+        if ((model == null) || string.IsNullOrEmpty(fileType)) {
+            return result;
+        }
+        if (model.CommonStaffs == null) {
+            return result;
+        }
+        CommonStaffSerializable refItem= 
+            model.CommonStaffs.Where(c => c.FileType == fileType).FirstOrDefault();
+        if (refItem == null) {
+            return result;
+        }
+        if(string.IsNullOrEmpty(refItem.FileName)) {
+            return result;
+        }
+        string fn = refItem.FileName.Replace(".interface","-interface");
+        StringBuilder sb = new StringBuilder();
+        bool toUpper = true;
+        foreach (char c in fn)
+        {
+            if( c == '-' )
+            {
+                toUpper = true;
+            } else
+            {
+                if (toUpper)
+                {
+                    sb.Append(Char.ToUpper(c));
+                    toUpper = false;
+                }
+                else
+                {
+                    sb.Append(c);
+                }
+            }
+                
+        }
+        return "I"+sb.ToString();
+    }
+    string GetModelClassName(ModelViewSerializable model, string fileType) {
+        string result="";
+        if ((model == null) || string.IsNullOrEmpty(fileType)) {
+            return result;
+        }
+        if (model.CommonStaffs == null) {
+            return result;
+        }
+        CommonStaffSerializable refItem= 
+            model.CommonStaffs.Where(c => c.FileType == fileType).FirstOrDefault();
+        if (refItem == null) {
+            return result;
+        }
+        if(string.IsNullOrEmpty(refItem.FileName)) {
+            return result;
+        }
+        string fn = refItem.FileName;
+        StringBuilder sb = new StringBuilder();
+        bool toUpper = true;
+        foreach (char c in fn)
+        {
+            if( c == '-' )
+            {
+                toUpper = true;
+            } else
+            {
+                if (toUpper)
+                {
+                    sb.Append(Char.ToUpper(c));
+                    toUpper = false;
+                }
+                else
+                {
+                    sb.Append(c);
+                }
+            }
+                
+        }
+        return sb.ToString();
+    }
+    string GetFolderName(ModelViewSerializable model, string refFolder, string currFolder) {
+        string result="./";
+        if ((model == null) || string.IsNullOrEmpty(refFolder) || string.IsNullOrEmpty(currFolder)) {
+            return result;
+        }
+        if (model.CommonStaffs == null) {
+            return result;
+        }
+        CommonStaffSerializable refItem= 
+            model.CommonStaffs.Where(c => c.FileType == refFolder).FirstOrDefault();
+        CommonStaffSerializable curItem= 
+            model.CommonStaffs.Where(c => c.FileType == currFolder).FirstOrDefault();
+        if ((refItem == null) || (curItem == null)) {
+            return result;
+        }
+        string[] refFolders  = new string[] {};
+        if(!string.IsNullOrEmpty(refItem.FileFolder)) {
+            refFolders  = refItem.FileFolder.Split(new string[] { "\\" }, StringSplitOptions.None);
+        }
+        string[] currFolders = new string[]{};
+        if(!string.IsNullOrEmpty(curItem.FileFolder)) {
+            currFolders  = curItem.FileFolder.Split(new string[] { "\\" }, StringSplitOptions.None);
+        }
+        int refLen = refFolders.Length;
+        int currLen = currFolders.Length;
+        int minLen = refLen < currLen ? refLen : currLen;
+        int cnt= 0;
+        for(int i = 0; i < minLen; i++) {
+            if ( !refFolders[i].Equals(currFolders[i], StringComparison.OrdinalIgnoreCase) ) break;
+            cnt++;
+        }
+        if(currLen > cnt) {
+            result += string.Join("", Enumerable.Repeat("../", currLen - cnt));
+        }
+        if(refLen > cnt) {
+            result += string.Join("/", refFolders, cnt, refLen - cnt) + "/";
+        }
+        result += refItem.FileName;
+        return result;
+    }
+
+#>

@@ -1,0 +1,372 @@
+﻿<#@ template language="C#" HostSpecific="True" Debug="True" #>
+<#@ output extension="tsx" #>
+<#@ assembly name="System.Core" #>
+<#@ import namespace="System" #>
+<#@ import namespace="System.IO" #>
+<#@ import namespace="System.Linq" #>
+<#@ import namespace="System.Collections" #>
+<#@ import namespace="System.Collections.Generic" #>
+<#@ import namespace="System.Text" #>
+<#@ import namespace="CS2REACTJS" #>
+<#@ import namespace="CS2REACTJS.Model" #>
+<#@ import namespace="CS2REACTJS.Model.Serializable" #>
+<#@ parameter type="CS2REACTJS.Model.Serializable.ModelViewSerializable" name="Model" #>
+<#@ parameter type="CS2REACTJS.Model.Serializable.DbContextSerializable" name="Context" #>
+<#
+
+    string sdlgComponentDataModelFolder             = "01440-Sdlg.component.tsx";
+    string sdlgComponentDataModelClassName          = GetModelComponentClassName(Model, sdlgComponentDataModelFolder);
+
+    string sdlgPropsDataModelFolder                 = "01439-Sdlg-props.interface.tsx";
+    string sdlgPropsDataModelClassName              = GetModelInterfaceName(Model, sdlgPropsDataModelFolder);
+
+    string sdlgStateDataModelFolder                 = "01438-Sdlg-state.interface.tsx";
+    string sdlgStateDataModelClassName              = GetModelInterfaceName(Model, sdlgStateDataModelFolder);
+
+    string sformComponentDataModelFolder            = "01420-Sform.component.tsx";
+    string sformComponentDataModelClassName         = GetModelComponentClassName(Model, sformComponentDataModelFolder);
+
+    string webServiceFilterRsltDataModelFolder      = "00052-web-service-filter-rslt.interface.tsx";
+    string webServiceFilterRsltDataModelClassName   = GetContextInterfaceName(Context, webServiceFilterRsltDataModelFolder);
+
+    string currentRowPropName                       = "currentRow";   
+    string HiddenFilterPropName                     = "hiddenFilter";
+      
+
+#>
+
+import React, { Component, createRef, Suspense, lazy } from 'react';
+import Button from '@material-ui/core/Button';
+import DialogContent from '@material-ui/core/DialogContent';
+import DialogActions from '@material-ui/core/DialogActions';
+import Dialog, { DialogProps } from '@material-ui/core/Dialog';
+
+
+import <#= sdlgPropsDataModelClassName #> from "<#= GetFolderName(Model, sdlgPropsDataModelFolder, sdlgComponentDataModelFolder) #>";
+import <#= sdlgStateDataModelClassName #> from "<#= GetFolderName(Model, sdlgStateDataModelFolder, sdlgComponentDataModelFolder) #>";
+import <#= webServiceFilterRsltDataModelClassName #> from "<#= GetCommonFolderName(Model, Context, webServiceFilterRsltDataModelFolder, sdlgComponentDataModelFolder) #>";
+const <#= sformComponentDataModelClassName #> = lazy(() => import('<#= GetFolderName(Model, sformComponentDataModelFolder, sdlgComponentDataModelFolder) #>'));
+
+
+export default class <#= sdlgComponentDataModelClassName #>  extends Component<<#= sdlgPropsDataModelClassName #>, <#= sdlgStateDataModelClassName #>> {
+    constructor(props: <#= sdlgPropsDataModelClassName #>) {
+        super(props);
+        this.state = {
+            ref: createRef<any>(), // createRef<<#= sformComponentDataModelClassName #>>(),
+            <#= HiddenFilterPropName #>: [],
+            cachedHiddenFlt: [],
+        }
+        this.handleClose = this.handleClose.bind(this)
+    }
+    static getDerivedStateFromProps(nwprps: <#= sdlgPropsDataModelClassName #>, oldstt: <#= sdlgStateDataModelClassName #>): any {
+        let isNotOpen = true;
+        if(nwprps.open) {
+            isNotOpen = false;
+        }
+        if (isNotOpen) {
+            if(oldstt.<#= HiddenFilterPropName #>.length > 0) {
+                return {
+                    <#= HiddenFilterPropName #>: []
+                }
+            } else {
+                return null;
+            }
+        }
+        let chiddenFlt: Array<<#= webServiceFilterRsltDataModelClassName #>> = [];
+        if(nwprps.<#= HiddenFilterPropName #>) chiddenFlt = nwprps.<#= HiddenFilterPropName #>;
+        if (oldstt.<#= HiddenFilterPropName #>.length === chiddenFlt.length) return null;
+        return  {
+            <#= HiddenFilterPropName #>: chiddenFlt.map( x =>  { return {fltrName: x.fltrName, fltrDataType: x.fltrDataType, fltrOperator: x.fltrOperator, fltrValue: x.fltrValue} } ),
+            cachedHiddenFlt: chiddenFlt
+        }
+    }
+    handleClose(r: boolean) {
+        if (this.props.onClose) {
+            if(!r) {
+                this.props.onClose(false)
+            } else {
+                if(this.state.ref.current){
+                    if(this.state.ref.current.state.<#= currentRowPropName #>){
+                        this.props.onClose(true, [this.state.ref.current.state.<#= currentRowPropName #>])
+                    }
+                }
+            }
+        }
+    }
+    render () {
+        return (
+            <Dialog
+                fullWidth={true}
+                maxWidth={ this.props.maxWidth ? (this.props.maxWidth as DialogProps['maxWidth']) : false  }
+                open={ this.props.open ? true : false }
+                onClose={ () => this.handleClose(false) } >
+                <DialogContent>
+                    <Suspense fallback={<div>Loading...</div>}>
+                        <<#= sformComponentDataModelClassName #>
+                            ref={this.state.ref}
+                            maxHeight={this.props.maxHeight}
+                            filterMaxHeight={this.props.filterMaxHeight}
+                            caption={this.props.caption}
+                            showBackBtn={false}
+                            showAddFltItem={this.props.showFilter}
+                            showFilter={this.props.showFilter}
+                            <#= HiddenFilterPropName #>={this.state.<#= HiddenFilterPropName #>}
+                        ></<#= sformComponentDataModelClassName #>>
+                    </Suspense>
+                </DialogContent>
+                <DialogActions>
+                  <Button variant="outlined" onClick={ ()=>this.handleClose(false) }  autoFocus>
+                    Cancel
+                  </Button>
+                  <Button variant="outlined" onClick={ ()=>this.handleClose(true) }  >
+                    Ok
+                  </Button>
+                </DialogActions>
+            </Dialog>
+        );
+    }
+}
+
+
+<#+
+    string GetModelInterfaceName(ModelViewSerializable model, string fileType) {
+        string result="";
+        if ((model == null) || string.IsNullOrEmpty(fileType)) {
+            return result;
+        }
+        if (model.CommonStaffs == null) {
+            return result;
+        }
+        CommonStaffSerializable refItem= 
+            model.CommonStaffs.Where(c => c.FileType == fileType).FirstOrDefault();
+        if (refItem == null) {
+            return result;
+        }
+        if(string.IsNullOrEmpty(refItem.FileName)) {
+            return result;
+        }
+        string fn = refItem.FileName.Replace(".interface","-interface");
+        StringBuilder sb = new StringBuilder();
+        bool toUpper = true;
+        foreach (char c in fn)
+        {
+            if( c == '-' )
+            {
+                toUpper = true;
+            } else
+            {
+                if (toUpper)
+                {
+                    sb.Append(Char.ToUpper(c));
+                    toUpper = false;
+                }
+                else
+                {
+                    sb.Append(c);
+                }
+            }
+                
+        }
+        return "I"+sb.ToString();
+    }
+    string GetModelClassName(ModelViewSerializable model, string fileType) {
+        string result="";
+        if ((model == null) || string.IsNullOrEmpty(fileType)) {
+            return result;
+        }
+        if (model.CommonStaffs == null) {
+            return result;
+        }
+        CommonStaffSerializable refItem= 
+            model.CommonStaffs.Where(c => c.FileType == fileType).FirstOrDefault();
+        if (refItem == null) {
+            return result;
+        }
+        if(string.IsNullOrEmpty(refItem.FileName)) {
+            return result;
+        }
+        string fn = refItem.FileName;
+        StringBuilder sb = new StringBuilder();
+        bool toUpper = true;
+        foreach (char c in fn)
+        {
+            if( c == '-' )
+            {
+                toUpper = true;
+            } else
+            {
+                if (toUpper)
+                {
+                    sb.Append(Char.ToUpper(c));
+                    toUpper = false;
+                }
+                else
+                {
+                    sb.Append(c);
+                }
+            }
+                
+        }
+        return sb.ToString();
+    }
+    string GetFolderName(ModelViewSerializable model, string refFolder, string currFolder) {
+        string result="./";
+        if ((model == null) || string.IsNullOrEmpty(refFolder) || string.IsNullOrEmpty(currFolder)) {
+            return result;
+        }
+        if (model.CommonStaffs == null) {
+            return result;
+        }
+        CommonStaffSerializable refItem= 
+            model.CommonStaffs.Where(c => c.FileType == refFolder).FirstOrDefault();
+        CommonStaffSerializable curItem= 
+            model.CommonStaffs.Where(c => c.FileType == currFolder).FirstOrDefault();
+        if ((refItem == null) || (curItem == null)) {
+            return result;
+        }
+        string[] refFolders  = new string[] {};
+        if(!string.IsNullOrEmpty(refItem.FileFolder)) {
+            refFolders  = refItem.FileFolder.Split(new string[] { "\\" }, StringSplitOptions.None);
+        }
+        string[] currFolders = new string[]{};
+        if(!string.IsNullOrEmpty(curItem.FileFolder)) {
+            currFolders  = curItem.FileFolder.Split(new string[] { "\\" }, StringSplitOptions.None);
+        }
+        int refLen = refFolders.Length;
+        int currLen = currFolders.Length;
+        int minLen = refLen < currLen ? refLen : currLen;
+        int cnt= 0;
+        for(int i = 0; i < minLen; i++) {
+            if ( !refFolders[i].Equals(currFolders[i], StringComparison.OrdinalIgnoreCase) ) break;
+            cnt++;
+        }
+        if(currLen > cnt) {
+            result += string.Join("", Enumerable.Repeat("../", currLen - cnt));
+        }
+        if(refLen > cnt) {
+            result += string.Join("/", refFolders, cnt, refLen - cnt) + "/";
+        }
+        result += refItem.FileName;
+        return result;
+    }
+    string GetModelComponentClassName(ModelViewSerializable model, string fileType) {
+        string result="";
+        if ((model == null) || string.IsNullOrEmpty(fileType) ) {
+            return result;
+        }
+        if (model.CommonStaffs == null) {
+            return result;
+        }
+        CommonStaffSerializable refItem= 
+            model.CommonStaffs.Where(c => c.FileType == fileType).FirstOrDefault();
+        if (refItem == null) {
+            return result;
+        }
+        if(string.IsNullOrEmpty(refItem.FileName)) {
+            return result;
+        }
+        string fn = refItem.FileName.Replace(".component","-component");
+        StringBuilder sb = new StringBuilder();
+        bool toUpper = true;
+        foreach (char c in fn)
+        {
+            if( c == '-' )
+            {
+                toUpper = true;
+            } else
+            {
+                if (toUpper)
+                {
+                    sb.Append(Char.ToUpper(c));
+                    toUpper = false;
+                }
+                else
+                {
+                    sb.Append(c);
+                }
+            }
+        }
+        return sb.ToString();
+    }
+    string GetCommonFolderName(ModelViewSerializable model, DbContextSerializable context,  string refFolder, string currFolder) {
+        string result="./";
+        if ((model == null) || (context == null) || string.IsNullOrEmpty(refFolder) || string.IsNullOrEmpty(currFolder)) {
+            return result;
+        }
+        if ((model.CommonStaffs == null) || (context.CommonStaffs == null)) {
+            return result;
+        }
+        CommonStaffSerializable refItem= 
+            context.CommonStaffs.Where(c => c.FileType == refFolder).FirstOrDefault();
+        CommonStaffSerializable curItem= 
+            model.CommonStaffs.Where(c => c.FileType == currFolder).FirstOrDefault();
+        if ((refItem == null) || (curItem == null)) {
+            return result;
+        }
+        string[] refFolders  = new string[] {};
+        if(!string.IsNullOrEmpty(refItem.FileFolder)) {
+            refFolders  = refItem.FileFolder.Split(new string[] { "\\" }, StringSplitOptions.None);
+        }
+        string[] currFolders = new string[]{};
+        if(!string.IsNullOrEmpty(curItem.FileFolder)) {
+            currFolders  = curItem.FileFolder.Split(new string[] { "\\" }, StringSplitOptions.None);
+        }
+        int refLen = refFolders.Length;
+        int currLen = currFolders.Length;
+        int minLen = refLen < currLen ? refLen : currLen;
+        int cnt= 0;
+        for(int i = 0; i < minLen; i++) {
+            if ( !refFolders[i].Equals(currFolders[i], StringComparison.OrdinalIgnoreCase) ) break;
+            cnt++;
+        }
+        if(currLen > cnt) {
+            result += string.Join("",Enumerable.Repeat("../", currLen - cnt));
+        }
+        if(refLen > cnt) {
+            result += string.Join("/", refFolders, cnt, refLen - cnt) + "/";
+        }
+        result += refItem.FileName;
+        return result;
+    }
+    string GetContextInterfaceName(DbContextSerializable context, string fileType) {
+        string result="";
+        if ((context == null) || string.IsNullOrEmpty(fileType)) {
+            return result;
+        }
+        if (context.CommonStaffs == null) {
+            return result;
+        }
+        CommonStaffSerializable refItem= 
+            context.CommonStaffs.Where(c => c.FileType == fileType).FirstOrDefault();
+        if (refItem == null) {
+            return result;
+        }
+        if(string.IsNullOrEmpty(refItem.FileName)) {
+            return result;
+        }
+        string fn = refItem.FileName.Replace(".interface","-interface");
+        StringBuilder sb = new StringBuilder();
+        bool toUpper = true;
+        foreach (char c in fn)
+        {
+            if( c == '-' )
+            {
+                toUpper = true;
+            } else
+            {
+                if (toUpper)
+                {
+                    sb.Append(Char.ToUpper(c));
+                    toUpper = false;
+                }
+                else
+                {
+                    sb.Append(c);
+                }
+            }
+                
+        }
+        return "I"+sb.ToString();
+    }
+
+#>

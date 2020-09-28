@@ -1,0 +1,217 @@
+﻿<#@ template language="C#" HostSpecific="True" Debug="True" #>
+<#@ output extension="tsx" #>
+<#@ assembly name="System.Core" #>
+<#@ import namespace="System" #>
+<#@ import namespace="System.IO" #>
+<#@ import namespace="System.Linq" #>
+<#@ import namespace="System.Collections" #>
+<#@ import namespace="System.Collections.Generic" #>
+<#@ import namespace="System.Text" #>
+<#@ import namespace="CS2REACTJS" #>
+<#@ import namespace="CS2REACTJS.Model" #>
+<#@ import namespace="CS2REACTJS.Model.Serializable" #>
+<#@ parameter type="CS2REACTJS.Model.Serializable.ModelViewSerializable" name="Model" #>
+<#@ parameter type="CS2REACTJS.Model.Serializable.DbContextSerializable" name="Context" #>
+<#
+
+    
+    string columnSelectorDataModelFolder            = "00090-column-selector.tsx";
+    string columnSelectorDataModelClassName         = GetModelClassName(Model, columnSelectorDataModelFolder);
+
+    string columnSelectorStateDataModelFolder       = "00082-column-selector-state.interface.tsx";
+    string columnSelectorStateDataModelClassName    = GetModelInterfaceName(Model, columnSelectorStateDataModelFolder);
+    string columnSelectorPropsDataModelFolder       = "00084-column-selector-props.interface.tsx";
+    string columnSelectorPropsDataModelClassName    = GetModelInterfaceName(Model, columnSelectorPropsDataModelFolder);
+    string columnSelectorItemDataModelFolder        = "00080-column-selector-item.interface.tsx";
+    string columnSelectorItemDataModelClassName     = GetModelInterfaceName(Model, columnSelectorItemDataModelFolder);
+
+#>
+
+import React, { Component } from 'react';
+import List from '@material-ui/core/List';
+import ListItem from '@material-ui/core/ListItem';
+import ListItemIcon from '@material-ui/core/ListItemIcon';
+import ListItemText from '@material-ui/core/ListItemText';
+import Checkbox from '@material-ui/core/Checkbox';
+import <#= columnSelectorStateDataModelClassName #> from "<#= GetFolderName(Model, columnSelectorStateDataModelFolder, columnSelectorDataModelFolder) #>";
+import <#= columnSelectorPropsDataModelClassName #> from "<#= GetFolderName(Model, columnSelectorPropsDataModelFolder, columnSelectorDataModelFolder) #>";
+import <#= columnSelectorItemDataModelClassName #> from "<#= GetFolderName(Model, columnSelectorItemDataModelFolder, columnSelectorDataModelFolder) #>";
+
+
+export default class <#= columnSelectorDataModelClassName #>  extends Component<<#= columnSelectorPropsDataModelClassName #>, <#= columnSelectorStateDataModelClassName #>> {
+    constructor(props: <#= columnSelectorPropsDataModelClassName #>) {
+        super(props);
+        this.state = {
+            colums: [],
+            cachedColums: []
+        }
+        this.handleToggle = this.handleToggle.bind(this)
+    }
+    static getDerivedStateFromProps(nwprps: <#= columnSelectorPropsDataModelClassName #>, oldstt: <#= columnSelectorStateDataModelClassName #>): any {
+        let ccolums: Array<<#= columnSelectorItemDataModelClassName #>> = [];
+        if(nwprps.columsToSelect)  ccolums = nwprps.columsToSelect;
+        let cflt = (ccolums !== oldstt.cachedColums) && (oldstt.cachedColums.length > 0);
+        cflt = cflt ? cflt : oldstt.cachedColums.length !== ccolums.length;
+        if (!cflt) return null;
+        return  {
+            colums: ccolums.map(x => x),
+            cachedColums: ccolums 
+        }
+    }
+    handleToggle(v: <#= columnSelectorItemDataModelClassName #>) {
+        if ((this.state.colums.filter(x => x.checked).length > 1) || (!v.checked)) {
+            v.checked = !v.checked;
+            this.setState<'colums'>( { colums: this.state.colums } );
+        }
+   };
+
+    render () {
+        return (
+            <List>
+                {this.state.colums.map((v) => {
+                    const labelId = `checkbox-list-label-${v.name}`;
+                    return (
+                        <ListItem key={v.name} role={undefined} dense button onClick={()=>this.handleToggle(v)}>
+                            <ListItemIcon>
+                              <Checkbox
+                                edge="start"
+                                checked={v.checked}
+                                tabIndex={-1}
+                                disableRipple
+                                inputProps={{ 'aria-labelledby': labelId }}
+                              />
+                            </ListItemIcon>
+                            <ListItemText id={labelId} primary={v.caption} />
+                        </ListItem>
+                    )
+                })}
+            </List>
+        );
+    }
+}
+
+
+
+<#+
+    string GetModelInterfaceName(ModelViewSerializable model, string fileType) {
+        string result="";
+        if ((model == null) || string.IsNullOrEmpty(fileType)) {
+            return result;
+        }
+        if (model.CommonStaffs == null) {
+            return result;
+        }
+        CommonStaffSerializable refItem= 
+            model.CommonStaffs.Where(c => c.FileType == fileType).FirstOrDefault();
+        if (refItem == null) {
+            return result;
+        }
+        if(string.IsNullOrEmpty(refItem.FileName)) {
+            return result;
+        }
+        string fn = refItem.FileName.Replace(".interface","-interface");
+        StringBuilder sb = new StringBuilder();
+        bool toUpper = true;
+        foreach (char c in fn)
+        {
+            if( c == '-' )
+            {
+                toUpper = true;
+            } else
+            {
+                if (toUpper)
+                {
+                    sb.Append(Char.ToUpper(c));
+                    toUpper = false;
+                }
+                else
+                {
+                    sb.Append(c);
+                }
+            }
+                
+        }
+        return "I"+sb.ToString();
+    }
+    string GetModelClassName(ModelViewSerializable model, string fileType) {
+        string result="";
+        if ((model == null) || string.IsNullOrEmpty(fileType)) {
+            return result;
+        }
+        if (model.CommonStaffs == null) {
+            return result;
+        }
+        CommonStaffSerializable refItem= 
+            model.CommonStaffs.Where(c => c.FileType == fileType).FirstOrDefault();
+        if (refItem == null) {
+            return result;
+        }
+        if(string.IsNullOrEmpty(refItem.FileName)) {
+            return result;
+        }
+        string fn = refItem.FileName;
+        StringBuilder sb = new StringBuilder();
+        bool toUpper = true;
+        foreach (char c in fn)
+        {
+            if( c == '-' )
+            {
+                toUpper = true;
+            } else
+            {
+                if (toUpper)
+                {
+                    sb.Append(Char.ToUpper(c));
+                    toUpper = false;
+                }
+                else
+                {
+                    sb.Append(c);
+                }
+            }
+                
+        }
+        return sb.ToString();
+    }
+    string GetFolderName(ModelViewSerializable model, string refFolder, string currFolder) {
+        string result="./";
+        if ((model == null) || string.IsNullOrEmpty(refFolder) || string.IsNullOrEmpty(currFolder)) {
+            return result;
+        }
+        if (model.CommonStaffs == null) {
+            return result;
+        }
+        CommonStaffSerializable refItem= 
+            model.CommonStaffs.Where(c => c.FileType == refFolder).FirstOrDefault();
+        CommonStaffSerializable curItem= 
+            model.CommonStaffs.Where(c => c.FileType == currFolder).FirstOrDefault();
+        if ((refItem == null) || (curItem == null)) {
+            return result;
+        }
+        string[] refFolders  = new string[] {};
+        if(!string.IsNullOrEmpty(refItem.FileFolder)) {
+            refFolders  = refItem.FileFolder.Split(new string[] { "\\" }, StringSplitOptions.None);
+        }
+        string[] currFolders = new string[]{};
+        if(!string.IsNullOrEmpty(curItem.FileFolder)) {
+            currFolders  = curItem.FileFolder.Split(new string[] { "\\" }, StringSplitOptions.None);
+        }
+        int refLen = refFolders.Length;
+        int currLen = currFolders.Length;
+        int minLen = refLen < currLen ? refLen : currLen;
+        int cnt= 0;
+        for(int i = 0; i < minLen; i++) {
+            if ( !refFolders[i].Equals(currFolders[i], StringComparison.OrdinalIgnoreCase) ) break;
+            cnt++;
+        }
+        if(currLen > cnt) {
+            result += string.Join("", Enumerable.Repeat("../", currLen - cnt));
+        }
+        if(refLen > cnt) {
+            result += string.Join("/", refFolders, cnt, refLen - cnt) + "/";
+        }
+        result += refItem.FileName;
+        return result;
+    }
+
+#>

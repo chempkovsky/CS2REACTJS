@@ -1,0 +1,1068 @@
+{
+  "Description": [
+    "",
+    "                                BEFORE YOU START !!!",
+    "1.",
+    "  Please make sure that you selected src folder",
+    "",
+    "2.",
+    " Please make that AspNet ModelViews has the following names",
+    " (Names are case sensitive)",
+    "     aspnetdashboardView",
+    "     aspnetmodelView",
+    "     aspnetroleView",
+    "     aspnetrolemaskView",
+    "     aspnetuserView",
+    "     aspnetusermaskView",
+    "     aspnetuserrolesView",
+    "",
+    "",
+    ""
+  ],
+  "BatchItems": [
+    {
+      "DestinationFolder": "components\\aspnetdashboard-view\\interfaces",
+      "GeneratorType": "01100-.interface.tsx",
+      "GeneratorSript": "interface.tsx.t4",
+      "ViewModel": "aspnetdashboardView"
+    },
+    {
+      "DestinationFolder": "components\\aspnetdashboard-view\\interfaces",
+      "GeneratorType": "01200-Page.interface.tsx",
+      "GeneratorSript": "Page.interface.tsx.t4",
+      "ViewModel": "aspnetdashboardView"
+    },
+    {
+      "DestinationFolder": "components\\aspnetdashboard-view\\interfaces",
+      "GeneratorType": "01300-Filter.interface.tsx",
+      "GeneratorSript": "Filter.interface.tsx.t4",
+      "ViewModel": "aspnetdashboardView"
+    },
+
+
+    {
+      "DestinationFolder": "components\\aspnetmodel-view\\interfaces",
+      "GeneratorType": "01100-.interface.tsx",
+      "GeneratorSript": "interface.tsx.t4",
+      "ViewModel": "aspnetmodelView"
+    },
+    {
+      "DestinationFolder": "components\\aspnetmodel-view\\interfaces",
+      "GeneratorType": "01200-Page.interface.tsx",
+      "GeneratorSript": "Page.interface.tsx.t4",
+      "ViewModel": "aspnetmodelView"
+    },
+    {
+      "DestinationFolder": "components\\aspnetmodel-view\\interfaces",
+      "GeneratorType": "01300-Filter.interface.tsx",
+      "GeneratorSript": "Filter.interface.tsx.t4",
+      "ViewModel": "aspnetmodelView"
+    },
+
+    {
+      "DestinationFolder": "components\\aspnetrole-view\\interfaces",
+      "GeneratorType": "01100-.interface.tsx",
+      "GeneratorSript": "interface.tsx.t4",
+      "ViewModel": "aspnetroleView"
+    },
+    {
+      "DestinationFolder": "components\\aspnetrole-view\\interfaces",
+      "GeneratorType": "01200-Page.interface.tsx",
+      "GeneratorSript": "Page.interface.tsx.t4",
+      "ViewModel": "aspnetroleView"
+    },
+    {
+      "DestinationFolder": "components\\aspnetrole-view\\interfaces",
+      "GeneratorType": "01300-Filter.interface.tsx",
+      "GeneratorSript": "Filter.interface.tsx.t4",
+      "ViewModel": "aspnetroleView"
+    },
+
+
+    {
+      "DestinationFolder": "components\\aspnetrolemask-view\\interfaces",
+      "GeneratorType": "01100-.interface.tsx",
+      "GeneratorSript": "interface.tsx.t4",
+      "ViewModel": "aspnetrolemaskView"
+    },
+    {
+      "DestinationFolder": "components\\aspnetrolemask-view\\interfaces",
+      "GeneratorType": "01200-Page.interface.tsx",
+      "GeneratorSript": "Page.interface.tsx.t4",
+      "ViewModel": "aspnetrolemaskView"
+    },
+    {
+      "DestinationFolder": "components\\aspnetrolemask-view\\interfaces",
+      "GeneratorType": "01300-Filter.interface.tsx",
+      "GeneratorSript": "Filter.interface.tsx.t4",
+      "ViewModel": "aspnetrolemaskView"
+    },
+
+
+    {
+      "DestinationFolder": "components\\aspnetuser-view\\interfaces",
+      "GeneratorType": "01100-.interface.tsx",
+      "GeneratorSript": "interface.tsx.t4",
+      "ViewModel": "aspnetuserView"
+    },
+    {
+      "DestinationFolder": "components\\aspnetuser-view\\interfaces",
+      "GeneratorType": "01200-Page.interface.tsx",
+      "GeneratorSript": "Page.interface.tsx.t4",
+      "ViewModel": "aspnetuserView"
+    },
+    {
+      "DestinationFolder": "components\\aspnetuser-view\\interfaces",
+      "GeneratorType": "01300-Filter.interface.tsx",
+      "GeneratorSript": "Filter.interface.tsx.t4",
+      "ViewModel": "aspnetuserView"
+    },
+
+    {
+      "DestinationFolder": "components\\aspnetusermask-view\\interfaces",
+      "GeneratorType": "01100-.interface.tsx",
+      "GeneratorSript": "interface.tsx.t4",
+      "ViewModel": "aspnetusermaskView"
+    },
+    {
+      "DestinationFolder": "components\\aspnetusermask-view\\interfaces",
+      "GeneratorType": "01200-Page.interface.tsx",
+      "GeneratorSript": "Page.interface.tsx.t4",
+      "ViewModel": "aspnetusermaskView"
+    },
+    {
+      "DestinationFolder": "components\\aspnetusermask-view\\interfaces",
+      "GeneratorType": "01300-Filter.interface.tsx",
+      "GeneratorSript": "Filter.interface.tsx.t4",
+      "ViewModel": "aspnetusermaskView"
+    },
+
+    {
+      "DestinationFolder": "components\\aspnetuserroles-view\\interfaces",
+      "GeneratorType": "01100-.interface.tsx",
+      "GeneratorSript": "interface.tsx.t4",
+      "ViewModel": "aspnetuserrolesView"
+    },
+    {
+      "DestinationFolder": "components\\aspnetuserroles-view\\interfaces",
+      "GeneratorType": "01200-Page.interface.tsx",
+      "GeneratorSript": "Page.interface.tsx.t4",
+      "ViewModel": "aspnetuserrolesView"
+    },
+    {
+      "DestinationFolder": "components\\aspnetuserroles-view\\interfaces",
+      "GeneratorType": "01300-Filter.interface.tsx",
+      "GeneratorSript": "Filter.interface.tsx.t4",
+      "ViewModel": "aspnetuserrolesView"
+    },
+
+
+    {
+      "DestinationFolder": "services\\aspnetdashboard-view",
+      "GeneratorType": "01400-.service.tsx",
+      "GeneratorSript": "service.tsx.t4",
+      "ViewModel": "aspnetdashboardView"
+    },
+    {
+      "DestinationFolder": "services\\aspnetmodel-view",
+      "GeneratorType": "01400-.service.tsx",
+      "GeneratorSript": "service.tsx.t4",
+      "ViewModel": "aspnetmodelView"
+    },
+    {
+      "DestinationFolder": "services\\aspnetrole-view",
+      "GeneratorType": "01400-.service.tsx",
+      "GeneratorSript": "service.tsx.t4",
+      "ViewModel": "aspnetroleView"
+    },
+    {
+      "DestinationFolder": "services\\aspnetrolemask-view",
+      "GeneratorType": "01400-.service.tsx",
+      "GeneratorSript": "service.tsx.t4",
+      "ViewModel": "aspnetrolemaskView"
+    },
+    {
+      "DestinationFolder": "services\\aspnetuser-view",
+      "GeneratorType": "01400-.service.tsx",
+      "GeneratorSript": "service.tsx.t4",
+      "ViewModel": "aspnetuserView"
+    },
+    {
+      "DestinationFolder": "services\\aspnetusermask-view",
+      "GeneratorType": "01401-.service.tsx",
+      "GeneratorSript": "serviceBitAggr.tsx.t4",
+      "ViewModel": "aspnetusermaskView"
+    },
+    {
+      "DestinationFolder": "services\\aspnetuserroles-view",
+      "GeneratorType": "01400-.service.tsx",
+      "GeneratorSript": "service.tsx.t4",
+      "ViewModel": "aspnetuserrolesView"
+    },
+
+
+    {
+      "DestinationFolder": "components\\aspnetdashboard-view\\interfaces",
+      "GeneratorType": "01418-Sform-state.interface.tsx",
+      "GeneratorSript": "Sform-state.interface.tsx.t4",
+      "ViewModel": "aspnetdashboardView"
+    },
+    {
+      "DestinationFolder": "components\\aspnetdashboard-view\\interfaces",
+      "GeneratorType": "01419-Sform-props.interface.tsx",
+      "GeneratorSript": "Sform-props.interface.tsx.t4",
+      "ViewModel": "aspnetdashboardView"
+    },
+    {
+      "DestinationFolder": "components\\aspnetdashboard-view\\components\\sform",
+      "GeneratorType": "01420-Sform.component.css",
+      "GeneratorSript": "Sform.component.css.t4",
+      "ViewModel": "aspnetdashboardView"
+    },
+    {
+      "DestinationFolder": "components\\aspnetdashboard-view\\components\\sform",
+      "GeneratorType": "01420-Sform.component.tsx",
+      "GeneratorSript": "Sform.component.fluentui.tsx.t4",
+      "ViewModel": "aspnetdashboardView"
+    },
+
+    {
+      "DestinationFolder": "components\\aspnetdashboard-view\\interfaces",
+      "GeneratorType": "01438-Sdlg-state.interface.tsx",
+      "GeneratorSript": "Sdlg-state.interface.tsx.t4",
+      "ViewModel": "aspnetdashboardView"
+    },
+    {
+      "DestinationFolder": "components\\aspnetdashboard-view\\interfaces",
+      "GeneratorType": "01439-Sdlg-props.interface.tsx",
+      "GeneratorSript": "Sdlg-props.interface.tsx.t4",
+      "ViewModel": "aspnetdashboardView"
+    },
+    {
+      "DestinationFolder": "components\\aspnetdashboard-view\\components\\sdlg",
+      "GeneratorType": "01440-Sdlg.component.tsx",
+      "GeneratorSript": "Sdlg.component.fluentui.tsx.t4",
+      "ViewModel": "aspnetdashboardView"
+    },
+
+    {
+      "DestinationFolder": "components\\aspnetmodel-view\\interfaces",
+      "GeneratorType": "01418-Sform-state.interface.tsx",
+      "GeneratorSript": "Sform-state.interface.tsx.t4",
+      "ViewModel": "aspnetmodelView"
+    },
+    {
+      "DestinationFolder": "components\\aspnetmodel-view\\interfaces",
+      "GeneratorType": "01419-Sform-props.interface.tsx",
+      "GeneratorSript": "Sform-props.interface.tsx.t4",
+      "ViewModel": "aspnetmodelView"
+    },
+    {
+      "DestinationFolder": "components\\aspnetmodel-view\\components\\sform",
+      "GeneratorType": "01420-Sform.component.css",
+      "GeneratorSript": "Sform.component.css.t4",
+      "ViewModel": "aspnetmodelView"
+    },
+    {
+      "DestinationFolder": "components\\aspnetmodel-view\\components\\sform",
+      "GeneratorType": "01420-Sform.component.tsx",
+      "GeneratorSript": "Sform.component.fluentui.tsx.t4",
+      "ViewModel": "aspnetmodelView"
+    },
+
+    {
+      "DestinationFolder": "components\\aspnetmodel-view\\interfaces",
+      "GeneratorType": "01438-Sdlg-state.interface.tsx",
+      "GeneratorSript": "Sdlg-state.interface.tsx.t4",
+      "ViewModel": "aspnetmodelView"
+    },
+    {
+      "DestinationFolder": "components\\aspnetmodel-view\\interfaces",
+      "GeneratorType": "01439-Sdlg-props.interface.tsx",
+      "GeneratorSript": "Sdlg-props.interface.tsx.t4",
+      "ViewModel": "aspnetmodelView"
+    },
+    {
+      "DestinationFolder": "components\\aspnetmodel-view\\components\\sdlg",
+      "GeneratorType": "01440-Sdlg.component.tsx",
+      "GeneratorSript": "Sdlg.component.fluentui.tsx.t4",
+      "ViewModel": "aspnetmodelView"
+    },
+
+
+    {
+      "DestinationFolder": "components\\aspnetrole-view\\interfaces",
+      "GeneratorType": "01418-Sform-state.interface.tsx",
+      "GeneratorSript": "Sform-state.interface.tsx.t4",
+      "ViewModel": "aspnetroleView"
+    },
+    {
+      "DestinationFolder": "components\\aspnetrole-view\\interfaces",
+      "GeneratorType": "01419-Sform-props.interface.tsx",
+      "GeneratorSript": "Sform-props.interface.tsx.t4",
+      "ViewModel": "aspnetroleView"
+    },
+    {
+      "DestinationFolder": "components\\aspnetrole-view\\components\\sform",
+      "GeneratorType": "01420-Sform.component.css",
+      "GeneratorSript": "Sform.component.css.t4",
+      "ViewModel": "aspnetroleView"
+    },
+    {
+      "DestinationFolder": "components\\aspnetrole-view\\components\\sform",
+      "GeneratorType": "01420-Sform.component.tsx",
+      "GeneratorSript": "Sform.component.fluentui.tsx.t4",
+      "ViewModel": "aspnetroleView"
+    },
+
+
+    {
+      "DestinationFolder": "components\\aspnetrole-view\\interfaces",
+      "GeneratorType": "01438-Sdlg-state.interface.tsx",
+      "GeneratorSript": "Sdlg-state.interface.tsx.t4",
+      "ViewModel": "aspnetroleView"
+    },
+    {
+      "DestinationFolder": "components\\aspnetrole-view\\interfaces",
+      "GeneratorType": "01439-Sdlg-props.interface.tsx",
+      "GeneratorSript": "Sdlg-props.interface.tsx.t4",
+      "ViewModel": "aspnetroleView"
+    },
+    {
+      "DestinationFolder": "components\\aspnetrole-view\\components\\sdlg",
+      "GeneratorType": "01440-Sdlg.component.tsx",
+      "GeneratorSript": "Sdlg.component.fluentui.tsx.t4",
+      "ViewModel": "aspnetroleView"
+    },
+
+    {
+      "DestinationFolder": "components\\aspnetrolemask-view\\interfaces",
+      "GeneratorType": "01418-Sform-state.interface.tsx",
+      "GeneratorSript": "Sform-state.interface.tsx.t4",
+      "ViewModel": "aspnetrolemaskView"
+    },
+    {
+      "DestinationFolder": "components\\aspnetrolemask-view\\interfaces",
+      "GeneratorType": "01419-Sform-props.interface.tsx",
+      "GeneratorSript": "Sform-props.interface.tsx.t4",
+      "ViewModel": "aspnetrolemaskView"
+    },
+    {
+      "DestinationFolder": "components\\aspnetrolemask-view\\components\\sform",
+      "GeneratorType": "01420-Sform.component.css",
+      "GeneratorSript": "Sform.component.css.t4",
+      "ViewModel": "aspnetrolemaskView"
+    },
+    {
+      "DestinationFolder": "components\\aspnetrolemask-view\\components\\sform",
+      "GeneratorType": "01420-Sform.component.tsx",
+      "GeneratorSript": "Sform.component.fluentui.tsx.t4",
+      "ViewModel": "aspnetrolemaskView"
+    },
+
+
+    {
+      "DestinationFolder": "components\\aspnetrolemask-view\\interfaces",
+      "GeneratorType": "01438-Sdlg-state.interface.tsx",
+      "GeneratorSript": "Sdlg-state.interface.tsx.t4",
+      "ViewModel": "aspnetrolemaskView"
+    },
+    {
+      "DestinationFolder": "components\\aspnetrolemask-view\\interfaces",
+      "GeneratorType": "01439-Sdlg-props.interface.tsx",
+      "GeneratorSript": "Sdlg-props.interface.tsx.t4",
+      "ViewModel": "aspnetrolemaskView"
+    },
+    {
+      "DestinationFolder": "components\\aspnetrolemask-view\\components\\sdlg",
+      "GeneratorType": "01440-Sdlg.component.tsx",
+      "GeneratorSript": "Sdlg.component.fluentui.tsx.t4",
+      "ViewModel": "aspnetrolemaskView"
+    },
+
+    {
+      "DestinationFolder": "components\\aspnetuser-view\\interfaces",
+      "GeneratorType": "01418-Sform-state.interface.tsx",
+      "GeneratorSript": "Sform-state.interface.tsx.t4",
+      "ViewModel": "aspnetuserView"
+    },
+    {
+      "DestinationFolder": "components\\aspnetuser-view\\interfaces",
+      "GeneratorType": "01419-Sform-props.interface.tsx",
+      "GeneratorSript": "Sform-props.interface.tsx.t4",
+      "ViewModel": "aspnetuserView"
+    },
+    {
+      "DestinationFolder": "components\\aspnetuser-view\\components\\sform",
+      "GeneratorType": "01420-Sform.component.css",
+      "GeneratorSript": "Sform.component.css.t4",
+      "ViewModel": "aspnetuserView"
+    },
+    {
+      "DestinationFolder": "components\\aspnetuser-view\\components\\sform",
+      "GeneratorType": "01420-Sform.component.tsx",
+      "GeneratorSript": "Sform.component.fluentui.tsx.t4",
+      "ViewModel": "aspnetuserView"
+    },
+
+    {
+      "DestinationFolder": "components\\aspnetuser-view\\interfaces",
+      "GeneratorType": "01438-Sdlg-state.interface.tsx",
+      "GeneratorSript": "Sdlg-state.interface.tsx.t4",
+      "ViewModel": "aspnetuserView"
+    },
+    {
+      "DestinationFolder": "components\\aspnetuser-view\\interfaces",
+      "GeneratorType": "01439-Sdlg-props.interface.tsx",
+      "GeneratorSript": "Sdlg-props.interface.tsx.t4",
+      "ViewModel": "aspnetuserView"
+    },
+    {
+      "DestinationFolder": "components\\aspnetuser-view\\components\\sdlg",
+      "GeneratorType": "01440-Sdlg.component.tsx",
+      "GeneratorSript": "Sdlg.component.fluentui.tsx.t4",
+      "ViewModel": "aspnetuserView"
+    },
+
+    {
+      "DestinationFolder": "components\\aspnetuserroles-view\\interfaces",
+      "GeneratorType": "01418-Sform-state.interface.tsx",
+      "GeneratorSript": "Sform-state.interface.tsx.t4",
+      "ViewModel": "aspnetuserrolesView"
+    },
+    {
+      "DestinationFolder": "components\\aspnetuserroles-view\\interfaces",
+      "GeneratorType": "01419-Sform-props.interface.tsx",
+      "GeneratorSript": "Sform-props.interface.tsx.t4",
+      "ViewModel": "aspnetuserrolesView"
+    },
+    {
+      "DestinationFolder": "components\\aspnetuserroles-view\\components\\sform",
+      "GeneratorType": "01420-Sform.component.css",
+      "GeneratorSript": "Sform.component.css.t4",
+      "ViewModel": "aspnetuserrolesView"
+    },
+    {
+      "DestinationFolder": "components\\aspnetuserroles-view\\components\\sform",
+      "GeneratorType": "01420-Sform.component.tsx",
+      "GeneratorSript": "Sform.component.fluentui.tsx.t4",
+      "ViewModel": "aspnetuserrolesView"
+    },
+
+
+    {
+      "DestinationFolder": "components\\aspnetuserroles-view\\interfaces",
+      "GeneratorType": "01438-Sdlg-state.interface.tsx",
+      "GeneratorSript": "Sdlg-state.interface.tsx.t4",
+      "ViewModel": "aspnetuserrolesView"
+    },
+    {
+      "DestinationFolder": "components\\aspnetuserroles-view\\interfaces",
+      "GeneratorType": "01439-Sdlg-props.interface.tsx",
+      "GeneratorSript": "Sdlg-props.interface.tsx.t4",
+      "ViewModel": "aspnetuserrolesView"
+    },
+    {
+      "DestinationFolder": "components\\aspnetuserroles-view\\components\\sdlg",
+      "GeneratorType": "01440-Sdlg.component.tsx",
+      "GeneratorSript": "Sdlg.component.fluentui.tsx.t4",
+      "ViewModel": "aspnetuserrolesView"
+    },
+
+
+    {
+      "DestinationFolder": "components\\aspnetdashboard-view\\interfaces",
+      "GeneratorType": "01498-Eform-state.interface.tsx",
+      "GeneratorSript": "Eform-state.interface.fluentui.tsx.t4",
+      "ViewModel": "aspnetdashboardView"
+    },
+    {
+      "DestinationFolder": "components\\aspnetdashboard-view\\interfaces",
+      "GeneratorType": "01499-Eform-props.interface.tsx",
+      "GeneratorSript": "Eform-props.interface.tsx.t4",
+      "ViewModel": "aspnetdashboardView"
+    },
+    {
+      "DestinationFolder": "components\\aspnetdashboard-view\\components\\eform",
+      "GeneratorType": "01500-Eform.component.tsx",
+      "GeneratorSript": "Eform.component.fluentui.tsx.t4",
+      "ViewModel": "aspnetdashboardView"
+    },
+    {
+      "DestinationFolder": "components\\aspnetdashboard-view\\interfaces",
+      "GeneratorType": "01518-Edlg-state.interface.tsx",
+      "GeneratorSript": "Edlg-state.interface.tsx.t4",
+      "ViewModel": "aspnetdashboardView"
+    },
+    {
+      "DestinationFolder": "components\\aspnetdashboard-view\\interfaces",
+      "GeneratorType": "01519-Edlg-props.interface.tsx",
+      "GeneratorSript": "Edlg-props.interface.tsx.t4",
+      "ViewModel": "aspnetdashboardView"
+    },
+    {
+      "DestinationFolder": "components\\aspnetdashboard-view\\components\\edlg",
+      "GeneratorType": "01520-Edlg.component.tsx",
+      "GeneratorSript": "Edlg.component.fluentui.tsx.t4",
+      "ViewModel": "aspnetdashboardView"
+    },
+
+
+    {
+      "DestinationFolder": "components\\aspnetmodel-view\\interfaces",
+      "GeneratorType": "01498-Eform-state.interface.tsx",
+      "GeneratorSript": "Eform-state.interface.fluentui.tsx.t4",
+      "ViewModel": "aspnetmodelView"
+    },
+    {
+      "DestinationFolder": "components\\aspnetmodel-view\\interfaces",
+      "GeneratorType": "01499-Eform-props.interface.tsx",
+      "GeneratorSript": "Eform-props.interface.tsx.t4",
+      "ViewModel": "aspnetmodelView"
+    },
+    {
+      "DestinationFolder": "components\\aspnetmodel-view\\components\\eform",
+      "GeneratorType": "01500-Eform.component.tsx",
+      "GeneratorSript": "Eform.component.fluentui.tsx.t4",
+      "ViewModel": "aspnetmodelView"
+    },
+    {
+      "DestinationFolder": "components\\aspnetmodel-view\\interfaces",
+      "GeneratorType": "01518-Edlg-state.interface.tsx",
+      "GeneratorSript": "Edlg-state.interface.tsx.t4",
+      "ViewModel": "aspnetmodelView"
+    },
+    {
+      "DestinationFolder": "components\\aspnetmodel-view\\interfaces",
+      "GeneratorType": "01519-Edlg-props.interface.tsx",
+      "GeneratorSript": "Edlg-props.interface.tsx.t4",
+      "ViewModel": "aspnetmodelView"
+    },
+    {
+      "DestinationFolder": "components\\aspnetmodel-view\\components\\edlg",
+      "GeneratorType": "01520-Edlg.component.tsx",
+      "GeneratorSript": "Edlg.component.fluentui.tsx.t4",
+      "ViewModel": "aspnetmodelView"
+    },
+
+    {
+      "DestinationFolder": "components\\aspnetrole-view\\interfaces",
+      "GeneratorType": "01498-Eform-state.interface.tsx",
+      "GeneratorSript": "Eform-state.interface.fluentui.tsx.t4",
+      "ViewModel": "aspnetroleView"
+    },
+    {
+      "DestinationFolder": "components\\aspnetrole-view\\interfaces",
+      "GeneratorType": "01499-Eform-props.interface.tsx",
+      "GeneratorSript": "Eform-props.interface.tsx.t4",
+      "ViewModel": "aspnetroleView"
+    },
+    {
+      "DestinationFolder": "components\\aspnetrole-view\\components\\eform",
+      "GeneratorType": "01500-Eform.component.tsx",
+      "GeneratorSript": "Eform.component.fluentui.tsx.t4",
+      "ViewModel": "aspnetroleView"
+    },
+    {
+      "DestinationFolder": "components\\aspnetrole-view\\interfaces",
+      "GeneratorType": "01518-Edlg-state.interface.tsx",
+      "GeneratorSript": "Edlg-state.interface.tsx.t4",
+      "ViewModel": "aspnetroleView"
+    },
+    {
+      "DestinationFolder": "components\\aspnetrole-view\\interfaces",
+      "GeneratorType": "01519-Edlg-props.interface.tsx",
+      "GeneratorSript": "Edlg-props.interface.tsx.t4",
+      "ViewModel": "aspnetroleView"
+    },
+    {
+      "DestinationFolder": "components\\aspnetrole-view\\components\\edlg",
+      "GeneratorType": "01520-Edlg.component.tsx",
+      "GeneratorSript": "Edlg.component.fluentui.tsx.t4",
+      "ViewModel": "aspnetroleView"
+    },
+
+    {
+      "DestinationFolder": "components\\aspnetuser-view\\interfaces",
+      "GeneratorType": "01498-Eform-state.interface.tsx",
+      "GeneratorSript": "Eform-state.interface.fluentui.tsx.t4",
+      "ViewModel": "aspnetuserView"
+    },
+    {
+      "DestinationFolder": "components\\aspnetuser-view\\interfaces",
+      "GeneratorType": "01499-Eform-props.interface.tsx",
+      "GeneratorSript": "Eform-props.interface.tsx.t4",
+      "ViewModel": "aspnetuserView"
+    },
+    {
+      "DestinationFolder": "components\\aspnetuser-view\\components\\eform",
+      "GeneratorType": "01500-Eform.component.tsx",
+      "GeneratorSript": "Eform.component.fluentui.tsx.t4",
+      "ViewModel": "aspnetuserView"
+    },
+    {
+      "DestinationFolder": "components\\aspnetuser-view\\interfaces",
+      "GeneratorType": "01518-Edlg-state.interface.tsx",
+      "GeneratorSript": "Edlg-state.interface.tsx.t4",
+      "ViewModel": "aspnetuserView"
+    },
+    {
+      "DestinationFolder": "components\\aspnetuser-view\\interfaces",
+      "GeneratorType": "01519-Edlg-props.interface.tsx",
+      "GeneratorSript": "Edlg-props.interface.tsx.t4",
+      "ViewModel": "aspnetuserView"
+    },
+    {
+      "DestinationFolder": "components\\aspnetuser-view\\components\\edlg",
+      "GeneratorType": "01520-Edlg.component.tsx",
+      "GeneratorSript": "Edlg.component.fluentui.tsx.t4",
+      "ViewModel": "aspnetuserView"
+    },
+
+    {
+      "DestinationFolder": "components\\aspnetrolemask-view\\interfaces",
+      "GeneratorType": "01498-Eform-state.interface.tsx",
+      "GeneratorSript": "Eform-state.interface.fluentui.tsx.t4",
+      "ViewModel": "aspnetrolemaskView"
+    },
+    {
+      "DestinationFolder": "components\\aspnetrolemask-view\\interfaces",
+      "GeneratorType": "01499-Eform-props.interface.tsx",
+      "GeneratorSript": "Eform-props.interface.tsx.t4",
+      "ViewModel": "aspnetrolemaskView"
+    },
+    {
+      "DestinationFolder": "components\\aspnetrolemask-view\\components\\eform",
+      "GeneratorType": "01500-Eform.component.tsx",
+      "GeneratorSript": "Eform.component.fluentui.tsx.t4",
+      "ViewModel": "aspnetrolemaskView"
+    },
+    {
+      "DestinationFolder": "components\\aspnetrolemask-view\\interfaces",
+      "GeneratorType": "01518-Edlg-state.interface.tsx",
+      "GeneratorSript": "Edlg-state.interface.tsx.t4",
+      "ViewModel": "aspnetrolemaskView"
+    },
+    {
+      "DestinationFolder": "components\\aspnetrolemask-view\\interfaces",
+      "GeneratorType": "01519-Edlg-props.interface.tsx",
+      "GeneratorSript": "Edlg-props.interface.tsx.t4",
+      "ViewModel": "aspnetrolemaskView"
+    },
+    {
+      "DestinationFolder": "components\\aspnetrolemask-view\\components\\edlg",
+      "GeneratorType": "01520-Edlg.component.tsx",
+      "GeneratorSript": "Edlg.component.fluentui.tsx.t4",
+      "ViewModel": "aspnetrolemaskView"
+    },
+
+
+    {
+      "DestinationFolder": "components\\aspnetuserroles-view\\interfaces",
+      "GeneratorType": "01498-Eform-state.interface.tsx",
+      "GeneratorSript": "Eform-state.interface.fluentui.tsx.t4",
+      "ViewModel": "aspnetuserrolesView"
+    },
+    {
+      "DestinationFolder": "components\\aspnetuserroles-view\\interfaces",
+      "GeneratorType": "01499-Eform-props.interface.tsx",
+      "GeneratorSript": "Eform-props.interface.tsx.t4",
+      "ViewModel": "aspnetuserrolesView"
+    },
+    {
+      "DestinationFolder": "components\\aspnetuserroles-view\\components\\eform",
+      "GeneratorType": "01500-Eform.component.tsx",
+      "GeneratorSript": "Eform.component.fluentui.tsx.t4",
+      "ViewModel": "aspnetuserrolesView"
+    },
+    {
+      "DestinationFolder": "components\\aspnetuserroles-view\\interfaces",
+      "GeneratorType": "01518-Edlg-state.interface.tsx",
+      "GeneratorSript": "Edlg-state.interface.tsx.t4",
+      "ViewModel": "aspnetuserrolesView"
+    },
+    {
+      "DestinationFolder": "components\\aspnetuserroles-view\\interfaces",
+      "GeneratorType": "01519-Edlg-props.interface.tsx",
+      "GeneratorSript": "Edlg-props.interface.tsx.t4",
+      "ViewModel": "aspnetuserrolesView"
+    },
+    {
+      "DestinationFolder": "components\\aspnetuserroles-view\\components\\edlg",
+      "GeneratorType": "01520-Edlg.component.tsx",
+      "GeneratorSript": "Edlg.component.fluentui.tsx.t4",
+      "ViewModel": "aspnetuserrolesView"
+    },
+
+    {
+      "DestinationFolder": "components\\aspnetdashboard-view\\interfaces",
+      "GeneratorType": "01596-List-state.interface.tsx",
+      "GeneratorSript": "List-state.interface.tsx.t4",
+      "ViewModel": "aspnetdashboardView"
+    },
+    {
+      "DestinationFolder": "components\\aspnetdashboard-view\\interfaces",
+      "GeneratorType": "01598-Lform-state.interface.tsx",
+      "GeneratorSript": "Lform-state.interface.tsx.t4",
+      "ViewModel": "aspnetdashboardView"
+    },
+    {
+      "DestinationFolder": "components\\aspnetdashboard-view\\interfaces",
+      "GeneratorType": "01599-Lform-props.interface.tsx",
+      "GeneratorSript": "Lform-props.interface.tsx.t4",
+      "ViewModel": "aspnetdashboardView"
+    },
+    {
+      "DestinationFolder": "components\\aspnetdashboard-view\\components\\lform",
+      "GeneratorType": "01600-Lform.component.tsx",
+      "GeneratorSript": "Lform.component.fluentui.tsx.t4",
+      "ViewModel": "aspnetdashboardView"
+    },
+    {
+      "DestinationFolder": "components\\aspnetdashboard-view\\interfaces",
+      "GeneratorType": "01618-Ldlg-state.interface.tsx",
+      "GeneratorSript": "Ldlg-state.interface.tsx.t4",
+      "ViewModel": "aspnetdashboardView"
+    },
+    {
+      "DestinationFolder": "components\\aspnetdashboard-view\\interfaces",
+      "GeneratorType": "01619-Ldlg-props.interface.tsx",
+      "GeneratorSript": "Ldlg-props.interface.tsx.t4",
+      "ViewModel": "aspnetdashboardView"
+    },
+    {
+      "DestinationFolder": "components\\aspnetdashboard-view\\components\\ldlg",
+      "GeneratorType": "01620-Ldlg.component.tsx",
+      "GeneratorSript": "Ldlg.component.fluentui.tsx.t4",
+      "ViewModel": "aspnetdashboardView"
+    },
+
+    {
+      "DestinationFolder": "components\\aspnetmodel-view\\interfaces",
+      "GeneratorType": "01596-List-state.interface.tsx",
+      "GeneratorSript": "List-state.interface.tsx.t4",
+      "ViewModel": "aspnetmodelView"
+    },
+    {
+      "DestinationFolder": "components\\aspnetmodel-view\\interfaces",
+      "GeneratorType": "01598-Lform-state.interface.tsx",
+      "GeneratorSript": "Lform-state.interface.tsx.t4",
+      "ViewModel": "aspnetmodelView"
+    },
+    {
+      "DestinationFolder": "components\\aspnetmodel-view\\interfaces",
+      "GeneratorType": "01599-Lform-props.interface.tsx",
+      "GeneratorSript": "Lform-props.interface.tsx.t4",
+      "ViewModel": "aspnetmodelView"
+    },
+    {
+      "DestinationFolder": "components\\aspnetmodel-view\\components\\lform",
+      "GeneratorType": "01600-Lform.component.tsx",
+      "GeneratorSript": "Lform.component.fluentui.tsx.t4",
+      "ViewModel": "aspnetmodelView"
+    },
+    {
+      "DestinationFolder": "components\\aspnetmodel-view\\interfaces",
+      "GeneratorType": "01618-Ldlg-state.interface.tsx",
+      "GeneratorSript": "Ldlg-state.interface.tsx.t4",
+      "ViewModel": "aspnetmodelView"
+    },
+    {
+      "DestinationFolder": "components\\aspnetmodel-view\\interfaces",
+      "GeneratorType": "01619-Ldlg-props.interface.tsx",
+      "GeneratorSript": "Ldlg-props.interface.tsx.t4",
+      "ViewModel": "aspnetmodelView"
+    },
+    {
+      "DestinationFolder": "components\\aspnetmodel-view\\components\\ldlg",
+      "GeneratorType": "01620-Ldlg.component.tsx",
+      "GeneratorSript": "Ldlg.component.fluentui.tsx.t4",
+      "ViewModel": "aspnetmodelView"
+    },
+
+    {
+      "DestinationFolder": "components\\aspnetrole-view\\interfaces",
+      "GeneratorType": "01596-List-state.interface.tsx",
+      "GeneratorSript": "List-state.interface.tsx.t4",
+      "ViewModel": "aspnetroleView"
+    },
+    {
+      "DestinationFolder": "components\\aspnetrole-view\\interfaces",
+      "GeneratorType": "01598-Lform-state.interface.tsx",
+      "GeneratorSript": "Lform-state.interface.tsx.t4",
+      "ViewModel": "aspnetroleView"
+    },
+    {
+      "DestinationFolder": "components\\aspnetrole-view\\interfaces",
+      "GeneratorType": "01599-Lform-props.interface.tsx",
+      "GeneratorSript": "Lform-props.interface.tsx.t4",
+      "ViewModel": "aspnetroleView"
+    },
+    {
+      "DestinationFolder": "components\\aspnetrole-view\\components\\lform",
+      "GeneratorType": "01600-Lform.component.tsx",
+      "GeneratorSript": "Lform.component.fluentui.tsx.t4",
+      "ViewModel": "aspnetroleView"
+    },
+    {
+      "DestinationFolder": "components\\aspnetrole-view\\interfaces",
+      "GeneratorType": "01618-Ldlg-state.interface.tsx",
+      "GeneratorSript": "Ldlg-state.interface.tsx.t4",
+      "ViewModel": "aspnetroleView"
+    },
+    {
+      "DestinationFolder": "components\\aspnetrole-view\\interfaces",
+      "GeneratorType": "01619-Ldlg-props.interface.tsx",
+      "GeneratorSript": "Ldlg-props.interface.tsx.t4",
+      "ViewModel": "aspnetroleView"
+    },
+    {
+      "DestinationFolder": "components\\aspnetrole-view\\components\\ldlg",
+      "GeneratorType": "01620-Ldlg.component.tsx",
+      "GeneratorSript": "Ldlg.component.fluentui.tsx.t4",
+      "ViewModel": "aspnetroleView"
+    },
+
+    {
+      "DestinationFolder": "components\\aspnetrolemask-view\\interfaces",
+      "GeneratorType": "01596-List-state.interface.tsx",
+      "GeneratorSript": "List-state.interface.tsx.t4",
+      "ViewModel": "aspnetrolemaskView"
+    },
+    {
+      "DestinationFolder": "components\\aspnetrolemask-view\\interfaces",
+      "GeneratorType": "01598-Lform-state.interface.tsx",
+      "GeneratorSript": "Lform-state.interface.tsx.t4",
+      "ViewModel": "aspnetrolemaskView"
+    },
+    {
+      "DestinationFolder": "components\\aspnetrolemask-view\\interfaces",
+      "GeneratorType": "01599-Lform-props.interface.tsx",
+      "GeneratorSript": "Lform-props.interface.tsx.t4",
+      "ViewModel": "aspnetrolemaskView"
+    },
+    {
+      "DestinationFolder": "components\\aspnetrolemask-view\\components\\lform",
+      "GeneratorType": "01600-Lform.component.tsx",
+      "GeneratorSript": "Lform.component.fluentui.tsx.t4",
+      "ViewModel": "aspnetrolemaskView"
+    },
+    {
+      "DestinationFolder": "components\\aspnetrolemask-view\\interfaces",
+      "GeneratorType": "01618-Ldlg-state.interface.tsx",
+      "GeneratorSript": "Ldlg-state.interface.tsx.t4",
+      "ViewModel": "aspnetrolemaskView"
+    },
+    {
+      "DestinationFolder": "components\\aspnetrolemask-view\\interfaces",
+      "GeneratorType": "01619-Ldlg-props.interface.tsx",
+      "GeneratorSript": "Ldlg-props.interface.tsx.t4",
+      "ViewModel": "aspnetrolemaskView"
+    },
+    {
+      "DestinationFolder": "components\\aspnetrolemask-view\\components\\ldlg",
+      "GeneratorType": "01620-Ldlg.component.tsx",
+      "GeneratorSript": "Ldlg.component.fluentui.tsx.t4",
+      "ViewModel": "aspnetrolemaskView"
+    },
+
+    {
+      "DestinationFolder": "components\\aspnetuser-view\\interfaces",
+      "GeneratorType": "01596-List-state.interface.tsx",
+      "GeneratorSript": "List-state.interface.tsx.t4",
+      "ViewModel": "aspnetuserView"
+    },
+    {
+      "DestinationFolder": "components\\aspnetuser-view\\interfaces",
+      "GeneratorType": "01598-Lform-state.interface.tsx",
+      "GeneratorSript": "Lform-state.interface.tsx.t4",
+      "ViewModel": "aspnetuserView"
+    },
+    {
+      "DestinationFolder": "components\\aspnetuser-view\\interfaces",
+      "GeneratorType": "01599-Lform-props.interface.tsx",
+      "GeneratorSript": "Lform-props.interface.tsx.t4",
+      "ViewModel": "aspnetuserView"
+    },
+    {
+      "DestinationFolder": "components\\aspnetuser-view\\components\\lform",
+      "GeneratorType": "01600-Lform.component.tsx",
+      "GeneratorSript": "Lform.component.fluentui.tsx.t4",
+      "ViewModel": "aspnetuserView"
+    },
+    {
+      "DestinationFolder": "components\\aspnetuser-view\\interfaces",
+      "GeneratorType": "01618-Ldlg-state.interface.tsx",
+      "GeneratorSript": "Ldlg-state.interface.tsx.t4",
+      "ViewModel": "aspnetuserView"
+    },
+    {
+      "DestinationFolder": "components\\aspnetuser-view\\interfaces",
+      "GeneratorType": "01619-Ldlg-props.interface.tsx",
+      "GeneratorSript": "Ldlg-props.interface.tsx.t4",
+      "ViewModel": "aspnetuserView"
+    },
+    {
+      "DestinationFolder": "components\\aspnetuser-view\\components\\ldlg",
+      "GeneratorType": "01620-Ldlg.component.tsx",
+      "GeneratorSript": "Ldlg.component.fluentui.tsx.t4",
+      "ViewModel": "aspnetuserView"
+    },
+
+    {
+      "DestinationFolder": "components\\aspnetuserroles-view\\interfaces",
+      "GeneratorType": "01596-List-state.interface.tsx",
+      "GeneratorSript": "List-state.interface.tsx.t4",
+      "ViewModel": "aspnetuserrolesView"
+    },
+    {
+      "DestinationFolder": "components\\aspnetuserroles-view\\interfaces",
+      "GeneratorType": "01598-Lform-state.interface.tsx",
+      "GeneratorSript": "Lform-state.interface.tsx.t4",
+      "ViewModel": "aspnetuserrolesView"
+    },
+    {
+      "DestinationFolder": "components\\aspnetuserroles-view\\interfaces",
+      "GeneratorType": "01599-Lform-props.interface.tsx",
+      "GeneratorSript": "Lform-props.interface.tsx.t4",
+      "ViewModel": "aspnetuserrolesView"
+    },
+    {
+      "DestinationFolder": "components\\aspnetuserroles-view\\components\\lform",
+      "GeneratorType": "01600-Lform.component.tsx",
+      "GeneratorSript": "Lform.component.fluentui.tsx.t4",
+      "ViewModel": "aspnetuserrolesView"
+    },
+    {
+      "DestinationFolder": "components\\aspnetuserroles-view\\interfaces",
+      "GeneratorType": "01618-Ldlg-state.interface.tsx",
+      "GeneratorSript": "Ldlg-state.interface.tsx.t4",
+      "ViewModel": "aspnetuserrolesView"
+    },
+    {
+      "DestinationFolder": "components\\aspnetuserroles-view\\interfaces",
+      "GeneratorType": "01619-Ldlg-props.interface.tsx",
+      "GeneratorSript": "Ldlg-props.interface.tsx.t4",
+      "ViewModel": "aspnetuserrolesView"
+    },
+    {
+      "DestinationFolder": "components\\aspnetuserroles-view\\components\\ldlg",
+      "GeneratorType": "01620-Ldlg.component.tsx",
+      "GeneratorSript": "Ldlg.component.fluentui.tsx.t4",
+      "ViewModel": "aspnetuserrolesView"
+    },
+
+
+
+    {
+      "DestinationFolder": "components\\aspnetmodel-view\\interfaces",
+      "GeneratorType": "02198-Checkedmodel-state.interface.tsx",
+      "GeneratorSript": "Checkedmodel-state.interface.tsx.t4",
+      "ViewModel": "aspnetmodelView"
+    },
+    {
+      "DestinationFolder": "components\\aspnetmodel-view\\interfaces",
+      "GeneratorType": "02199-Checkedmodel-props.interface.tsx",
+      "GeneratorSript": "Checkedmodel-props.interface.tsx.t4",
+      "ViewModel": "aspnetmodelView"
+    },
+    {
+      "DestinationFolder": "components\\aspnetmodel-view\\components\\chkform",
+      "GeneratorType": "02200-Checkedmodel.component.css",
+      "GeneratorSript": "Checkedmodel.component.css.t4",
+      "ViewModel": "aspnetmodelView"
+    },
+    {
+      "DestinationFolder": "components\\aspnetmodel-view\\components\\chkform",
+      "GeneratorType": "02200-Checkedmodel.component.tsx",
+      "GeneratorSript": "Checkedmodel.component.fluentui.tsx.t4",
+      "ViewModel": "aspnetmodelView"
+    },
+
+    {
+      "DestinationFolder": "components\\aspnetdashboard-view\\interfaces",
+      "GeneratorType": "02203-Checkeddashboard-state.interface.tsx",
+      "GeneratorSript": "Checkeddashboard-state.interface.tsx.t4",
+      "ViewModel": "aspnetdashboardView"
+    },
+    {
+      "DestinationFolder": "components\\aspnetdashboard-view\\interfaces",
+      "GeneratorType": "02204-Checkeddashboard-props.interface.tsx",
+      "GeneratorSript": "Checkeddashboard-props.interface.tsx.t4",
+      "ViewModel": "aspnetdashboardView"
+    },
+    {
+      "DestinationFolder": "components\\aspnetdashboard-view\\components\\chkform",
+      "GeneratorType": "02205-Checkeddashboard.component.css",
+      "GeneratorSript": "Checkeddashboard.component.css.t4",
+      "ViewModel": "aspnetdashboardView"
+    },
+    {
+      "DestinationFolder": "components\\aspnetdashboard-view\\components\\chkform",
+      "GeneratorType": "02205-Checkeddashboard.component.tsx",
+      "GeneratorSript": "Checkeddashboard.component.fluentui.tsx.t4",
+      "ViewModel": "aspnetdashboardView"
+    },
+
+    {
+      "DestinationFolder": "components\\aspnetrolemask-view\\interfaces",
+      "GeneratorType": "02208-Checkedrole-state.interface.tsx",
+      "GeneratorSript": "Checkedrole-state.interface.tsx.t4",
+      "ViewModel": "aspnetrolemaskView"
+    },
+    {
+      "DestinationFolder": "components\\aspnetrolemask-view\\interfaces",
+      "GeneratorType": "02209-Checkedrole-props.interface.tsx",
+      "GeneratorSript": "Checkedrole-props.interface.tsx.t4",
+      "ViewModel": "aspnetrolemaskView"
+    },
+    {
+      "DestinationFolder": "components\\aspnetrolemask-view\\components\\chkform",
+      "GeneratorType": "02210-Checkedrole.component.tsx",
+      "GeneratorSript": "Checkedrole.component.fluentui.tsx.t4",
+      "ViewModel": "aspnetrolemaskView"
+    },
+
+
+    {
+      "DestinationFolder": "components\\aspnetusermask-view\\interfaces",
+      "GeneratorType": "01598-Lform-state.interface.tsx",
+      "GeneratorSript": "SecLform-state.interface.tsx.t4",
+      "ViewModel": "aspnetusermaskView"
+    },
+    {
+      "DestinationFolder": "components\\aspnetusermask-view\\interfaces",
+      "GeneratorType": "01599-Lform-props.interface.tsx",
+      "GeneratorSript": "Lform-props.interface.tsx.t4",
+      "ViewModel": "aspnetusermaskView"
+    },
+    {
+      "DestinationFolder": "components\\aspnetusermask-view\\components\\lform",
+      "GeneratorType": "01600-Lform.component.tsx",
+      "GeneratorSript": "SecLform.component.fluentui.tsx.t4",
+      "ViewModel": "aspnetusermaskView"
+    },
+
+    {
+      "DestinationFolder": "components\\aspnetuser-view\\interfaces",
+      "GeneratorType": "01698-O2m-state.interface.tsx",
+      "GeneratorSript": "O2m-state.interface.tsx.t4",
+      "ViewModel": "aspnetuserView"
+    },
+    {
+      "DestinationFolder": "components\\aspnetuser-view\\interfaces",
+      "GeneratorType": "01699-O2m-props.interface.tsx",
+      "GeneratorSript": "O2m-props.interface.tsx.t4",
+      "ViewModel": "aspnetuserView"
+    },
+    {
+      "DestinationFolder": "components\\aspnetuser-view\\components\\o2m",
+      "GeneratorType": "01700-O2m.component.tsx",
+      "GeneratorSript": "O2m.component.fluentui.tsx.t4",
+      "ViewModel": "aspnetuserView"
+    }
+
+
+  ]
+
+}

@@ -1,0 +1,1321 @@
+﻿<#@ template language="C#" HostSpecific="True" Debug="True" #>
+<#@ output extension="tsx" #>
+<#@ assembly name="System.Core" #>
+<#@ import namespace="System" #>
+<#@ import namespace="System.IO" #>
+<#@ import namespace="System.Linq" #>
+<#@ import namespace="System.Collections" #>
+<#@ import namespace="System.Collections.Generic" #>
+<#@ import namespace="System.Text" #>
+<#@ import namespace="CS2REACTJS" #>
+<#@ import namespace="CS2REACTJS.Model" #>
+<#@ import namespace="CS2REACTJS.Model.Serializable" #>
+<#@ parameter type="CS2REACTJS.Model.Serializable.ModelViewSerializable" name="Model" #>
+<#@ parameter type="CS2REACTJS.Model.Serializable.DbContextSerializable" name="Context" #>
+<#
+
+    string checkedroleComponentDataModelFolder          = "02210-Checkedrole.component.tsx";
+    string checkedroleComponentDataModelClassName       = GetModelComponentClassName(Model, checkedroleComponentDataModelFolder);
+
+    string checkedrolePropsDataModelFolder              = "02209-Checkedrole-props.interface.tsx";
+    string checkedrolePropsDataModelClassName           = GetModelInterfaceName(Model, checkedrolePropsDataModelFolder);
+
+    string checkedroleStateDataModelFolder              = "02208-Checkedrole-state.interface.tsx";
+    string checkedroleStateDataModelClassName           = GetModelInterfaceName(Model, checkedroleStateDataModelFolder);
+
+    string checkedmodelComponentDataModelFolder         = "02200-Checkedmodel.component.tsx";
+    ModelViewSerializable checkedmodel                  = GetFirstModelViewByType(Context, checkedmodelComponentDataModelFolder);
+    string modelViewName                                = (checkedmodel == null) ? "" : checkedmodel.ViewName;
+    string checkedmodelComponentDataModelClassName      = GetModelComponentClassName(checkedmodel, checkedmodelComponentDataModelFolder);
+
+    string checkeddashboardComponentDataModelFolder     = "02205-Checkeddashboard.component.tsx";
+    ModelViewSerializable checkeddashmodel              = GetFirstModelViewByType(Context, checkeddashboardComponentDataModelFolder);
+    string dashViewName                                 = (checkeddashmodel == null) ? "" : checkeddashmodel.ViewName;
+    string checkeddashboardComponentDataModelClassName  = GetModelComponentClassName(checkeddashmodel, checkeddashboardComponentDataModelFolder);
+
+    string viewServiceFolder                            = "01400-.service.tsx";
+    string viewServiceClassName                         = GetServiceClassName(Model, viewServiceFolder);
+
+    string eformComponentDataModelFolder                = "01500-Eform.component.tsx";
+    string eformComponentDataModelClassName             = GetModelComponentClassName(Model, eformComponentDataModelFolder);
+
+    string lformComponentDataModelFolder                = "01600-Lform.component.tsx";
+    string lformComponentDataModelClassName             = GetModelComponentClassName(Model, lformComponentDataModelFolder);
+
+    string viewInterfaceFolder                          = "01100-.interface.tsx";
+
+
+    string eformModeEnumlFolder                         = "00025-eform-mode.enum.tsx";
+    string eformModeEnumName                            = GetContextEnumClassName(Context, eformModeEnumlFolder);
+
+    string appGlblSettingsContextFolder                 = "00029-app-glbl-settings.context.tsx";
+    string appGlblSettingsContextClassName              = GetContextContextName(Context, appGlblSettingsContextFolder);
+
+    string fxFlexBaseRowCssClassFolder                  = "00030-fx-flex-base-row.css";
+    string fxFlexBaseRowCssClassName                    = GetContextCssClassName(Context, fxFlexBaseRowCssClassFolder);
+    string colFlexFunctionFolder                        = "00040-col-flex.tsx";
+    string colFlexFunctionName                          = GetContextFunctionName(Context, colFlexFunctionFolder);
+    string rowFlexFunctionFolder                        = "00043-row-flex.tsx";
+    string rowFlexFunctionName                          = GetContextFunctionName(Context, rowFlexFunctionFolder);
+    string currFlexScreenFunctionFolder                 = "00044-curr-flex-screen.tsx";
+    string currFlexScreenFunctionName                   = GetContextFunctionName(Context, currFlexScreenFunctionFolder);
+
+    string webServiceFilterRsltDataModelFolder          = "00052-web-service-filter-rslt.interface.tsx";
+    string webServiceFilterRsltDataModelClassName       = GetContextInterfaceName(Context, webServiceFilterRsltDataModelFolder);
+
+    string webServiceFilterEventDataModelFolder         = "00062-web-service-filter-event.interface.tsx";
+    string webServiceFilterEventDataModelClassName      = GetContextInterfaceName(Context, webServiceFilterEventDataModelFolder);
+
+    string messageDlgDataModelFolder                    = "00106-message-dlg.tsx";
+    string messageDlgDataModelClassName                 = GetContextClassName(Context, messageDlgDataModelFolder);
+
+
+    string currentRowPropName                       = "currentRow";   
+    string HiddenFilterPropName                     = "hiddenFilter";
+    string MaxHeightPropName                        = "maxHeight";
+    string FilterMaxHeightPropName                  = "filterMaxHeight";
+    string CaptionPropName                          = "caption";
+    string CanAddPropName                           = "canAdd";
+    string CanUpdPropName                           = "canUpdate";
+    string CanDelPropName                           = "canDelete";
+    string ShowFilterPropName                       = "showFilter";
+    string ShowAddFltItemPropName                   = "showAddFltItem";
+    string GetCurrentRowMethodName                  = "getCurrentRow";                                                  
+    string ShowBackBtnPropName                      = "showBackBtn";
+    string DetailViewNamePropName                   = "detailViewName";
+    string DetailViewSelModels                      = "detailViewSelModels";
+    string PermMaskPropName                         = "permMask";
+    string DetailHiddenFilterPropName               = "detailHiddenFilter";
+    string InitialRowPropName                       = "initialRow";
+    string SelectedRowPropName                      = "selectedRow";
+    string MasterRowPropName                        = "masterRow";
+    string ShowDetailAddFltItemPropName             = "showDetailAddFltItem";
+    string ShowDetailFilterPropName                 = "showDetailFilter";
+    string CanAddDetailPropName                     = "canDetailAdd";
+    string CanUpdDetailPropName                     = "canDetailUpdate";
+    string CanDelDetailPropName                     = "canDetailDelete";
+    string ContMenuItemsPropName                    = "contMenuItems";
+    string OnContMenuItemMethodName                 = "onContMenuItem";
+    string EformModePropName                        = "eformMode";
+    string TabIndexPropName                         = "tabIndex";
+    string NewRowPropName                           = "newRow";
+    string IsModifiedPropName                       = "IsModified";
+    string OnPermissionsMethodName                  = "onPermissions";
+    string IsDisabledPropName                       = "isDisabled";
+
+
+    string PermissionsPropName                      = "permissions";
+    string OpenMssgDlgPropName                      = "openMssgDlg";
+    string AfterSubmitPropName                      = "afterSubmit";
+    string BeforeSubmitPropName                     = "beforeSubmit";
+    string FormControlModelPropName                 = "eformControlModel";
+    string detailsVisiblePropName                   = "detailsVisible";
+
+
+    List<string> detailViews = GetDetailViews(Model, Context, null);
+    List<ModelViewPropertyOfVwSerializable> primKeys = GetModelPrimaryKeyProps(Model);
+#>
+
+import React, { Component, createRef, Suspense, lazy } from 'react';
+import Accordion from '@material-ui/core/Accordion';
+import AccordionSummary from '@material-ui/core/AccordionSummary';
+import AccordionDetails from '@material-ui/core/AccordionDetails';
+import Icon from '@material-ui/core/Icon';
+import Typography from '@material-ui/core/Typography';
+import Tabs from '@material-ui/core/Tabs';
+import Tab from '@material-ui/core/Tab';
+
+import <#= eformModeEnumName #> from "<#= GetCommonFolderName(Model, Context, eformModeEnumlFolder, checkedroleComponentDataModelFolder) #>";
+import <#= appGlblSettingsContextClassName #> from '<#= GetCommonFolderName(Model, Context, appGlblSettingsContextFolder, checkedroleComponentDataModelFolder) #>';
+import <#= webServiceFilterEventDataModelClassName #> from "<#= GetCommonFolderName(Model, Context, webServiceFilterEventDataModelFolder, checkedroleComponentDataModelFolder) #>";
+import <#= messageDlgDataModelClassName #> from "<#= GetCommonFolderName(Model, Context, messageDlgDataModelFolder, checkedroleComponentDataModelFolder) #>";
+import <#= checkedrolePropsDataModelClassName #> from "<#= GetFolderName(Model, checkedrolePropsDataModelFolder, checkedroleComponentDataModelFolder) #>";
+import <#= checkedroleStateDataModelClassName #> from "<#= GetFolderName(Model, checkedroleStateDataModelFolder, checkedroleComponentDataModelFolder) #>";
+import <#= GetInterfaceName(Model) #> from '<#= GetFolderName(Model, viewInterfaceFolder, checkedroleComponentDataModelFolder) #>';
+import <#= viewServiceClassName #>  from '<#= GetFolderName(Model, viewServiceFolder, checkedroleComponentDataModelFolder)#>';
+
+const  <#= lformComponentDataModelClassName #> = lazy(() => import('<#= GetFolderName(Model, lformComponentDataModelFolder, checkedroleComponentDataModelFolder) #>'));
+const  <#= eformComponentDataModelClassName #> = lazy(() => import('<#= GetFolderName(Model, eformComponentDataModelFolder, checkedroleComponentDataModelFolder) #>'));
+const  <#= checkedmodelComponentDataModelClassName #> = lazy(() => import('<#= GetCrossComponentFolderName(Model, checkedroleComponentDataModelFolder, Context, modelViewName, checkedmodelComponentDataModelFolder) #>'));
+const  <#= checkeddashboardComponentDataModelClassName #> = lazy(() => import('<#= GetCrossComponentFolderName(Model, checkedroleComponentDataModelFolder, Context, dashViewName, checkeddashboardComponentDataModelFolder) #>'));
+
+
+export default class <#= checkedroleComponentDataModelClassName #>  extends Component<<#= checkedrolePropsDataModelClassName #>, <#= checkedroleStateDataModelClassName #>> {
+    static contextType = <#= appGlblSettingsContextClassName #>;
+    constructor(props: <#= checkedrolePropsDataModelClassName #>) {
+        super(props);
+        this.state = {
+            ref: createRef<any>(), // createRef<<#= lformComponentDataModelClassName #>>(),
+            eref: createRef<any>(), // createRef<<#= eformComponentDataModelClassName #>>(),
+            <#= CaptionPropName #>: '<#= Model.ViewName #>',
+            <#= MaxHeightPropName #>: 5,
+            <#= FilterMaxHeightPropName #>: 2,
+            <#= ShowAddFltItemPropName #>: true,
+            <#= ShowFilterPropName #>: true,
+            <#= EformModePropName #>: <#= eformModeEnumName #>.UpdateMode,
+
+            <#= InitialRowPropName #>: null,
+            <#= MasterRowPropName #>: null,
+            <#= NewRowPropName #>: null,
+
+            <#= TabIndexPropName #>: 0,
+            <#= PermissionsPropName #>: [],
+            <#= ContMenuItemsPropName #>: [ {id: 'saveRole', caption: 'Save Role bitmasks', iconName: 'save', iconColor: 'primary', enabled: true } ], 
+
+            <#= IsModifiedPropName #>: false,
+            <#= OpenMssgDlgPropName #>: false,
+
+            <#= CanAddPropName #>: true,
+            <#= CanUpdPropName #>: true,
+            <#= CanDelPropName #>: true,
+            <#= PermMaskPropName #>: 15,
+            <#= detailsVisiblePropName #>: false,
+        }
+        this.<#= SelectedRowPropName #> = this.<#= SelectedRowPropName #>.bind(this);
+        this.onPermMask = this.onPermMask.bind(this);
+        this.onNewRow = this.onNewRow.bind(this);
+        this.<#= OnContMenuItemMethodName #> = this.<#= OnContMenuItemMethodName #>.bind(this);
+        this.onTabsChange = this.onTabsChange.bind(this);
+        this.onCloseDialog = this.onCloseDialog.bind(this);
+        this.<#= AfterSubmitPropName #> = this.<#= AfterSubmitPropName #>.bind(this);
+        this.<#= BeforeSubmitPropName #> = this.<#= BeforeSubmitPropName #>.bind(this);
+        this.<#= OnPermissionsMethodName #> = this.<#= OnPermissionsMethodName #>.bind(this);
+
+    }
+    static getDerivedStateFromProps(nwprps: <#= checkedrolePropsDataModelClassName #>, oldstt: <#= checkedroleStateDataModelClassName #>): any {
+        let rslt: { [key: string]: any; } = {};
+        if(nwprps.<#= CaptionPropName #>) {
+            if(nwprps.<#= CaptionPropName #> !== oldstt.<#= CaptionPropName #>) rslt['<#= CaptionPropName #>'] = nwprps.<#= CaptionPropName #>;
+        } else {
+            if (oldstt.<#= CaptionPropName #> !== '') rslt['<#= CaptionPropName #>'] = '<#= Model.ViewName #>';
+        }
+        if(nwprps.<#= MaxHeightPropName #>) {
+            if(nwprps.<#= MaxHeightPropName #> !== oldstt.<#= MaxHeightPropName #>) rslt['<#= MaxHeightPropName #>'] = nwprps.<#= MaxHeightPropName #>;
+        } else {
+            if(oldstt.<#= MaxHeightPropName #> !== 5) rslt['<#= MaxHeightPropName #>'] = 5;
+        }
+        if(nwprps.<#= FilterMaxHeightPropName #>) {
+            if(nwprps.<#= FilterMaxHeightPropName #> !== oldstt.<#= FilterMaxHeightPropName #>) rslt['<#= FilterMaxHeightPropName #>'] = nwprps.<#= FilterMaxHeightPropName #>;
+        } else {
+            if(oldstt.<#= FilterMaxHeightPropName #> !== 2) rslt['<#= FilterMaxHeightPropName #>'] = 2;
+        }
+        if(typeof nwprps.<#= ShowAddFltItemPropName #> === 'undefined') {
+            if(!oldstt.<#= ShowAddFltItemPropName #> ) rslt['<#= ShowAddFltItemPropName #>'] = true;
+        } else {
+            if(nwprps.<#= ShowAddFltItemPropName #> !== oldstt.<#= ShowAddFltItemPropName #>) rslt['<#= ShowAddFltItemPropName #>'] = nwprps.<#= ShowAddFltItemPropName #>;
+        }
+        if(typeof nwprps.<#= ShowFilterPropName #> === 'undefined') {
+            if(!oldstt.<#= ShowFilterPropName #> ) rslt['<#= ShowFilterPropName #>'] = true;
+        } else {
+            if(nwprps.<#= ShowFilterPropName #> !== oldstt.<#= ShowFilterPropName #>) rslt['<#= ShowFilterPropName #>'] = nwprps.<#= ShowFilterPropName #>;
+        }
+        return rslt;
+    }
+    onPermMask() {
+        const <#= PermMaskPropName #>: number = this.context.getViewModelMask('<#= Model.ViewName #>');
+        if(<#= PermMaskPropName #> !== this.state.<#= PermMaskPropName #>) {
+            let <#= CanAddPropName #> = true;
+            if (!(typeof this.props.<#= CanAddPropName #> === 'undefined')) <#= CanAddPropName #> = this.props.<#= CanAddPropName #>;
+            let <#= CanUpdPropName #> = true;
+            if (!(typeof this.props.<#= CanUpdPropName #> === 'undefined')) <#= CanUpdPropName #> = this.props.<#= CanUpdPropName #>;
+            let <#= CanDelPropName #> = true;
+            if (!(typeof this.props.<#= CanDelPropName #> === 'undefined')) <#= CanDelPropName #> = this.props.<#= CanDelPropName #>;
+            <#= CanDelPropName #> = (<#= CanDelPropName #> && ((<#= PermMaskPropName #> & 2) === 2));
+            <#= CanUpdPropName #> = (<#= CanUpdPropName #> && ((<#= PermMaskPropName #> & 4) === 4));
+            <#= CanAddPropName #> = (<#= CanAddPropName #> && ((<#= PermMaskPropName #> & 8) === 8));
+            this.setState({ <#= PermMaskPropName #>: <#= PermMaskPropName #>, <#= CanDelPropName #>: <#= CanDelPropName #>, <#= CanUpdPropName #>: <#= CanUpdPropName #>, <#= CanAddPropName #>: <#= CanAddPropName #>,
+                            <#= ContMenuItemsPropName #>: [ {id: 'saveRole', caption: 'Save Role bitmasks', iconName: 'save', iconColor: 'primary', enabled: <#= CanAddPropName #> } ] });
+        }
+    }
+    componentDidMount() {
+        this.onPermMask();
+    }
+    componentDidUpdate() {
+        this.onPermMask();
+    }
+    <#= SelectedRowPropName #>(row: <#= GetInterfaceName(Model) #> | null): void {
+        if (this.state.<#= IsModifiedPropName #>) {
+            this.setState({<#= OpenMssgDlgPropName #>: true, <#= NewRowPropName #>: row});
+        } else {
+            this.setState({<#= NewRowPropName #>: row}, this.onNewRow);
+        }
+    }
+    onNewRow() {
+        let row: <#= GetInterfaceName(Model) #> | null = this.state.<#= NewRowPropName #>;
+        let isNDef = true;
+        if(!(typeof row === 'undefined')) {
+            isNDef = (row === null);
+        }
+        if(isNDef) {
+            this.setState({<#= MasterRowPropName #>: null, <#= InitialRowPropName #>: null, <#= IsModifiedPropName #>: false, <#= PermissionsPropName #>: []});
+            return;
+        }
+        const mask = 'mask';
+        const sfx = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'A', 'B', 'C', 'D'];
+        let rslt: Array<number> = [];
+        sfx.forEach(e => {
+            let nm = mask + e;
+            // @ts-ignore
+            if (!(typeof row[nm] === 'undefined')) {
+                // @ts-ignore
+                rslt.push(row[nm]);
+            }
+        });
+        const dask = 'dask';
+        const dsfx = ['0', '1', '2'];
+        dsfx.forEach(e => {
+            let nm = dask + e;
+            // @ts-ignore
+            if (!(typeof row[nm] === 'undefined')) {
+                // @ts-ignore
+                rslt.push(row[nm]);
+            }
+        });
+        this.setState({<#= PermissionsPropName #>: rslt, <#= IsModifiedPropName #>: false, <#= MasterRowPropName #>: {...row} as <#= GetInterfaceName(Model) #>, <#= InitialRowPropName #>: row});
+    }
+    <#= OnContMenuItemMethodName #>(v: <#= webServiceFilterEventDataModelClassName #>) {
+        if(this.state.eref.current) {
+            this.state.eref.current.doSubmit();
+        }
+    }
+    onTabsChange(event: React.ChangeEvent<{}>, newValue: number) {
+        this.setState({<#= TabIndexPropName #> : newValue});
+    }
+    onCloseDialog(rslt: boolean) {
+        if(rslt) {
+            if(this.state.eref.current) {
+                this.setState({<#= OpenMssgDlgPropName #>: false});
+                this.setState({openMssgDlg: false}) 
+            } else {
+                this.setState({<#= OpenMssgDlgPropName #>: false}, this.onNewRow);
+            }
+        } else {
+            this.setState({<#= OpenMssgDlgPropName #>: false}, this.onNewRow);
+        }
+    }
+    <#= AfterSubmitPropName #>(sender: any, rslt: boolean, respdata: <#= GetInterfaceName(Model) #>|null) {
+        if(!rslt) {
+            // @ts-ignore
+            <#= viewServiceClassName #>.src2dest(respdata, this.state.<#= MasterRowPropName #>)
+            // @ts-ignore
+            <#= viewServiceClassName #>.src2dest(respdata, this.state.<#= InitialRowPropName #>)
+            this.onNewRow(); 
+        }
+    }
+    <#= BeforeSubmitPropName #>(sender: any, data: <#= GetInterfaceName(Model) #>|null) {
+        if(data === null) {
+            this.onNewRow();
+        }
+    }
+    <#= OnPermissionsMethodName #>(val: Array<number>) {
+        if (this.state.<#= MasterRowPropName #> === null) { 
+            return;
+        }
+        if(typeof val === 'undefined') {
+            return;
+        }
+        if(!Array.isArray(val)) {
+            return;
+        }
+        let row = this.state.<#= MasterRowPropName #>;
+        const lng: number = val.length;
+        const mask = 'mask';
+        const sfx = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'A', 'B', 'C', 'D'];
+        let i: number = 0;
+        sfx.forEach(e => {
+            if(i < lng) {
+                let nm = mask + e;
+                // @ts-ignore
+                row[nm] = val[i];
+            }
+            i++;
+        });
+        const dask = 'dask';
+        const dsfx = ['0', '1', '2'];
+        dsfx.forEach(e => {
+            if(i < lng) {
+                let nm = dask + e;
+                // @ts-ignore
+                row[nm] = val[i];
+            }
+            i++;
+        });
+        if(this.state.eref.current) { this.state.eref.current.inputToControls(); }
+        this.setState({<#= MasterRowPropName #>: row, permissions: val, <#= IsModifiedPropName #>: true})
+    }
+
+
+    render () {
+        return (
+        <div style={{ padding: '5px' }}>
+            <Suspense fallback={<div>Loading...</div>}>
+                <<#= lformComponentDataModelClassName #>
+                    ref={this.state.ref}
+                    <#= CaptionPropName #>={this.state.<#= CaptionPropName #>}
+                    <#= MaxHeightPropName #>={this.state.<#= MaxHeightPropName #>}
+                    <#= FilterMaxHeightPropName #>={this.state.<#= FilterMaxHeightPropName #>}
+                    <#= ShowFilterPropName #>={(this.state.<#= ShowFilterPropName #>) ? true : false}
+                    <#= ShowAddFltItemPropName #>={(this.state.<#= ShowAddFltItemPropName #>) ? true : false}
+                    <#= ShowBackBtnPropName #>={false}
+
+                    <#= CanAddPropName #>={ this.state.<#= CanAddPropName #> }
+                    <#= CanUpdPropName #>={ this.state.<#= CanUpdPropName #> }
+                    <#= CanDelPropName #>={ this.state.<#= CanDelPropName #> }
+
+                    <#= HiddenFilterPropName #>={this.props.<#= HiddenFilterPropName #>}
+                    <#= SelectedRowPropName #>={this.<#= SelectedRowPropName #>}
+                    <#= ContMenuItemsPropName #>={ this.props.<#= ContMenuItemsPropName #> }
+                    <#= OnContMenuItemMethodName #>={this.props.<#= OnContMenuItemMethodName #>}
+                ></<#= lformComponentDataModelClassName #>>
+            </Suspense>
+            <Accordion>
+                <AccordionSummary expandIcon={ <Icon color="primary" >expand_more</Icon>  }>
+                    <Typography >Role details</Typography>
+                </AccordionSummary>
+                <AccordionDetails>
+                    <Suspense fallback={<div>Loading...</div>}>
+                        <<#= eformComponentDataModelClassName #>
+                            ref={this.state.eref}
+                            <#= EformModePropName #> = { this.state.<#= EformModePropName #> }
+                            <#= FormControlModelPropName #> = { this.state.<#= MasterRowPropName #> }
+                            <#= AfterSubmitPropName #> = { this.<#= AfterSubmitPropName #> }
+                            <#= BeforeSubmitPropName #> = { this.<#= BeforeSubmitPropName #> }
+                        ></<#= eformComponentDataModelClassName #>>
+                    </Suspense>
+                </AccordionDetails>
+            </Accordion>
+            <Tabs
+              value={this.state.<#= TabIndexPropName #>}
+              onChange={this.onTabsChange}
+              indicatorColor="primary"
+              textColor="primary"
+              // variant="fullWidth"
+              >
+                <Tab label="Models"/>
+                <Tab label="Dashboards"/>
+            </Tabs>
+                <div hidden={this.state.<#= TabIndexPropName #> !== 0}>
+                    <Suspense fallback={<div>Loading...</div>}>
+                        <<#= checkedmodelComponentDataModelClassName #>
+                            // <#= CaptionPropName #>='Models'
+                            <#= MaxHeightPropName #>={this.state.<#= MaxHeightPropName #>}
+                            <#= FilterMaxHeightPropName #>={this.state.<#= FilterMaxHeightPropName #>}
+                            <#= ShowAddFltItemPropName #>={ true }
+                            <#= ShowFilterPropName #>={ true }
+
+                            // <#= HiddenFilterPropName #>={[]}
+
+                            <#= ContMenuItemsPropName #> = { this.state.<#= ContMenuItemsPropName #> }
+                            <#= OnContMenuItemMethodName #> = { this.<#= OnContMenuItemMethodName #> }
+
+                            <#= PermissionsPropName #> = { this.state.<#= PermissionsPropName #> }
+                            <#= OnPermissionsMethodName #> = { this.<#= OnPermissionsMethodName #> }
+                            <#= IsDisabledPropName #>={ !this.state.<#= CanUpdPropName #> }
+                        />
+                    </Suspense>
+                </div>
+                <div hidden={this.state.<#= TabIndexPropName #> !== 1}>
+                    <Suspense fallback={<div>Loading...</div>}>
+                        <<#= checkeddashboardComponentDataModelClassName #>
+                            // <#= CaptionPropName #>='Dashboards'
+                            <#= MaxHeightPropName #>={this.state.<#= MaxHeightPropName #>}
+                            <#= FilterMaxHeightPropName #>={this.state.<#= FilterMaxHeightPropName #>}
+                            <#= ShowAddFltItemPropName #>={ true }
+                            <#= ShowFilterPropName #>={ true }
+                        
+                            // <#= HiddenFilterPropName #>={[]}
+
+                            <#= ContMenuItemsPropName #> = { this.state.<#= ContMenuItemsPropName #> }
+                            <#= OnContMenuItemMethodName #> = { this.<#= OnContMenuItemMethodName #> }
+
+                            <#= PermissionsPropName #> = { this.state.<#= PermissionsPropName #> }
+                            <#= OnPermissionsMethodName #> = { this.<#= OnPermissionsMethodName #> }
+                            <#= IsDisabledPropName #>={ !this.state.<#= CanUpdPropName #> }
+                        />
+                    </Suspense>
+                </div>
+            <<#= messageDlgDataModelClassName #>
+                open={this.state.<#= OpenMssgDlgPropName #>}
+                maxWidth='md'
+                caption='Save data'
+                message='Would you like to save changes?'
+                iconname = 'warning'
+                iconcolor = 'secondary'
+                onClose = { this.onCloseDialog }
+            />
+        </div>
+        );
+    }
+}
+
+
+<#+
+    string GetInterfaceName(ModelViewSerializable model) {
+        return "I"+model.ViewName;
+    }
+    string GetModelInterfaceName(ModelViewSerializable model, string fileType) {
+        string result="";
+        if ((model == null) || string.IsNullOrEmpty(fileType)) {
+            return result;
+        }
+        if (model.CommonStaffs == null) {
+            return result;
+        }
+        CommonStaffSerializable refItem= 
+            model.CommonStaffs.Where(c => c.FileType == fileType).FirstOrDefault();
+        if (refItem == null) {
+            return result;
+        }
+        if(string.IsNullOrEmpty(refItem.FileName)) {
+            return result;
+        }
+        string fn = refItem.FileName.Replace(".interface","-interface");
+        StringBuilder sb = new StringBuilder();
+        bool toUpper = true;
+        foreach (char c in fn)
+        {
+            if( c == '-' )
+            {
+                toUpper = true;
+            } else
+            {
+                if (toUpper)
+                {
+                    sb.Append(Char.ToUpper(c));
+                    toUpper = false;
+                }
+                else
+                {
+                    sb.Append(c);
+                }
+            }
+                
+        }
+        return "I"+sb.ToString();
+    }
+    string GetModelClassName(ModelViewSerializable model, string fileType) {
+        string result="";
+        if ((model == null) || string.IsNullOrEmpty(fileType)) {
+            return result;
+        }
+        if (model.CommonStaffs == null) {
+            return result;
+        }
+        CommonStaffSerializable refItem= 
+            model.CommonStaffs.Where(c => c.FileType == fileType).FirstOrDefault();
+        if (refItem == null) {
+            return result;
+        }
+        if(string.IsNullOrEmpty(refItem.FileName)) {
+            return result;
+        }
+        string fn = refItem.FileName;
+        StringBuilder sb = new StringBuilder();
+        bool toUpper = true;
+        foreach (char c in fn)
+        {
+            if( c == '-' )
+            {
+                toUpper = true;
+            } else
+            {
+                if (toUpper)
+                {
+                    sb.Append(Char.ToUpper(c));
+                    toUpper = false;
+                }
+                else
+                {
+                    sb.Append(c);
+                }
+            }
+                
+        }
+        return sb.ToString();
+    }
+    string GetFolderName(ModelViewSerializable model, string refFolder, string currFolder) {
+        string result="./";
+        if ((model == null) || string.IsNullOrEmpty(refFolder) || string.IsNullOrEmpty(currFolder)) {
+            return result;
+        }
+        if (model.CommonStaffs == null) {
+            return result;
+        }
+        CommonStaffSerializable refItem= 
+            model.CommonStaffs.Where(c => c.FileType == refFolder).FirstOrDefault();
+        CommonStaffSerializable curItem= 
+            model.CommonStaffs.Where(c => c.FileType == currFolder).FirstOrDefault();
+        if ((refItem == null) || (curItem == null)) {
+            return result;
+        }
+        string[] refFolders  = new string[] {};
+        if(!string.IsNullOrEmpty(refItem.FileFolder)) {
+            refFolders  = refItem.FileFolder.Split(new string[] { "\\" }, StringSplitOptions.None);
+        }
+        string[] currFolders = new string[]{};
+        if(!string.IsNullOrEmpty(curItem.FileFolder)) {
+            currFolders  = curItem.FileFolder.Split(new string[] { "\\" }, StringSplitOptions.None);
+        }
+        int refLen = refFolders.Length;
+        int currLen = currFolders.Length;
+        int minLen = refLen < currLen ? refLen : currLen;
+        int cnt= 0;
+        for(int i = 0; i < minLen; i++) {
+            if ( !refFolders[i].Equals(currFolders[i], StringComparison.OrdinalIgnoreCase) ) break;
+            cnt++;
+        }
+        if(currLen > cnt) {
+            result += string.Join("", Enumerable.Repeat("../", currLen - cnt));
+        }
+        if(refLen > cnt) {
+            result += string.Join("/", refFolders, cnt, refLen - cnt) + "/";
+        }
+        result += refItem.FileName;
+        return result;
+    }
+    string GetModelComponentClassName(ModelViewSerializable model, string fileType) {
+        string result="";
+        if ((model == null) || string.IsNullOrEmpty(fileType) ) {
+            return result;
+        }
+        if (model.CommonStaffs == null) {
+            return result;
+        }
+        CommonStaffSerializable refItem= 
+            model.CommonStaffs.Where(c => c.FileType == fileType).FirstOrDefault();
+        if (refItem == null) {
+            return result;
+        }
+        if(string.IsNullOrEmpty(refItem.FileName)) {
+            return result;
+        }
+        string fn = refItem.FileName.Replace(".component","-component");
+        StringBuilder sb = new StringBuilder();
+        bool toUpper = true;
+        foreach (char c in fn)
+        {
+            if( c == '-' )
+            {
+                toUpper = true;
+            } else
+            {
+                if (toUpper)
+                {
+                    sb.Append(Char.ToUpper(c));
+                    toUpper = false;
+                }
+                else
+                {
+                    sb.Append(c);
+                }
+            }
+        }
+        return sb.ToString();
+    }
+    string GetCommonFolderName(ModelViewSerializable model, DbContextSerializable context,  string refFolder, string currFolder) {
+        string result="./";
+        if ((model == null) || (context == null) || string.IsNullOrEmpty(refFolder) || string.IsNullOrEmpty(currFolder)) {
+            return result;
+        }
+        if ((model.CommonStaffs == null) || (context.CommonStaffs == null)) {
+            return result;
+        }
+        CommonStaffSerializable refItem= 
+            context.CommonStaffs.Where(c => c.FileType == refFolder).FirstOrDefault();
+        CommonStaffSerializable curItem= 
+            model.CommonStaffs.Where(c => c.FileType == currFolder).FirstOrDefault();
+        if ((refItem == null) || (curItem == null)) {
+            return result;
+        }
+        string[] refFolders  = new string[] {};
+        if(!string.IsNullOrEmpty(refItem.FileFolder)) {
+            refFolders  = refItem.FileFolder.Split(new string[] { "\\" }, StringSplitOptions.None);
+        }
+        string[] currFolders = new string[]{};
+        if(!string.IsNullOrEmpty(curItem.FileFolder)) {
+            currFolders  = curItem.FileFolder.Split(new string[] { "\\" }, StringSplitOptions.None);
+        }
+        int refLen = refFolders.Length;
+        int currLen = currFolders.Length;
+        int minLen = refLen < currLen ? refLen : currLen;
+        int cnt= 0;
+        for(int i = 0; i < minLen; i++) {
+            if ( !refFolders[i].Equals(currFolders[i], StringComparison.OrdinalIgnoreCase) ) break;
+            cnt++;
+        }
+        if(currLen > cnt) {
+            result += string.Join("",Enumerable.Repeat("../", currLen - cnt));
+        }
+        if(refLen > cnt) {
+            result += string.Join("/", refFolders, cnt, refLen - cnt) + "/";
+        }
+        result += refItem.FileName;
+        return result;
+    }
+    string GetContextInterfaceName(DbContextSerializable context, string fileType) {
+        string result="";
+        if ((context == null) || string.IsNullOrEmpty(fileType)) {
+            return result;
+        }
+        if (context.CommonStaffs == null) {
+            return result;
+        }
+        CommonStaffSerializable refItem= 
+            context.CommonStaffs.Where(c => c.FileType == fileType).FirstOrDefault();
+        if (refItem == null) {
+            return result;
+        }
+        if(string.IsNullOrEmpty(refItem.FileName)) {
+            return result;
+        }
+        string fn = refItem.FileName.Replace(".interface","-interface");
+        StringBuilder sb = new StringBuilder();
+        bool toUpper = true;
+        foreach (char c in fn)
+        {
+            if( c == '-' )
+            {
+                toUpper = true;
+            } else
+            {
+                if (toUpper)
+                {
+                    sb.Append(Char.ToUpper(c));
+                    toUpper = false;
+                }
+                else
+                {
+                    sb.Append(c);
+                }
+            }
+                
+        }
+        return "I"+sb.ToString();
+    }
+    string GetContextFunctionName(DbContextSerializable context, string fileType) {
+        string result="";
+        if ((context == null) || string.IsNullOrEmpty(fileType)) {
+            return result;
+        }
+        if (context.CommonStaffs == null) {
+            return result;
+        }
+        CommonStaffSerializable refItem= 
+            context.CommonStaffs.Where(c => c.FileType == fileType).FirstOrDefault();
+        if (refItem == null) {
+            return result;
+        }
+        if(string.IsNullOrEmpty(refItem.FileName)) {
+            return result;
+        }
+        string fn = refItem.FileName;
+        StringBuilder sb = new StringBuilder();
+        bool toUpper = true;
+        foreach (char c in fn)
+        {
+            if( c == '-' )
+            {
+                toUpper = true;
+            } else
+            {
+                if (toUpper)
+                {
+                    sb.Append(Char.ToUpper(c));
+                    toUpper = false;
+                }
+                else
+                {
+                    sb.Append(c);
+                }
+            }
+                
+        }
+        return sb.ToString();
+    }
+    string GetContextCssClassName(DbContextSerializable context, string fileType) {
+        string result="";
+        if ((context == null) || string.IsNullOrEmpty(fileType)) {
+            return result;
+        }
+        if (context.CommonStaffs == null) {
+            return result;
+        }
+        CommonStaffSerializable refItem= 
+            context.CommonStaffs.Where(c => c.FileType == fileType).FirstOrDefault();
+        if (refItem == null) {
+            return result;
+        }
+        if(string.IsNullOrEmpty(refItem.FileName)) {
+            return result;
+        }
+        return refItem.FileName;
+    }
+    List<ModelViewPropertyOfVwSerializable> GetModelPrimaryKeyProps(ModelViewSerializable model) {
+        List<ModelViewPropertyOfVwSerializable> result = new List<ModelViewPropertyOfVwSerializable>();
+        if (model == null)
+        {
+            return result;
+        }
+        if ((model.PrimaryKeyProperties == null) || (model.ScalarProperties == null)) {
+            return result;
+        }
+        foreach(ModelViewKeyPropertySerializable modelViewKeyPropertySerializable in model.PrimaryKeyProperties) {
+            ModelViewPropertyOfVwSerializable prop =
+                model.ScalarProperties.Where(p => p.ViewPropertyName == modelViewKeyPropertySerializable.ViewPropertyName).FirstOrDefault();
+            if(prop != null) {
+                result.Add(prop);
+            } else {
+                if(model.ForeignKeys != null) {
+                    foreach(ModelViewForeignKeySerializable modelViewForeignKeySerializable in model.ForeignKeys) {
+                        if ((modelViewForeignKeySerializable.PrincipalKeyProps != null) && (modelViewForeignKeySerializable.ForeignKeyProps != null)) {
+                            for(int i = 0; i < modelViewForeignKeySerializable.ForeignKeyProps.Count; i++) {
+                                if(modelViewForeignKeySerializable.ForeignKeyProps[i].OriginalPropertyName == modelViewKeyPropertySerializable.OriginalPropertyName ) {
+                                    if(i < modelViewForeignKeySerializable.PrincipalKeyProps.Count) {
+                                        prop =
+                                        model.ScalarProperties.Where(p => 
+                                            (p.OriginalPropertyName == modelViewForeignKeySerializable.PrincipalKeyProps[i].OriginalPropertyName)
+                                            &&
+                                            (p.ForeignKeyName == modelViewForeignKeySerializable.NavigationName)
+                                        ).FirstOrDefault();
+                                    }
+                                }
+                                if(prop != null) break;
+                            }
+                        }
+                        if(prop != null) break;
+                    }
+                    if(prop != null) {
+                        result.Add(prop);
+                    }
+                }
+            }
+        }
+        return result;
+    }
+    List<string> GetDetailViews(ModelViewSerializable model, DbContextSerializable context, List<string> result)
+    {
+        if (result == null)
+        {
+            result = new List<string>();
+        }
+        if ((model == null) || (context == null))
+        {
+            return result;
+        }
+        if ((model.ScalarProperties == null) || (model.PrimaryKeyProperties == null) || (context.ModelViews == null)) {
+            return result;
+        }
+        if ((model.PrimaryKeyProperties.Count < 1) || (model.ScalarProperties.Count < 1))
+        {
+            return result;
+        }
+        List<ModelViewPropertyOfVwSerializable> primKeys = GetModelPrimaryKeyProps(model);
+        if(primKeys == null)
+        {
+            return result;
+        }
+        if (primKeys.Count != model.PrimaryKeyProperties.Count)
+        {
+            return result;
+        }
+        string RootEntityFullClassName = model.RootEntityFullClassName;
+        string RootEntityUniqueProjectName = model.RootEntityUniqueProjectName;
+        List<ModelViewSerializable> details =
+            context.ModelViews.Where(m => m.ForeignKeys.Any(f => (f.NavigationEntityFullName == RootEntityFullClassName) && (f.NavigationEntityUniqueProjectName == RootEntityUniqueProjectName))).ToList();
+        if(details.Count < 1)
+        {
+            return result;
+        }
+        foreach(ModelViewSerializable detail in details)
+        {
+            if (detail.ScalarProperties == null) continue;
+            if (detail.ForeignKeys == null) continue;
+            if (detail.ForeignKeys.Count < 1) continue;
+            List<ModelViewForeignKeySerializable> ForeignKeys =
+                detail.ForeignKeys.Where(f => (f.NavigationEntityFullName == RootEntityFullClassName) && (f.NavigationEntityUniqueProjectName == RootEntityUniqueProjectName)).ToList();
+            if (ForeignKeys.Count < 1) continue;
+            bool canBeUsed = false;
+            foreach(ModelViewForeignKeySerializable ForeignKey in ForeignKeys)
+            {
+                bool hasForeignKeyProps = true;
+                if (ForeignKey.ForeignKeyProps != null)
+                {
+                    for(int i = 0; i < ForeignKey.ForeignKeyProps.Count; i++)
+                    {
+                        ModelViewKeyPropertySerializable ForeignKeyProp = ForeignKey.ForeignKeyProps[i];
+                        if (!(detail.ScalarProperties.Any(s => (s.OriginalPropertyName == ForeignKeyProp.OriginalPropertyName) && (string.IsNullOrEmpty(s.ForeignKeyNameChain)))))
+                        {
+                            hasForeignKeyProps = false;
+                        }
+                        if(!hasForeignKeyProps)
+                        {
+                            ModelViewKeyPropertySerializable PrincipalKeyProp = ForeignKey.PrincipalKeyProps[i];
+                            if (detail.ScalarProperties.Any(s => (s.OriginalPropertyName == PrincipalKeyProp.OriginalPropertyName) && (s.ForeignKeyNameChain == ForeignKey.NavigationName)))
+                            {
+                                hasForeignKeyProps = true;
+                            } else
+                            {
+                                break;
+                            }
+                        }
+                    }
+                } else
+                {
+                    hasForeignKeyProps = false;
+                }
+                if (hasForeignKeyProps)
+                {
+                    canBeUsed = true;
+                    break;
+                }
+            }
+            if(canBeUsed)
+            {
+                if(!result.Contains(detail.ViewName))
+                {
+                    result.Add(detail.ViewName);
+                }
+            }
+        }
+        return result;
+    }
+    ModelViewSerializable GetModelViewByName(DbContextSerializable context, string viewName) {
+        if ((context == null) || (string.IsNullOrEmpty(viewName))) {
+            return null;
+        }
+        if (context.ModelViews == null) {
+            return null;
+        }
+        return context.ModelViews.Where(v => v.ViewName == viewName).FirstOrDefault();
+    }
+    string GetCrossComponentFolderName(ModelViewSerializable model, string currFolder, DbContextSerializable context, string refViewName, string refFolder) {
+        string result="./";
+        if ((model == null) || string.IsNullOrEmpty(currFolder) || (context == null) || string.IsNullOrEmpty(refFolder) || string.IsNullOrEmpty(refViewName)) {
+            return result;
+        }
+        if ((model.CommonStaffs == null) || (context.ModelViews == null)) {
+            return result;
+        }
+        ModelViewSerializable refModel = context.ModelViews.Where(v => v.ViewName == refViewName).FirstOrDefault();
+        if (refModel == null) {
+            return result;
+        }
+        if (refModel.CommonStaffs == null)  {
+            return result;
+        }
+        CommonStaffSerializable refItem= 
+            refModel.CommonStaffs.Where(c => c.FileType == refFolder).FirstOrDefault();
+        CommonStaffSerializable curItem= 
+            model.CommonStaffs.Where(c => c.FileType == currFolder).FirstOrDefault();
+        if ((refItem == null) || (curItem == null)) {
+            return result;
+        }
+        string[] refFolders  = new string[] {};
+        if(!string.IsNullOrEmpty(refItem.FileFolder)) {
+            refFolders  = refItem.FileFolder.Split(new string[] { "\\" }, StringSplitOptions.None);
+        }
+        string[] currFolders = new string[]{};
+        if(!string.IsNullOrEmpty(curItem.FileFolder)) {
+            currFolders  = curItem.FileFolder.Split(new string[] { "\\" }, StringSplitOptions.None);
+        }
+        int refLen = refFolders.Length;
+        int currLen = currFolders.Length;
+        int minLen = refLen < currLen ? refLen : currLen;
+        int cnt= 0;
+        for(int i = 0; i < minLen; i++) {
+            if ( !refFolders[i].Equals(currFolders[i], StringComparison.OrdinalIgnoreCase) ) break;
+            cnt++;
+        }
+        if(currLen > cnt) {
+            result += string.Join("",Enumerable.Repeat("../", currLen - cnt));
+        }
+        if(refLen > cnt) {
+            result += string.Join("/", refFolders, cnt, refLen - cnt) + "/";
+        }
+        result += refItem.FileName;
+        return result;
+    }
+    string GetInterfaceNameEx(DbContextSerializable context, string viewName) {
+        if ((context == null) || string.IsNullOrEmpty(viewName)) {
+            return "I";
+        }
+        ModelViewSerializable model = context.ModelViews.Where(v => v.ViewName == viewName).FirstOrDefault();
+        if (model == null) {
+            return "I";
+        }
+        return GetInterfaceName(model);
+    }
+    List<ModelViewPropertyOfVwSerializable> GetDetailViewForeignKeyProps(ModelViewSerializable model, ModelViewPropertyOfVwSerializable primKey, ModelViewSerializable detail, ModelViewForeignKeySerializable ForeignKey, List<ModelViewPropertyOfVwSerializable> result)
+    {
+        if (result == null)
+        {
+            result = new List<ModelViewPropertyOfVwSerializable>();
+        }
+        if ((model == null) || (detail == null) || (primKey == null) || (ForeignKey == null))
+        {
+            return result;
+        }
+        if ((model.ScalarProperties == null) || (model.PrimaryKeyProperties == null) || (detail.ScalarProperties == null) || (detail.ForeignKeys == null) || (ForeignKey == null))
+        {
+            return result;
+        }
+        List<ModelViewPropertyOfVwSerializable> primKeys = GetModelPrimaryKeyProps(model);
+        if(primKeys == null)
+        {
+            return result;
+        }
+        if (primKeys.Count < 1)
+        {
+            return result;
+        }
+        if(!primKeys.Any(p => (p.ViewPropertyName == primKey.ViewPropertyName) && (p.OriginalPropertyName == primKey.OriginalPropertyName)))
+        {
+            return result;
+        }
+        ModelViewForeignKeySerializable fk = detail.ForeignKeys.Where(f => f.NavigationName == ForeignKey.NavigationName).FirstOrDefault();
+        if(fk == null)
+        {
+            return result;
+        }
+        ModelViewPropertyOfVwSerializable modelViewPropertyOfVwSerializable =
+            detail.ScalarProperties.Where(s => (s.OriginalPropertyName == primKey.OriginalPropertyName) && (s.ForeignKeyNameChain == fk.NavigationName)).FirstOrDefault();
+        if (modelViewPropertyOfVwSerializable != null)
+        {
+            result.Add(modelViewPropertyOfVwSerializable);
+        }
+        if (fk.ForeignKeyProps == null)
+        {
+            return result;
+        }
+
+        int ind = fk.PrincipalKeyProps.FindIndex(p => p.OriginalPropertyName == primKey.OriginalPropertyName);
+        if(ind < 0)
+        {
+            return result;
+        }
+        ModelViewKeyPropertySerializable ForeignKeyProp = ForeignKey.ForeignKeyProps[ind];
+        ModelViewPropertyOfVwSerializable modelViewPropertyOfVwSerializableEx =
+            detail.ScalarProperties.FirstOrDefault(s => (s.OriginalPropertyName == ForeignKeyProp.OriginalPropertyName) && (string.IsNullOrEmpty(s.ForeignKeyNameChain)));
+        if(modelViewPropertyOfVwSerializableEx != null) {
+            if(modelViewPropertyOfVwSerializableEx != modelViewPropertyOfVwSerializable)
+            {
+                result.Add(modelViewPropertyOfVwSerializableEx);
+            }
+        }
+        return result;
+    }
+    List<ModelViewForeignKeySerializable> GetDetailViewForeignKeys(ModelViewSerializable model, ModelViewSerializable detail, List<ModelViewForeignKeySerializable> result)
+    {
+        if (result == null) result = new List<ModelViewForeignKeySerializable>();
+        if ((model == null) || (detail == null))
+        {
+            return result;
+        }
+        if ((model.PrimaryKeyProperties == null) || (detail.ScalarProperties == null) || (detail.ForeignKeys == null))
+        {
+            return result;
+        }
+        if ((model.PrimaryKeyProperties.Count < 1) || (model.ScalarProperties.Count < 1))
+        {
+            return result;
+        }
+        List<ModelViewPropertyOfVwSerializable> primKeys = GetModelPrimaryKeyProps(model);
+        if (primKeys == null)
+        {
+            return result;
+        }
+        if (primKeys.Count != model.PrimaryKeyProperties.Count)
+        {
+            return result;
+        }
+        string RootEntityFullClassName = model.RootEntityFullClassName;
+        string RootEntityUniqueProjectName = model.RootEntityUniqueProjectName;
+        List<ModelViewForeignKeySerializable> ForeignKeys =
+            detail.ForeignKeys.Where(f => (f.NavigationEntityFullName == RootEntityFullClassName) && (f.NavigationEntityUniqueProjectName == RootEntityUniqueProjectName)).ToList();
+        if (ForeignKeys.Count < 1)
+        {
+            return result;
+        }
+        foreach (ModelViewForeignKeySerializable ForeignKey in ForeignKeys)
+        {
+            bool hasForeignKeyProps = true;
+            if (ForeignKey.ForeignKeyProps != null)
+            {
+                for (int i = 0; i < ForeignKey.ForeignKeyProps.Count; i++)
+                {
+                    ModelViewKeyPropertySerializable ForeignKeyProp = ForeignKey.ForeignKeyProps[i];
+                    hasForeignKeyProps =
+                        detail.ScalarProperties.Any(s => (s.OriginalPropertyName == ForeignKeyProp.OriginalPropertyName) && (string.IsNullOrEmpty(s.ForeignKeyNameChain)));
+                    if (!hasForeignKeyProps)
+                    {
+                        ModelViewKeyPropertySerializable PrincipalKeyProp = ForeignKey.PrincipalKeyProps[i];
+                        hasForeignKeyProps = detail.ScalarProperties.Any(s => (s.OriginalPropertyName == PrincipalKeyProp.OriginalPropertyName) && (s.ForeignKeyNameChain == ForeignKey.NavigationName));
+                        {
+                            hasForeignKeyProps = true;
+                        }
+                        if(!hasForeignKeyProps)
+                        {
+                            break;
+                        }
+                    }
+                }
+            }
+            else
+            {
+                hasForeignKeyProps = false;
+            }
+            if (hasForeignKeyProps)
+            {
+                result.Add(ForeignKey);
+                break;
+            }
+        }
+        return result;
+    }
+    string GetContextContextName(DbContextSerializable context, string fileType) {
+        string result="";
+        if ((context == null) || string.IsNullOrEmpty(fileType)) {
+            return result;
+        }
+        if (context.CommonStaffs == null) {
+            return result;
+        }
+        CommonStaffSerializable refItem= 
+            context.CommonStaffs.Where(c => c.FileType == fileType).FirstOrDefault();
+        if (refItem == null) {
+            return result;
+        }
+        if(string.IsNullOrEmpty(refItem.FileName)) {
+            return result;
+        }
+        string fn = refItem.FileName.Replace(".context","-context");
+        StringBuilder sb = new StringBuilder();
+        bool toUpper = true;
+        foreach (char c in fn)
+        {
+            if( c == '-' )
+            {
+                toUpper = true;
+            } else
+            {
+                if (toUpper)
+                {
+                    sb.Append(Char.ToUpper(c));
+                    toUpper = false;
+                }
+                else
+                {
+                    sb.Append(c);
+                }
+            }
+                
+        }
+        return sb.ToString();
+    }
+    string GetComponentClassNameEx(DbContextSerializable context, string viewName, string fileType)
+    {
+        string result = "";
+        if ((context == null) || string.IsNullOrEmpty(fileType) || string.IsNullOrEmpty(viewName))
+        {
+            return result;
+        }
+        ModelViewSerializable model = context.ModelViews.Where(v => v.ViewName == viewName).FirstOrDefault();
+        return GetComponentClassName(model, fileType);
+    }
+    string GetComponentClassName(ModelViewSerializable model, string fileType)
+    {
+        string result = "";
+        if ((model == null) || string.IsNullOrEmpty(fileType))
+        {
+            return result;
+        }
+        if (model.CommonStaffs == null)
+        {
+            return result;
+        }
+        CommonStaffSerializable refItem =
+            model.CommonStaffs.Where(c => c.FileType == fileType).FirstOrDefault();
+        if (refItem == null)
+        {
+            return result;
+        }
+        if (string.IsNullOrEmpty(refItem.FileName))
+        {
+            return result;
+        }
+        string fn = refItem.FileName.Replace(".component", "Component");
+        StringBuilder sb = new StringBuilder();
+        bool toUpper = true;
+        foreach (char c in fn)
+        {
+            if (c == '-')
+            {
+                toUpper = true;
+            }
+            else
+            {
+                if (toUpper)
+                {
+                    sb.Append(Char.ToUpper(c));
+                    toUpper = false;
+                }
+                else
+                {
+                    sb.Append(c);
+                }
+            }
+        }
+        return sb.ToString();
+    }
+    string GetTypeScriptPropertyName(ModelViewPropertyOfVwSerializable prop, ModelViewSerializable model) {
+        if ((model == null) || (prop == null)) {
+            return "Noname";
+        }
+        if (model.GenerateJSonAttribute) {
+            return prop.JsonPropertyName;
+        } else {
+            return FirstLetterToLower(prop.ViewPropertyName);
+        }
+    }
+    string GetCCharpDatatype(ModelViewPropertyOfVwSerializable prop, ModelViewSerializable model) {
+        if ((prop == null) || (model == null)) return "";
+        return prop.UnderlyingTypeName.ToLower().Replace("system.", "");
+    }
+    public string FirstLetterToLower(string str)
+    {
+        if (str == null)
+            return null;
+        if (str.Length > 1)
+            return char.ToLower(str[0]) + str.Substring(1);
+        return str.ToUpper();
+    }
+    string GetContextClassName(DbContextSerializable context, string fileType) {
+        string result="";
+        if ((context == null) || string.IsNullOrEmpty(fileType)) {
+            return result;
+        }
+        if (context.CommonStaffs == null) {
+            return result;
+        }
+        CommonStaffSerializable refItem= 
+            context.CommonStaffs.Where(c => c.FileType == fileType).FirstOrDefault();
+        if (refItem == null) {
+            return result;
+        }
+        if(string.IsNullOrEmpty(refItem.FileName)) {
+            return result;
+        }
+        string fn = refItem.FileName;
+        StringBuilder sb = new StringBuilder();
+        bool toUpper = true;
+        foreach (char c in fn)
+        {
+            if( c == '-' )
+            {
+                toUpper = true;
+            } else
+            {
+                if (toUpper)
+                {
+                    sb.Append(Char.ToUpper(c));
+                    toUpper = false;
+                }
+                else
+                {
+                    sb.Append(c);
+                }
+            }
+                
+        }
+        return sb.ToString();
+    }
+    ModelViewSerializable GetFirstModelViewByType(DbContextSerializable context, string fileType) {
+        if ((context == null) || (string.IsNullOrEmpty(fileType))) {
+            return null;
+        }
+        if (context.ModelViews == null) {
+            return null;
+        }
+        return context.ModelViews.Where(v => v.CommonStaffs.Any(f =>f.FileType == fileType)).FirstOrDefault();
+    }
+    string GetContextEnumClassName(DbContextSerializable context, string fileType) {
+        string result="";
+        if ((context == null) || string.IsNullOrEmpty(fileType)) {
+            return result;
+        }
+        if (context.CommonStaffs == null) {
+            return result;
+        }
+        CommonStaffSerializable refItem= 
+            context.CommonStaffs.Where(c => c.FileType == fileType).FirstOrDefault();
+        if (refItem == null) {
+            return result;
+        }
+        if(string.IsNullOrEmpty(refItem.FileName)) {
+            return result;
+        }
+        string fn = refItem.FileName.Replace(".enum","");
+        StringBuilder sb = new StringBuilder();
+        bool toUpper = true;
+        foreach (char c in fn)
+        {
+            if( c == '-' )
+            {
+                toUpper = true;
+            } else
+            {
+                if (toUpper)
+                {
+                    sb.Append(Char.ToUpper(c));
+                    toUpper = false;
+                }
+                else
+                {
+                    sb.Append(c);
+                }
+            }
+                
+        }
+        return sb.ToString();
+    }
+    string GetServiceClassName(ModelViewSerializable model, string fileType) {
+        string result="";
+        if ((model == null) || string.IsNullOrEmpty(fileType) ) {
+            return result;
+        }
+        if (model.CommonStaffs == null) {
+            return result;
+        }
+        CommonStaffSerializable refItem= 
+            model.CommonStaffs.Where(c => c.FileType == fileType).FirstOrDefault();
+        if (refItem == null) {
+            return result;
+        }
+        if(string.IsNullOrEmpty(refItem.FileName)) {
+            return result;
+        }
+        string fn = refItem.FileName.Replace(".service","-service");
+        StringBuilder sb = new StringBuilder();
+        bool toUpper = true;
+        foreach (char c in fn)
+        {
+            if( c == '-' )
+            {
+                toUpper = true;
+            } else
+            {
+                if (toUpper)
+                {
+                    sb.Append(Char.ToUpper(c));
+                    toUpper = false;
+                }
+                else
+                {
+                    sb.Append(c);
+                }
+            }
+        }
+        return sb.ToString();
+    }
+
+#>
