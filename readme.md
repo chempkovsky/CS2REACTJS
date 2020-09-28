@@ -16,7 +16,7 @@
 #### [007 FIRST WEB API SERVICE](#07-FIRST-WEB-API-SERVICE)
 #### [008 AUXILIARY REACTJS TYPESCRIPT CLASSES](#08-AUXILIARY-REACTJS-TYPESCRIPT-CLASSES)
 #### [009 AUXILIARY CLASSES. WHAT IS IN THE BOX](#09-AUXILIARY-CLASSES.-WHAT-IS-IN-THE-BOX)
-#### [010 ANGULAR CLASSES FOR THE FIRST VIEW](#10-ANGULAR-CLASSES-FOR-THE-FIRST-VIEW)
+#### [010 REACTJS CLASSES FOR THE FIRST VIEW](#10-REACTJS-CLASSES-FOR-THE-FIRST-VIEW)
 #### [011 SOME NOTES ABOUT AUTHORIZATION](#11-SOME-NOTES-ABOUT-AUTHORIZATION)
 
 ## 00 SUMMARY
@@ -24,7 +24,7 @@
 ##### [SUMMARY 00.2 CREATING PROJECT FOR REACTJS FLUENT UI AND MICROSOFT FONT ICONS](#002-CREATING-PROJECT-FOR-REACTJS-FLUENT-UI-AND-MICROSOFT-FONT-ICONS)
 
 ### 001 CREATING PROJECT FOR REACTJS MATERIAL AND MATERIAL DESIGN ICONS
-- For more information, please visit ANGULAR MATERIAL and MATERIAL DESIGN ICONS sites
+- For more information, please visit REACTJS MATERIAL and MATERIAL DESIGN ICONS sites
 
 https://material-ui.com/getting-started/installation/
 
@@ -407,7 +407,7 @@ https://developer.microsoft.com/en-us/fluentui#/styles/web/icons
 - Selecting row in the master table fires event to apply filter in the detail-table
 - Function to Add(Update/Delete) to the details table is also avalable. User controls associated with the master-entity are disabled and filled with the correct data even for the “Add item” form.
 
-### With CS2Reactjs, a developer can model and generate angular routing navigation chains of any length:
+### With CS2Reactjs, a developer can model and generate reactjs routing navigation chains of any length:
 - Navigation is carried out from the row of the master table. It fires event to apply filter in the detail-table.
 - Function to Add(Update/Delete) to any table in the navigation chain is available. And again, the user controls associated with the master-entity are disabled and filled with the correct data even for the “Add item” form
 
@@ -977,7 +977,7 @@ public class LitGenre {
     - The component is used by all View’s tabular forms
     - Using the functionality of this component the end user can define the filter.
 
-## 10 ANGULAR CLASSES FOR THE FIRST VIEW
+## 10 REACTJS CLASSES FOR THE FIRST VIEW
 - Preparation steps to first run Dm04WebApp
     - Set up default constructor of LitDbContext
 
