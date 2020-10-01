@@ -111,6 +111,7 @@ export default class <#= lformComponentDataModelClassName #> extends Component<<
             <#= TabIndexPropName #>: 0,
         }
         this.onFilter = this.onFilter.bind(this);
+        this.onTabsChange = this.onTabsChange.bind(this);
     }
     static getDerivedStateFromProps(nwprps: <#= lformPropsDataModelClassName #>, oldstt: <#= lformStateDataModelClassName #>): any {
         let rslt: { [key: string]: any; } = {};

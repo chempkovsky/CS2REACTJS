@@ -196,7 +196,7 @@ export default class <#= webServiceFilterDataModelClassName #> extends Component
         }
         if(this.props.showBackBtn) {
             cptnsitems.push(
-                <Tooltip title="Go back">
+                <Tooltip key={3} title="Go back">
                     <IconButton key={3} color="primary"  size="small" onClick={this.handleBackBtn}>
                         <Icon color="primary" fontSize="small">arrow_back</Icon> 
                     </IconButton>
@@ -206,7 +206,7 @@ export default class <#= webServiceFilterDataModelClassName #> extends Component
         }
         if( this.props.showFilter && this.props.showAddFltItem ) {
             cptnsitems.push(
-                <Tooltip title="Add filter Item">
+                <Tooltip key={5} title="Add filter Item">
                     <IconButton key={5} color="primary"  size="small" onClick={this.addFltItem}>
                         <Icon color="primary" fontSize="small">filter_9_plus</Icon> 
                     </IconButton>
@@ -216,7 +216,7 @@ export default class <#= webServiceFilterDataModelClassName #> extends Component
         if( this.props.showFilter && this.props.showAddFltItem ) {
             cptnsitems.push(<span key={6} style={stl1}></span>)
             cptnsitems.push(
-                <Tooltip title="Remove All Filters">
+                <Tooltip key={7} title="Remove All Filters">
                     <IconButton key={7} color="secondary"  size="small" onClick={this.removeAllFilters}>
                         <Icon color="secondary" fontSize="small">filter_none</Icon> 
                     </IconButton>
@@ -225,7 +225,7 @@ export default class <#= webServiceFilterDataModelClassName #> extends Component
         }
         cptnsitems.push(<span key={8} style={stl1}></span>);
         cptnsitems.push(
-            <Tooltip title="Refresh">
+            <Tooltip key={9} title="Refresh">
                 <IconButton key={9}  color="primary"  size="small" onClick={this.handleOnRefresh}>
                     <Icon color="primary" fontSize="small">refresh</Icon> 
                 </IconButton>
@@ -237,7 +237,7 @@ export default class <#= webServiceFilterDataModelClassName #> extends Component
             this.props.contMenuItems?.forEach(cmi => {
                 ii++;
                 cptnsitems.push(
-                    <Tooltip title={cmi.caption}>
+                    <Tooltip key={ii} title={cmi.caption}>
                         <IconButton key={ii} color={cmi.iconColor as PropTypes.Color}  size="small" onClick={() => this.handleContMenuItem(cmi)}>
                             <Icon color={cmi.iconColor as PropTypes.Color} fontSize="small">{cmi.iconName}</Icon> 
                         </IconButton>
