@@ -1045,7 +1045,7 @@ public class LitGenre {
     - Select “01100-Intefaces.json”
     - Click “Start”-button
 
-    ![picture](img/img1007.png)
+    ![picture](img/img1008.png)
 
     - Close both dialogs
 
