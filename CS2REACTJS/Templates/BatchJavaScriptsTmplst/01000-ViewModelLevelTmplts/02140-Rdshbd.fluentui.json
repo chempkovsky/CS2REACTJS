@@ -31,7 +31,7 @@
     {
       "DestinationFolder": "components\\rdshbd",
       "GeneratorType": "02140-RDashboard.component.css",
-      "GeneratorSript": "RDashboard.component.css.t4"
+      "GeneratorSript": "RDashboard.component.fluentui.css.t4"
     },
     {
       "DestinationFolder": "components\\rdshbd",

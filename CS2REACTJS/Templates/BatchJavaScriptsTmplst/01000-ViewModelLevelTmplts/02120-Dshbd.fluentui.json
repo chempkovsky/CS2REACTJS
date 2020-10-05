@@ -31,7 +31,7 @@
     {
       "DestinationFolder": "components\\dshbd",
       "GeneratorType": "02120-Dashboard.component.css",
-      "GeneratorSript": "Dashboard.component.css.t4"
+      "GeneratorSript": "Dashboard.component.fluentui.css.t4"
     },
     {
       "DestinationFolder": "components\\dshbd",

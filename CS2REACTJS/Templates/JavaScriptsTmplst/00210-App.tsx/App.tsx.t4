@@ -73,18 +73,25 @@ const  <#= appGlblChngpswdDataModelClassName #> = lazy(() => import('<#= GetFold
 
 
 const drawerWidth = 240;
+const scrollwidth = 18;
 const styles = (theme: Theme) => ({  
     root: {
-      display: 'flex',
-      height: '100vh',
+      [theme.breakpoints.down('md')]: {
+        boxSizing: 'border-box',
+      },
+      [theme.breakpoints.up('md')]: {
+        marginLeft: -scrollwidth,
+        display: 'flex',
+      },
     },
     drawer: {
       [theme.breakpoints.up('md')]: {
-        width: drawerWidth,
+        width: (drawerWidth-scrollwidth),
         flexShrink: 0,
       },
     },
     appBar: {
+      width: `calc(100%)`,
       [theme.breakpoints.up('md')]: {
         width: `calc(100% - ${drawerWidth}px)`,
         marginLeft: drawerWidth,
@@ -102,19 +109,23 @@ const styles = (theme: Theme) => ({
       width: drawerWidth,
     },
     content: {
-      flexGrow: 1,
-      // padding: theme.spacing(3),
-    },
-    title: {
-      flexGrow: 1,
-    },
-    routeChild: {
-      width: `calc(100%)`,
       [theme.breakpoints.up('md')]: {
-        width: `calc(100% - ${drawerWidth}px)`,
+        flexGrow: 1,
       },
     },
-
+    title: {
+        flexGrow: 1
+    },
+    routeChild: {
+      [theme.breakpoints.down('md')]: {
+       width: `calc(100vw-18px)`,
+      },
+      [theme.breakpoints.up('md')]: {
+        width: `calc(100vw  - ${drawerWidth-scrollwidth}px)`,
+        boxSizing: 'border-box',
+        paddingLeft:scrollwidth*2
+      },
+    },
   });
 
 interface <#= appDataModelClassName + "State" #>  {
@@ -256,6 +267,8 @@ class <#= appDataModelClassName #> extends React.Component <any, <#= appDataMode
               </Menu>
           </Toolbar>
         </AppBar>
+
+
         <nav className={classes.drawer} >
           {/* The implementation can be swapped with js to avoid SEO duplication of links. */}
           <Hidden mdUp implementation="css">
@@ -285,23 +298,23 @@ class <#= appDataModelClassName #> extends React.Component <any, <#= appDataMode
             </Drawer>
           </Hidden>
         </nav>
+
         <main className={classes.content}>
           <div className={classes.toolbar} />
+          <div className={classes.routeChild} >
 
             <Route>
                 <Suspense fallback={<div>Loading...</div>}>
                     <Switch>
-                        <Route path="/home" render={(props) => <<#= appGlblHomeDataModelClassName #> {...props} />} />
-                        <Route path="/authentication/login" render={(props) => <<#= appGlblLoginDataModelClassName #> {...props} />} />
-                        <Route path="/authentication/logout" render={(props) => <<#= appGlblLogoutDataModelClassName #> {...props} />} />
-                        <Route path="/authentication/register" render={(props) => <<#= appGlblRegisterDataModelClassName #> {...props} />} />
-                        <Route path="/authentication/changepassword" render={(props) => <<#= appGlblChngpswdDataModelClassName #> {...props} />} />
+                        <Route path="/home" render={(props) => <div style={{  height:`calc(100vh - ${theme.spacing(16)}px)`, marginTop: `${theme.spacing(8)}px` }}><<#= appGlblHomeDataModelClassName #> {...props} /></div>} />
+                        <Route path="/authentication/login" render={(props) => <div style={{  height:`calc(100vh - ${theme.spacing(16)}px)`, marginTop: `${theme.spacing(8)}px` }}><<#= appGlblLoginDataModelClassName #> {...props} /></div>} />
+                        <Route path="/authentication/logout" render={(props) => <div style={{  height:`calc(100vh - ${theme.spacing(16)}px)`, marginTop: `${theme.spacing(8)}px` }}><<#= appGlblLogoutDataModelClassName #> {...props} /></div>} />
+                        <Route path="/authentication/register" render={(props) => <div style={{  height:`calc(100vh - ${theme.spacing(16)}px)`, marginTop: `${theme.spacing(8)}px` }}><<#= appGlblRegisterDataModelClassName #> {...props} /></div>} />
+                        <Route path="/authentication/changepassword" render={(props) => <div style={{  height:`calc(100vh - ${theme.spacing(16)}px)`, marginTop: `${theme.spacing(8)}px` }}><<#= appGlblChngpswdDataModelClassName #> {...props} /></div>} />
 
                         {/* <Route path="/YourComponent/lform" render={(props) => 
-                          <div className={classes.routeChild} style={{position: 'fixed'}}>  
                             <YourComponentLformComponent canAdd={true} canUpdate={true} canDelete={true} 
                               showFilter={true} showAddFltItem={true} maxHeight={15} filterMaxHeight={2}/>
-                          </div>
                         }/> */}
 
 
@@ -312,6 +325,7 @@ class <#= appDataModelClassName #> extends React.Component <any, <#= appDataMode
                     </Switch>  
                 </Suspense>
             </Route>
+          </div>
        </main>
        <Snackbar
         open={this.state.openSnackbar}

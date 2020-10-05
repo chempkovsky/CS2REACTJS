@@ -16,8 +16,8 @@
   box-sizing: border-box;
   padding-left: 5px;  
   padding-top: 5px;  
-  /* padding-right: 15px; 
-  overflow-y: auto;
+  padding-right: 15px; 
+  /* overflow-y: auto;
   height: calc(93vh); */
 }
 

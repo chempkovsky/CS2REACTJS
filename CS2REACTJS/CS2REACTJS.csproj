@@ -1893,6 +1893,15 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
       <IncludeInVSIX>true</IncludeInVSIX>
     </Content>
+    <Content Include="Templates\JavaScriptsTmplst\02120-Dashboard.component.css\Dashboard.component.fluentui.css.t4">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Templates\JavaScriptsTmplst\02140-RDashboard.component.css\RDashboard.component.fluentui.css.t4">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Templates\JavaFeatureScriptsTmplst\30100-.ftr.component.css\ftr.component.fluentui.css.t4">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
   </ItemGroup>
   <ItemGroup>
     <Reference Include="Microsoft.CSharp" />
