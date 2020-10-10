@@ -3115,7 +3115,7 @@ export default class <#= eformComponentDataModelClassName #> extends Component<<
                                         // if (IsDateInput(modelViewUIFormPropertySerializable, Model)) {
 #>
                         <DatePicker label='<#= GetDisplayAttributeValueString(modelViewUIFormPropertySerializable, Model, DisplayLabelProperty)#>'
-                            value={ this.state.<#= GetTypeScriptPropertyNameEx(modelViewUIFormPropertySerializable, Model) #>.Value! }
+                            value={ this.state.<#= GetTypeScriptPropertyNameEx(modelViewUIFormPropertySerializable, Model) #>.Value  ? new Date(this.state.<#= GetTypeScriptPropertyNameEx(modelViewUIFormPropertySerializable, Model) #>.Value) : undefined }
                             strings={ DayPickerStrings }
                             allowTextInput={ true }
                             disabled={ true }
@@ -3126,7 +3126,7 @@ export default class <#= eformComponentDataModelClassName #> extends Component<<
                                        // if (IsDateInput(modelViewUIFormPropertySerializable, Model)) {
 #>
                         <DatePicker label='<#= GetDisplayAttributeValueString(modelViewUIFormPropertySerializable, Model, DisplayLabelProperty)#>'
-                            value={ this.state.<#= GetTypeScriptPropertyNameEx(modelViewUIFormPropertySerializable, Model) #>.Value! }
+                            value={ this.state.<#= GetTypeScriptPropertyNameEx(modelViewUIFormPropertySerializable, Model) #>.Value ? new Date(this.state.<#= GetTypeScriptPropertyNameEx(modelViewUIFormPropertySerializable, Model) #>.Value) : undefined }
                             strings={ DayPickerStrings }
                             allowTextInput={ true }
                             disabled={ this.state.<#= GetTypeScriptPropertyNameEx(modelViewUIFormPropertySerializable, Model) #>.Disabled }
