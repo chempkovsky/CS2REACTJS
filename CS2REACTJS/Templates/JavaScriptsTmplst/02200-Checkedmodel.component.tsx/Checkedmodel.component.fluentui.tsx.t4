@@ -150,9 +150,9 @@ import <#= webServiceFilterMenuDataModelClassName #> from "<#= GetCommonFolderNa
 import '<#= GetFolderName(Model, checkedmodelComponentCssClassFolder, checkedmodelComponentDataModelFolder)#>.css';
 import <#= appGlblSettingsServiceClassName #> from "<#= GetCommonFolderName(Model, Context, appGlblSettingsServiceFolder, checkedmodelComponentDataModelFolder) #>";
 
-import <#= tableheadCellDataModelClassName #> from "<#= GetCommonFolderName(Model, Context, tableheadCellDataModelFolder, sformComponentDataModelFolder) #>";
-import <#= tablebodyCellDataModelClassName #> from "<#= GetCommonFolderName(Model, Context, tablebodyCellDataModelFolder, sformComponentDataModelFolder) #>";
-import <#= tablePaginationDataModelClassName #> from "<#= GetCommonFolderName(Model, Context, tablePaginationDataModelFolder, sformComponentDataModelFolder) #>";
+import <#= tableheadCellDataModelClassName #> from "<#= GetCommonFolderName(Model, Context, tableheadCellDataModelFolder, checkedmodelComponentDataModelFolder) #>";
+import <#= tablebodyCellDataModelClassName #> from "<#= GetCommonFolderName(Model, Context, tablebodyCellDataModelFolder, checkedmodelComponentDataModelFolder) #>";
+import <#= tablePaginationDataModelClassName #> from "<#= GetCommonFolderName(Model, Context, tablePaginationDataModelFolder, checkedmodelComponentDataModelFolder) #>";
 
 const scheme = getTheme();
 
@@ -487,7 +487,7 @@ export default class <#= checkedmodelComponentDataModelClassName #> extends Comp
         this.setState( { inQuery: true,  currentSortdirection: newSortDir, currentSortColumn: clNm} );
     }
 
-    <#= onCheckedMethodName #>(v: React.FormEvent<HTMLElement>, newVal: boolean, modelPk: number, val: number) {
+    <#= onCheckedMethodName #>(v: any, newVal: boolean|undefined, modelPk: number, val: number) {
         let rid: number = Math.floor(modelPk/7);
         let perms = this.state.<#= PermissionsPropName #>.slice(0);
         let lng: number = perms.length;

@@ -149,9 +149,9 @@ import <#= webServiceFilterMenuDataModelClassName #> from "<#= GetCommonFolderNa
 import '<#= GetFolderName(Model, checkeddashboardComponentCssClassFolder, checkeddashboardComponentDataModelFolder)#>.css';
 import <#= appGlblSettingsServiceClassName #> from "<#= GetCommonFolderName(Model, Context, appGlblSettingsServiceFolder, checkeddashboardComponentDataModelFolder) #>";
 
-import <#= tableheadCellDataModelClassName #> from "<#= GetCommonFolderName(Model, Context, tableheadCellDataModelFolder, sformComponentDataModelFolder) #>";
-import <#= tablebodyCellDataModelClassName #> from "<#= GetCommonFolderName(Model, Context, tablebodyCellDataModelFolder, sformComponentDataModelFolder) #>";
-import <#= tablePaginationDataModelClassName #> from "<#= GetCommonFolderName(Model, Context, tablePaginationDataModelFolder, sformComponentDataModelFolder) #>";
+import <#= tableheadCellDataModelClassName #> from "<#= GetCommonFolderName(Model, Context, tableheadCellDataModelFolder, checkeddashboardComponentDataModelFolder) #>";
+import <#= tablebodyCellDataModelClassName #> from "<#= GetCommonFolderName(Model, Context, tablebodyCellDataModelFolder, checkeddashboardComponentDataModelFolder) #>";
+import <#= tablePaginationDataModelClassName #> from "<#= GetCommonFolderName(Model, Context, tablePaginationDataModelFolder, checkeddashboardComponentDataModelFolder) #>";
 
 const scheme = getTheme();
 
@@ -486,7 +486,7 @@ export default class <#= checkeddashboardComponentDataModelClassName #> extends 
         this.setState( { inQuery: true,  currentSortdirection: newSortDir, currentSortColumn: clNm} );
     }
 
-    <#= onCheckedMethodName #>(v: React.FormEvent<HTMLElement>, newVal: boolean, dashboardPk: number) {
+    <#= onCheckedMethodName #>(v: any, newVal: boolean|undefined, dashboardPk: number) {
         let rid: number = Math.floor(dashboardPk/31);
         let perms = this.state.<#= PermissionsPropName #>.slice(0);
         let lng: number = perms.length;
@@ -565,7 +565,6 @@ export default class <#= checkeddashboardComponentDataModelClassName #> extends 
                         <tbody style={{border:'inherit', borderCollapse: 'inherit'}} >
                             {this.state.dataSource.map((row, i) => (
                                 <tr key={i} style={{border:'inherit', borderCollapse: 'inherit'}}>
-                                <TableRow key={i}>
                                     {
                                         this.state.<#= DisplayedColumnsProperty #>.map(c => {
                                             // @ts-ignore

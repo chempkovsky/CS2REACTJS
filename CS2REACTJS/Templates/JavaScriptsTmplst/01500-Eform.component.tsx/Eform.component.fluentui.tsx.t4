@@ -242,7 +242,7 @@
 #>
 
 import React, { Component, CSSProperties } from 'react';
-import { IconButton, FontIcon, TooltipHost, getTheme, TextField } from '@fluentui/react';
+import { IconButton, FontIcon, TooltipHost, getTheme, TextField, Checkbox } from '@fluentui/react';
 <# if (formHasCombo) { #>  
 import { ComboBox, IComboBox, IComboBoxOption } from '@fluentui/react';  
 // import { stringify } from 'querystring';
