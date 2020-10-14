@@ -25,7 +25,7 @@ USE [SecurityDataBase]
 GO
 */
 <#
-    string ftrFeatureComponentFolder = "30100-.ftr.component.ts";
+    string ftrFeatureComponentFolder = "30100-.ftr.component.tsx";
     string insertSql = "insert into [dbo].[securitydashboards]([DashboardPk], [DashboardName], [DashboardDescription]) values (";
     int currentId = startFromId;
     foreach(FeatureSerializable featureSerializable in FeatureContext.Features) {

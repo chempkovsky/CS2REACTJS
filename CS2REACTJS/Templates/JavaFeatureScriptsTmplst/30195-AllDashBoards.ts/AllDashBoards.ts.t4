@@ -31,7 +31,7 @@
 // 4. Paste from clipboard inside curly brackets
 //    
 <#
-    string ftrFeatureComponentFolder = "30100-.ftr.component.ts";
+    string ftrFeatureComponentFolder = "30100-.ftr.component.tsx";
     foreach(FeatureSerializable featureSerializable in FeatureContext.Features) {
         string featureClassName = GetFeatureComponentClassName(featureSerializable, ftrFeatureComponentFolder);
 #>
