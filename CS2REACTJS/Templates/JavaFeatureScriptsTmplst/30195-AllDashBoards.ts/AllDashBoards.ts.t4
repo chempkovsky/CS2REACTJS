@@ -6,13 +6,13 @@
 <#@ import namespace="System.Collections" #>
 <#@ import namespace="System.Collections.Generic" #>
 <#@ import namespace="System.Text" #>
-<#@ import namespace="CS2ANGULAR" #>
-<#@ import namespace="CS2ANGULAR.Model" #>
-<#@ import namespace="CS2ANGULAR.Model.Serializable" #>
-<#@ parameter type="CS2ANGULAR.Model.Serializable.AllowedFileTypesSerializable" name="AllowedFileTypes" #>
-<#@ parameter type="CS2ANGULAR.Model.Serializable.FeatureContextSerializable" name="FeatureContext" #>
-<#@ parameter type="CS2ANGULAR.Model.Serializable.FeatureSerializable" name="Feature" #>
-<#@ parameter type="CS2ANGULAR.Model.Serializable.DbContextSerializable" name="Context" #>
+<#@ import namespace="CS2REACTJS" #>
+<#@ import namespace="CS2REACTJS.Model" #>
+<#@ import namespace="CS2REACTJS.Model.Serializable" #>
+<#@ parameter type="CS2REACTJS.Model.Serializable.AllowedFileTypesSerializable" name="AllowedFileTypes" #>
+<#@ parameter type="CS2REACTJS.Model.Serializable.FeatureContextSerializable" name="FeatureContext" #>
+<#@ parameter type="CS2REACTJS.Model.Serializable.FeatureSerializable" name="Feature" #>
+<#@ parameter type="CS2REACTJS.Model.Serializable.DbContextSerializable" name="Context" #>
 <#
 //
 // Before you starts:
