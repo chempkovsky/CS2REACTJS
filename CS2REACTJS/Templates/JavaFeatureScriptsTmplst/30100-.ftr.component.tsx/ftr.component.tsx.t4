@@ -401,7 +401,7 @@ export default class <#= featureClassName #> extends Component<RouteComponentPro
     {
         foreach(FeatureItemSerializable featureItemSerializable in Feature.FeatureItems) {
 #>
-            (this.context.getViewModelMask('<#= featureItemSerializable.ViewName #>') & 1) === 1,
+            !((this.context.getViewModelMask('<#= featureItemSerializable.ViewName #>') & 1) === 1),
 <#
         }
     }
