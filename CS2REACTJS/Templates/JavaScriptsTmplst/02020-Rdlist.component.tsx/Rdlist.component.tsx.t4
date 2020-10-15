@@ -176,6 +176,7 @@ export default class <#= rdlistComponentDataModelClassName #> extends Component<
         this.<#= ApplyFilterMethodName #> = this.<#= ApplyFilterMethodName #>.bind(this);
         this.<#= OnBackBtnMethodName #> = this.<#= OnBackBtnMethodName #>.bind(this);
         this.onPermMask = this.onPermMask.bind(this);
+        this.onSelPermMask = this.onSelPermMask.bind(this);
         this.onPostNav =  this.onPostNav.bind(this);
         this.onNavError =  this.onNavError.bind(this);
     }
@@ -593,6 +594,13 @@ export default class <#= rdlistComponentDataModelClassName #> extends Component<
             }
         }
     }
+    onSelPermMask() {
+        const permMask: number = this.context.getViewModelMask('<#= Model.ViewName #>');
+        if (!((permMask & 1) === 1)) {
+            return false;
+        }
+        return true;
+    }
     onPermMask() {
         let <#= CanAddPropName #> = false;
         if(this.props.<#= CanAddPropName #>) <#= CanAddPropName #> = this.props.<#= CanAddPropName #>;
@@ -646,10 +654,18 @@ export default class <#= rdlistComponentDataModelClassName #> extends Component<
             this.onNavError();
             return;
         }
+        if(!this.onSelPermMask()) {
+            this.onNavError();
+            return;
+        }
         this.onPermMask();
     }
     componentDidUpdate() {
         if(this.state.<#= NavErrorFlagPropName #>) {
+            this.onNavError();
+            return;
+        }
+        if(!this.onSelPermMask()) {
             this.onNavError();
             return;
         }

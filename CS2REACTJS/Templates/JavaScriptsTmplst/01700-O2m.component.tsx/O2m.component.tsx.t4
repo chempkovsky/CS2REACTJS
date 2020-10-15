@@ -314,7 +314,7 @@ export default class <#= o2mComponentDataModelClassName #>  extends Component<<#
             string detailComponentDataModelClassName = GetModelComponentClassName(detailView, lformComponentDataModelFolder); 
 #>
                 <# if(isNotFirst) { #>else <# } #>if(this.state.<#= DetailViewNamePropName #>.viewName === '<#= detailView.ViewName #>') {
-                    const <#= PermMaskPropName #>: number = this.context.getViewModelMask('<#= Model.ViewName #>');
+                    const <#= PermMaskPropName #>: number = this.context.getViewModelMask('<#= detailView.ViewName #>');
                     if((<#= PermMaskPropName #> & 1) === 1) {
                         htmlitems.push(
                             <<#= detailComponentDataModelClassName #>  key={100}

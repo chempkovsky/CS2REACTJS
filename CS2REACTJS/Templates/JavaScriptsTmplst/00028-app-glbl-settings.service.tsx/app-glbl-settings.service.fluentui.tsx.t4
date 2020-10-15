@@ -164,6 +164,12 @@ export default class <#= appGlblSettingsServiceClassName #> implements <#= appGl
                 'LitPublisherView':8,
         */
     };
+    dshBrds:  { [key: string]: number } = {
+        /*        
+              'ManuscriptDFeatureFtrComponent': 0,
+              'ManuscriptRFeatureFtrComponent': 1,
+       */ 
+    };
 
     getViewModelMask(vwModel: string): number {
       return 15; // delete this line when vwModels is ready
@@ -175,6 +181,19 @@ export default class <#= appGlblSettingsServiceClassName #> implements <#= appGl
       let rslt = this.perms[rid];
       if(sft > 0) {
         rslt = this.perms[rid] >> sft;
+      }
+      return rslt; 
+    }
+    getDashBrdMask(dshBrd: string): number {
+      return 1; // delete this line when dshBrds is ready
+      let pk = this.dshBrds[dshBrd];
+      if(typeof pk === 'undefined') return 0;
+      let rid: number = Math.floor(pk/31);
+      if(rid >= (this.perms.length-14))  return 0; 
+      let sft: number = (pk - rid * 31);
+      let rslt = (this.perms[rid+14])
+      if(sft > 0) {
+        rslt = (this.perms[rid+14]) >> sft;
       }
       return rslt; 
     }

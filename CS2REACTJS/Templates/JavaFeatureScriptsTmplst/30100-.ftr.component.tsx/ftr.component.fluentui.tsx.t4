@@ -47,6 +47,7 @@
     string ShowDetailFilterPropName                 = "showDetailFilter";
     string OnContMenuItemMethodName                 = "onContMenuItem";
     string ShowBackBtnPropName                      = "showBackBtn";
+    string PermsPropName                            = "perms";
 
 
     string curBreakPointPropName                    = "curBp";
@@ -67,7 +68,7 @@
 
 import React, { Component, Suspense, lazy } from 'react';
 import { getTheme }  from '@fluentui/react';
-import { Route } from 'react-router-dom';
+import { Route, RouteComponentProps } from 'react-router-dom';
 import '<#= GetFeatureFolderName(Feature, featureCssComponentFolder, featureComponentFolder)#>.css';
 import <#= appGlblSettingsContextClassName #> from '<#= GetFeatureCommonFolderName(Feature, Context, appGlblSettingsContextFolder, featureComponentFolder) #>';
 import <#= webServiceFilterMenuDataModelClassName #> from "<#= GetFeatureCommonFolderName(Feature, Context, webServiceFilterMenuDataModelFolder, featureComponentFolder) #>";
@@ -97,9 +98,10 @@ export interface <#= featureClassName + "State" #> {
     <#= MaxHeightPropName #>: number[][];
     <#= FilterMaxHeightPropName #>: number[][];
     <#= ContMenuItemsPropName #>: <#= webServiceFilterMenuDataModelClassName #>[][];
+    <#= PermsPropName #>: boolean[];
 }
 
-export default class <#= featureClassName #> extends Component<any, <#= featureClassName + "State" #>> {
+export default class <#= featureClassName #> extends Component<RouteComponentProps<any>, <#= featureClassName + "State" #>> {
     static contextType = <#= appGlblSettingsContextClassName #>;
     <#= isExpPropName #>: boolean[] = [<#= GetAllFeatureDefaultIsExp(Feature) #>];
     <#= colspanPropName #>: number[][]= [
@@ -299,10 +301,24 @@ export default class <#= featureClassName #> extends Component<any, <#= featureC
     }
 #>
             ],
+            <#= PermsPropName #>: [
+<#
+    {
+        foreach(FeatureItemSerializable featureItemSerializable in Feature.FeatureItems) {
+#>
+                true,
+<#
+        }
+    }
+#>
+            ],
+
         }
         this.<#= OnContMenuItemMethodName #> = this.<#= OnContMenuItemMethodName #>.bind(this);
         this.updateSettings = this.updateSettings.bind(this);
         this.handleResize = this.handleResize.bind(this);
+        this.onPermMask = this.onPermMask.bind(this);
+        this.onNavError = this.onNavError.bind(this);
     }
 
     updateSettings() {
@@ -353,8 +369,46 @@ export default class <#= featureClassName #> extends Component<any, <#= featureC
             this.setState({<#= curBreakPointPropName #>: <#= curBreakPointPropName #>}, this.updateSettings);
         }
     }
+    onNavError(): void {
+        let msg = {
+            message:'Incorrect Url.'
+        };
+        this.context.showError('Navigation Error', msg)
+        if(this.props.history) {
+            this.props.history.push("/");
+        }
+    }
+    onPermMask() {
+        const permMask: number = this.context.getDashBrdMask('<#= featureClassName #>');
+        if (!((permMask & 1) === 1)) {
+            return false;
+        }
+        return true;
+    }
+    componentDidUpdate() {
+        if(!this.onPermMask()) {
+            this.onNavError();
+            return;
+        }
+    }
     componentDidMount() {
         window.addEventListener('resize', this.handleResize);
+        if(!this.onPermMask()) {
+            this.onNavError();
+            return;
+        }
+        let <#= PermsPropName #>: boolean[] = [
+<#
+    {
+        foreach(FeatureItemSerializable featureItemSerializable in Feature.FeatureItems) {
+#>
+            (this.context.getViewModelMask('<#= featureItemSerializable.ViewName #>') & 1) === 1,
+<#
+        }
+    }
+#>
+        ];
+        this.setState({ <#= PermsPropName #>: <#= PermsPropName #> });
         this.updateSettings();
     }
     componentWillUnmount() {
@@ -388,7 +442,7 @@ export default class <#= featureClassName #> extends Component<any, <#= featureC
 
             if (isRouted) {
 #>
-                    <div  hidden={this.state.colSpan[<#= curItem #>][0] === 0}
+                    <div  hidden={ (this.state.colSpan[<#= curItem #>][0] === 0) || this.state.<#= PermsPropName #>[<#= curItem #>] }
                           style={{ gridColumnEnd: `span ${this.state.colSpan[<#= curItem #>][0]}`, gridRowEnd: `span ${this.state.rowSpan[<#= curItem #>][0]}` }}>
                           <Route  render={(props) => <Suspense fallback={<div>Loading...</div>}><<#= GetModelComponentClassName(modelViewSerializable, featureItemSerializable.FileType) #> {...props} 
                                 <#= ContMenuItemsPropName #>={ this.state.<#= ContMenuItemsPropName #>[<#= curItem #>] }
@@ -402,7 +456,7 @@ export default class <#= featureClassName #> extends Component<any, <#= featureC
 <#
             } else {
 #>
-                    <div  hidden={this.state.colSpan[<#= curItem #>][0] === 0}
+                    <div  hidden={ (this.state.colSpan[<#= curItem #>][0] === 0) || this.state.<#= PermsPropName #>[<#= curItem #>] }
                           style={{ gridColumnEnd: `span ${this.state.colSpan[<#= curItem #>][0]}`, gridRowEnd: `span ${this.state.rowSpan[<#= curItem #>][0]}` }}>
                         <Suspense fallback={<div>Loading...</div>}>
                          <<#= GetModelComponentClassName(modelViewSerializable, featureItemSerializable.FileType) #>
