@@ -147,6 +147,7 @@ const scheme = getTheme();
 
 export default class <#= sformComponentDataModelClassName #> extends Component<<#= sformPropsDataModelClassName #>, <#= sformStateDataModelClassName #>> {
     static contextType = <#= appGlblSettingsContextClassName #>;
+    public mounted: boolean = true;
     visuallyHidden = {
       border: 0,
       clip: 'rect(0 0 0 0)',
@@ -358,7 +359,10 @@ export default class <#= sformComponentDataModelClassName #> extends Component<<
         if (this.state.inQuery) this.onFilter();
     }
     onApplyFilterClicked(r: Array<<#= webServiceFilterRsltDataModelClassName #>>): void {
-        this.setState( { currentFilter: r, matPaginatorCurrentPage: 0, inQuery: true } );
+        if(this.mounted) this.setState( { currentFilter: r, matPaginatorCurrentPage: 0, inQuery: true } );
+    }
+    componentWillUnmount() {
+        this.mounted = false;
     }
 
 
@@ -418,7 +422,7 @@ export default class <#= sformComponentDataModelClassName #> extends Component<<
                         pg = v.page;
                     }
                 }
-                this.setState( { inQuery: false, dataSource: rslt, matPaginatorLen: pl, matPaginatorCurrentPage: pg } );
+                if(this.mounted) this.setState( { inQuery: false, dataSource: rslt, matPaginatorLen: pl, matPaginatorCurrentPage: pg } );
                 if(this.props.<#= applyFilterPropName #>) this.props.<#= applyFilterPropName #>(this);
                 let currow: <#= GetInterfaceName(Model) #> | null = null;
                 if(Array.isArray(rslt)) {
@@ -429,7 +433,7 @@ export default class <#= sformComponentDataModelClassName #> extends Component<<
                 this.onSelectRow(currow);
             },
             (error: any) => {
-                this.setState( { inQuery: false } );
+                if(this.mounted) this.setState( { inQuery: false } );
                 this.context.<#= ShowErrorMethodName #>('http', error)
             });
     }
@@ -440,45 +444,45 @@ export default class <#= sformComponentDataModelClassName #> extends Component<<
         } else {
             currow = e;
         }
-        this.setState( { <#= currentRowPropName #>: currow } );
+        if(this.mounted) this.setState( { <#= currentRowPropName #>: currow } );
         if(this.props.<#= selectedRowPropName #>) this.props.<#= selectedRowPropName #>(currow);
     }
 
     handleChangeRowsPerPage = (sender: any, rows: number) => {
-        this.setState( { matPaginatorCurrentPage: 0, inQuery: true,  matPaginatorPageSize: rows } );
+        if(this.mounted) this.setState( { matPaginatorCurrentPage: 0, inQuery: true,  matPaginatorPageSize: rows } );
     };
     handleChangePage = (sender: any, page: number) => {
-        this.setState( { inQuery: true,  matPaginatorCurrentPage: page } );
+        if(this.mounted) this.setState( { inQuery: true,  matPaginatorCurrentPage: page } );
     };
     onSort(clNm: string, newSortDir: string) {
-        this.setState( { inQuery: true,  currentSortdirection: newSortDir, currentSortColumn: clNm} );
+        if(this.mounted) this.setState( { inQuery: true,  currentSortdirection: newSortDir, currentSortColumn: clNm} );
     }
     handleOpenTblMenu(event: React.MouseEvent<HTMLButtonElement>) {
-        this.setState( { anchorTbl: event.currentTarget } );
+        if(this.mounted) this.setState( { anchorTbl: event.currentTarget } );
     }
     handleCloseTblMenu() {
-        this.setState( { anchorTbl: null } );
+        if(this.mounted) this.setState( { anchorTbl: null } );
     }
     handleTblMenuRefresh() {
-        this.setState( { inQuery: true, anchorTbl: null } );
+        if(this.mounted) this.setState( { inQuery: true, anchorTbl: null } );
     }
     handleTblMenuSettings() {
-        this.setState( { anchorTbl: null, openColSelDlg: true } );
+        if(this.mounted) this.setState( { anchorTbl: null, openColSelDlg: true } );
     }
     onCloseColSelDlg(r: boolean, cols?: Array<<#= columnSelectorItemDataModelClassName #>>) {
-        this.setState( { openColSelDlg: false } );
+        if(this.mounted) this.setState( { openColSelDlg: false } );
         if (r) {
             if (cols) {
                 let dspCols: Array<string> = [];
                 cols.forEach(c => {
                     if(c.checked) dspCols.push(c.name);
                 });
-                this.setState( { <#= DisplayedColumnsProperty #>: dspCols, colToSel: cols.map(c=>c) } );
+                if(this.mounted) this.setState( { <#= DisplayedColumnsProperty #>: dspCols, colToSel: cols.map(c=>c) } );
             }
         }
     }
     handleTblMenu(id: string) {
-        this.setState( { anchorTbl: null } );
+        if(this.mounted) this.setState( { anchorTbl: null } );
         if(this.props.<#= OnTableMenuItemMethodName #>) {
             let v: <#= webServiceFilterEventDataModelClassName #> = {
                 id: id,

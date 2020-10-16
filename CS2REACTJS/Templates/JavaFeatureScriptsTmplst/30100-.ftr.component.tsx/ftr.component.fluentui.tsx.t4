@@ -103,6 +103,7 @@ export interface <#= featureClassName + "State" #> {
 
 export default class <#= featureClassName #> extends Component<RouteComponentProps<any>, <#= featureClassName + "State" #>> {
     static contextType = <#= appGlblSettingsContextClassName #>;
+    public mounted: boolean = true;
     <#= isExpPropName #>: boolean[] = [<#= GetAllFeatureDefaultIsExp(Feature) #>];
     <#= colspanPropName #>: number[][]= [
 <#
@@ -327,7 +328,7 @@ export default class <#= featureClassName #> extends Component<RouteComponentPro
             this.<#= colspanPropName #>[i][0] = this.<#= isExpPropName #>[i] ? this.<#= colspanPropName #>[i][3] : this.<#= colspanPropName #>[i][this.state.<#= curBreakPointPropName #>] * this.<#= colspanPropName #>[i][3];
             this.<#= rowspanPropName #>[i][0] = this.<#= isExpPropName #>[i] ? this.<#= rowspanPropName #>[i][3] : this.<#= rowspanPropName #>[i][this.state.<#= curBreakPointPropName #>] * this.<#= rowspanPropName #>[i][3];
         }
-        this.setState({<#= colspanPropName #>: this.<#= colspanPropName #>, <#= rowspanPropName #>: this.<#= rowspanPropName #>, <#= isExpPropName #>: this.<#= isExpPropName #>, <#= MaxHeightPropName #>: this.<#= MaxHeightPropName #>, <#= FilterMaxHeightPropName #>: this.<#= FilterMaxHeightPropName #>});
+        if(this.mounted) this.setState({<#= colspanPropName #>: this.<#= colspanPropName #>, <#= rowspanPropName #>: this.<#= rowspanPropName #>, <#= isExpPropName #>: this.<#= isExpPropName #>, <#= MaxHeightPropName #>: this.<#= MaxHeightPropName #>, <#= FilterMaxHeightPropName #>: this.<#= FilterMaxHeightPropName #>});
     }
 
     <#= OnContMenuItemMethodName #>(v: <#= webServiceFilterEventDataModelClassName #>) {
@@ -366,7 +367,7 @@ export default class <#= featureClassName #> extends Component<RouteComponentPro
         const cfs: string = <#= currFlexScreenFunctionName #>();
         if(cfs === 'lg') { <#= curBreakPointPropName #> = 1; }
         if(<#= curBreakPointPropName #> !== this.state.<#= curBreakPointPropName #>) {
-            this.setState({<#= curBreakPointPropName #>: <#= curBreakPointPropName #>}, this.updateSettings);
+            if(this.mounted) this.setState({<#= curBreakPointPropName #>: <#= curBreakPointPropName #>}, this.updateSettings);
         }
     }
     onNavError(): void {
@@ -380,10 +381,7 @@ export default class <#= featureClassName #> extends Component<RouteComponentPro
     }
     onPermMask() {
         const permMask: number = this.context.getDashBrdMask('<#= featureClassName #>');
-        if (!((permMask & 1) === 1)) {
-            return false;
-        }
-        return true;
+        return ((permMask & 1) === 1);
     }
     componentDidUpdate() {
         if(!this.onPermMask()) {
@@ -408,7 +406,7 @@ export default class <#= featureClassName #> extends Component<RouteComponentPro
     }
 #>
         ];
-        this.setState({ <#= PermsPropName #>: <#= PermsPropName #> });
+        if(this.mounted) this.setState({ <#= PermsPropName #>: <#= PermsPropName #> });
         this.updateSettings();
     }
     componentWillUnmount() {

@@ -158,6 +158,7 @@ const scheme = getTheme();
 
 export default class <#= checkedmodelComponentDataModelClassName #> extends Component<<#= checkedmodelPropsDataModelClassName #>, <#= checkedmodelStateDataModelClassName #>> {
     static contextType = <#= appGlblSettingsContextClassName #>;
+    public mounted: boolean = true;
     visuallyHidden = {
       border: 0,
       clip: 'rect(0 0 0 0)',
@@ -407,8 +408,11 @@ export default class <#= checkedmodelComponentDataModelClassName #> extends Comp
     componentDidUpdate() {
         if (this.state.inQuery) this.onFilter();
     }
+    componentWillUnmount() {
+        this.mounted = false;
+    }
     onApplyFilterClicked(r: Array<<#= webServiceFilterRsltDataModelClassName #>>): void {
-        this.setState( { currentFilter: r, inQuery: true } );
+        if(this.mounted) this.setState( { currentFilter: r, inQuery: true } );
     }
 
 
@@ -469,22 +473,22 @@ export default class <#= checkedmodelComponentDataModelClassName #> extends Comp
                     }
                 }
                 let rsltEx: Array<<#= GetPermInterfaceName(Model) #>> = <#= checkedmodelComponentDataModelClassName #>.updatePermissions(rslt, this.state.<#= PermissionsPropName #>);
-                this.setState( { inQuery: false, dataSource: rsltEx, matPaginatorLen: pl, matPaginatorCurrentPage: pg } );
+                if(this.mounted) this.setState( { inQuery: false, dataSource: rsltEx, matPaginatorLen: pl, matPaginatorCurrentPage: pg } );
             },
             (error: any) => {
-                this.setState( { inQuery: false } );
+                if(this.mounted) this.setState( { inQuery: false } );
                 this.context.<#= ShowErrorMethodName #>('http', error)
             });
     }
 
     handleChangeRowsPerPage = (sender: any, rows: number) => {
-        this.setState( { matPaginatorCurrentPage: 0, inQuery: true,  matPaginatorPageSize: rows } );
+        if(this.mounted) this.setState( { matPaginatorCurrentPage: 0, inQuery: true,  matPaginatorPageSize: rows } );
     };
     handleChangePage = (event: any, newPage: number) => {
-        this.setState( { inQuery: true,  matPaginatorCurrentPage: newPage } );
+        if(this.mounted) this.setState( { inQuery: true,  matPaginatorCurrentPage: newPage } );
     };
     onSort(clNm: string, newSortDir: string) {
-        this.setState( { inQuery: true,  currentSortdirection: newSortDir, currentSortColumn: clNm} );
+        if(this.mounted) this.setState( { inQuery: true,  currentSortdirection: newSortDir, currentSortColumn: clNm} );
     }
 
     <#= onCheckedMethodName #>(v: any, newVal: boolean|undefined, modelPk: number, val: number) {

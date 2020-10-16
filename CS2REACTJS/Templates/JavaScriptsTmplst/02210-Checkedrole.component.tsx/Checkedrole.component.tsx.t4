@@ -142,6 +142,7 @@ const  <#= checkeddashboardComponentDataModelClassName #> = lazy(() => import('<
 
 export default class <#= checkedroleComponentDataModelClassName #>  extends Component<<#= checkedrolePropsDataModelClassName #>, <#= checkedroleStateDataModelClassName #>> {
     static contextType = <#= appGlblSettingsContextClassName #>;
+    public mounted: boolean = true;
     constructor(props: <#= checkedrolePropsDataModelClassName #>) {
         super(props);
         this.state = {
@@ -223,7 +224,7 @@ export default class <#= checkedroleComponentDataModelClassName #>  extends Comp
             <#= CanDelPropName #> = (<#= CanDelPropName #> && ((<#= PermMaskPropName #> & 2) === 2));
             <#= CanUpdPropName #> = (<#= CanUpdPropName #> && ((<#= PermMaskPropName #> & 4) === 4));
             <#= CanAddPropName #> = (<#= CanAddPropName #> && ((<#= PermMaskPropName #> & 8) === 8));
-            this.setState({ <#= PermMaskPropName #>: <#= PermMaskPropName #>, <#= CanDelPropName #>: <#= CanDelPropName #>, <#= CanUpdPropName #>: <#= CanUpdPropName #>, <#= CanAddPropName #>: <#= CanAddPropName #>,
+            if(this.mounted) this.setState({ <#= PermMaskPropName #>: <#= PermMaskPropName #>, <#= CanDelPropName #>: <#= CanDelPropName #>, <#= CanUpdPropName #>: <#= CanUpdPropName #>, <#= CanAddPropName #>: <#= CanAddPropName #>,
                             <#= ContMenuItemsPropName #>: [ {id: 'saveRole', caption: 'Save Role bitmasks', iconName: 'save', iconColor: 'primary', enabled: <#= CanAddPropName #> } ] });
         }
     }
@@ -233,11 +234,14 @@ export default class <#= checkedroleComponentDataModelClassName #>  extends Comp
     componentDidUpdate() {
         this.onPermMask();
     }
+    componentWillUnmount() {
+        this.mounted = false;
+    }
     <#= SelectedRowPropName #>(row: <#= GetInterfaceName(Model) #> | null): void {
         if (this.state.<#= IsModifiedPropName #>) {
-            this.setState({<#= OpenMssgDlgPropName #>: true, <#= NewRowPropName #>: row});
+            if(this.mounted) this.setState({<#= OpenMssgDlgPropName #>: true, <#= NewRowPropName #>: row});
         } else {
-            this.setState({<#= NewRowPropName #>: row}, this.onNewRow);
+            if(this.mounted) this.setState({<#= NewRowPropName #>: row}, this.onNewRow);
         }
     }
     onNewRow() {
@@ -247,7 +251,7 @@ export default class <#= checkedroleComponentDataModelClassName #>  extends Comp
             isNDef = (row === null);
         }
         if(isNDef) {
-            this.setState({<#= MasterRowPropName #>: null, <#= InitialRowPropName #>: null, <#= IsModifiedPropName #>: false, <#= PermissionsPropName #>: []});
+            if(this.mounted) this.setState({<#= MasterRowPropName #>: null, <#= InitialRowPropName #>: null, <#= IsModifiedPropName #>: false, <#= PermissionsPropName #>: []});
             return;
         }
         const mask = 'mask';
@@ -271,7 +275,7 @@ export default class <#= checkedroleComponentDataModelClassName #>  extends Comp
                 rslt.push(row[nm]);
             }
         });
-        this.setState({<#= PermissionsPropName #>: rslt, <#= IsModifiedPropName #>: false, <#= MasterRowPropName #>: {...row} as <#= GetInterfaceName(Model) #>, <#= InitialRowPropName #>: row});
+        if(this.mounted) this.setState({<#= PermissionsPropName #>: rslt, <#= IsModifiedPropName #>: false, <#= MasterRowPropName #>: {...row} as <#= GetInterfaceName(Model) #>, <#= InitialRowPropName #>: row});
     }
     <#= OnContMenuItemMethodName #>(v: <#= webServiceFilterEventDataModelClassName #>) {
         if(this.state.eref.current) {
@@ -279,18 +283,18 @@ export default class <#= checkedroleComponentDataModelClassName #>  extends Comp
         }
     }
     onTabsChange(event: React.ChangeEvent<{}>, newValue: number) {
-        this.setState({<#= TabIndexPropName #> : newValue});
+        if(this.mounted) this.setState({<#= TabIndexPropName #> : newValue});
     }
     onCloseDialog(rslt: boolean) {
         if(rslt) {
             if(this.state.eref.current) {
-                this.setState({<#= OpenMssgDlgPropName #>: false});
-                this.setState({openMssgDlg: false}) 
+                if(this.mounted) this.setState({<#= OpenMssgDlgPropName #>: false});
+                if(this.mounted) this.setState({openMssgDlg: false}) 
             } else {
-                this.setState({<#= OpenMssgDlgPropName #>: false}, this.onNewRow);
+                if(this.mounted) this.setState({<#= OpenMssgDlgPropName #>: false}, this.onNewRow);
             }
         } else {
-            this.setState({<#= OpenMssgDlgPropName #>: false}, this.onNewRow);
+            if(this.mounted) this.setState({<#= OpenMssgDlgPropName #>: false}, this.onNewRow);
         }
     }
     <#= AfterSubmitPropName #>(sender: any, rslt: boolean, respdata: <#= GetInterfaceName(Model) #>|null) {
@@ -341,7 +345,7 @@ export default class <#= checkedroleComponentDataModelClassName #>  extends Comp
             i++;
         });
         if(this.state.eref.current) { this.state.eref.current.inputToControls(); }
-        this.setState({<#= MasterRowPropName #>: row, permissions: val, <#= IsModifiedPropName #>: true})
+        if(this.mounted) this.setState({<#= MasterRowPropName #>: row, permissions: val, <#= IsModifiedPropName #>: true})
     }
 
 

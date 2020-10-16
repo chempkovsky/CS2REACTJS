@@ -99,6 +99,7 @@ import <#= GetInterfaceFilterName(Model) #> from '<#= GetFolderName(Model, viewI
 
 export default class <#= lformComponentDataModelClassName #> extends Component<<#= lformPropsDataModelClassName #>, <#= lformStateDataModelClassName #>> {
     static contextType = <#= appGlblSettingsContextClassName #>;
+    public mounted: boolean = true;
     constructor(props: <#= lformPropsDataModelClassName #>) {
         super(props);
         // const <#= PermMaskPropName #>: number = 15;
@@ -152,8 +153,11 @@ export default class <#= lformComponentDataModelClassName #> extends Component<<
             this.onFilter();
         }
     }
+    componentWillUnmount() {
+        this.mounted = false;
+    }
     onFilter() {
-        this.setState({<#= MustQueryPropName #>: false, <#= PermissionsPropName #>:[]});
+        if(this.mounted) this.setState({<#= MustQueryPropName #>: false, <#= PermissionsPropName #>:[]});
         let flt: <#= GetInterfaceFilterName(Model) #> = { page: 1, pagesize: 1, orderby: [] };
         this.state.<#= HiddenFilterPropName #>.forEach(e => {
             let opNm =  e.fltrName + '<#= OperatorSufix #>';
@@ -187,14 +191,14 @@ export default class <#= lformComponentDataModelClassName #> extends Component<<
             .then((res: any) => res.json())
             .then((v: <#= GetInterfacePageName(Model) #>) => {
                 let <#= PermissionsPropName #>: Array<number> = <#= viewServiceClassName #>.<#= src2arrayMethodName #>(v);
-                this.setState({<#= PermissionsPropName #>: <#= PermissionsPropName #>});
+                if(this.mounted) this.setState({<#= PermissionsPropName #>: <#= PermissionsPropName #>});
             },
             error => {
                 this.context.<#= ShowErrorMethodName #>('http', error)
             });
     }
     onTabsChange(event: React.ChangeEvent<{}>, newValue: number) {
-        this.setState({<#= TabIndexPropName #> : newValue});
+        if(this.mounted) this.setState({<#= TabIndexPropName #> : newValue});
     }
 
     render () {

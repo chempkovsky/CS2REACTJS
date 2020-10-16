@@ -65,6 +65,7 @@ import <#= rowFlexFunctionName #> from "<#= GetFolderName(Model, rowFlexFunction
 
 
 export default class <#= webServiceFilterDataModelClassName #> extends Component<<#= webServiceFilterPropsDataModelClassName #>, <#= webServiceFilterStateDataModelClassName #>> {
+    public mounted: boolean = true;
     opers: Array<<#= webServiceFilterOperatorDataModelClassName #>> =  [
         {oName: 'eq', oCaption: '=='},
         {oName: 'gt', oCaption: '>='},
@@ -127,17 +128,18 @@ export default class <#= webServiceFilterDataModelClassName #> extends Component
     }
     componentWillUnmount() {
         window.removeEventListener('resize', this.handleResize);
+        this.mounted = false;
     }
     removeAllFilters() {
         let nextItemId = this.state.nextItemId;
-        this.setState<'nextItemId'>( { nextItemId: nextItemId+1 } );
-        this.setState<'fltitems'>( { fltitems: [{ itmRef: createRef<<#= webServiceFilterItemDataModelClassName #>>(), itmId: nextItemId }] } );
+        if(this.mounted) this.setState<'nextItemId'>( { nextItemId: nextItemId+1 } );
+        if(this.mounted) this.setState<'fltitems'>( { fltitems: [{ itmRef: createRef<<#= webServiceFilterItemDataModelClassName #>>(), itmId: nextItemId }] } );
     }
     addFltItem() {
         let nextItemId = this.state.nextItemId;
-        this.setState<'nextItemId'>( { nextItemId: nextItemId+1 } );
+        if(this.mounted) this.setState<'nextItemId'>( { nextItemId: nextItemId+1 } );
         this.state.fltitems.push({ itmRef: createRef<<#= webServiceFilterItemDataModelClassName #>>(), itmId: nextItemId });
-        this.setState<'fltitems'>( { fltitems: this.state.fltitems } );
+        if(this.mounted) this.setState<'fltitems'>( { fltitems: this.state.fltitems } );
     }
     onDelete(key: any) {
         if(typeof key === 'undefined') return;
@@ -147,7 +149,7 @@ export default class <#= webServiceFilterDataModelClassName #> extends Component
             const i = this.state.fltitems.findIndex(fi => fi.itmRef.current === key);
             if(i > -1) {
             this.state.fltitems.splice(i,1);
-            this.setState<'fltitems'>( { fltitems: this.state.fltitems } );
+            if(this.mounted) this.setState<'fltitems'>( { fltitems: this.state.fltitems } );
             }
         }
     }

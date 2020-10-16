@@ -96,6 +96,7 @@ const  <#= eformComponentDataModelClassName #> = lazy(() => import('<#= GetFolde
 
 export default class <#= reditComponentDataModelClassName #>  extends Component<<#= reditPropsDataModelClassName #>, <#= reditStateDataModelClassName #>> {
     static contextType = <#= appGlblSettingsContextClassName #>;
+    public mounted: boolean = true;
     constructor(props: <#= reditPropsDataModelClassName #>) {
         super(props);
         this.state = {
@@ -403,22 +404,22 @@ export default class <#= reditComponentDataModelClassName #>  extends Component<
     }
     onPostNav() { 
         if(this.state.<#= EformModePropName #> === <#= eformModeEnumName #>.<#= GetInputTypeToEnumName(1) #>) {
-            this.setState({ <#= FormControlModelPropName #>: null, <#= PostNavAppliedPropName #>: true });
+            if(this.mounted) this.setState({ <#= FormControlModelPropName #>: null, <#= PostNavAppliedPropName #>: true });
         } else {
-            // this.setState({ <#= PostNavAppliedPropName #>: true });
+            // if(this.mounted) this.setState({ <#= PostNavAppliedPropName #>: true });
             <#= viewServiceClassName #>.<#= GetOneMethodName #>(this.context <# 
      foreach(ModelViewPropertyOfVwSerializable primKey in primKeys) {  #>, this.state.<#= GetPrimKeyVarName(primKey) #> <#} #> )
                 .then((res: any) => res.json())
                 .then(
                     (data: <#= GetInterfaceName(Model) #> ) => { // success path
                         if(data) {
-                            this.setState({ <#= FormControlModelPropName #>: data, <#= PostNavAppliedPropName #>: true});
+                            if(this.mounted) this.setState({ <#= FormControlModelPropName #>: data, <#= PostNavAppliedPropName #>: true});
                         } else {
                             let msg = {
                                 message:'Http request error. No data were returned.'
                             };
                             this.context.<#= ShowErrorMethodName #>('http', msg);
-                            this.setState({ <#= FormControlModelPropName #>: null, <#= PostNavAppliedPropName #>: true});
+                            if(this.mounted) this.setState({ <#= FormControlModelPropName #>: null, <#= PostNavAppliedPropName #>: true});
                             if(this.props.history) {
                                 this.props.history.push("/");
                             }
@@ -452,6 +453,9 @@ export default class <#= reditComponentDataModelClassName #>  extends Component<
             return;
         }
         if(!this.state.<#= PostNavAppliedPropName #>) this.onPostNav();
+    }
+    componentWillUnmount() {
+        this.mounted = false;
     }
     <#= BeforeSubmitPropName #>(sender: any, value: <#= GetInterfaceName(Model) #>|null) : void {
         if (this.props.<#= BeforeSubmitPropName #>) this.props.<#= BeforeSubmitPropName #>(sender, value);

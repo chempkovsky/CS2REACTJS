@@ -271,7 +271,7 @@ import  <#=  GetInterfaceNameEx(Context, viewNm) #>  from '<#=  GetCrossComponen
 export default class <#= eformComponentDataModelClassName #> extends Component<<#= eformPropsDataModelClassName #>, <#= eformStateDataModelClassName #>> {
     static contextType = <#= appGlblSettingsContextClassName #>;
     public <#= EformModePropName #>: <#= eformModeEnumName #> = <#= eformModeEnumName #>.<#= GetInputTypeToEnumName(3) #>;
-
+    public mounted: boolean = true;
 <#  // scalar props
     foreach(ModelViewUIFormPropertySerializable modelViewUIFormPropertySerializable in Model.UIFormProperties) {
         if (IsBooleanInput(modelViewUIFormPropertySerializable, Model)) {
@@ -577,6 +577,7 @@ export default class <#= eformComponentDataModelClassName #> extends Component<<
         this.toState();
     }
     componentWillUnmount() {
+        this.mounted = false;
         window.removeEventListener('resize', this.handleResize);
     }
     <#= OnContMenuItemMethodName #>(cmi: <#= webServiceFilterMenuDataModelClassName #>) {
@@ -586,7 +587,7 @@ export default class <#= eformComponentDataModelClassName #> extends Component<<
     }
 
     public scalarsToState(): void {
-        this.setState({
+        if(this.mounted) this.setState({
 <#  
     foreach(ModelViewUIFormPropertySerializable modelViewUIFormPropertySerializable in Model.UIFormProperties) {
 #>
@@ -625,7 +626,7 @@ export default class <#= eformComponentDataModelClassName #> extends Component<<
                     if (!setStateInserted) {
                         setStateInserted = true;
 #>
-            this.setState({
+            if(this.mounted) this.setState({
 <#    
                     }
 #>
@@ -636,7 +637,7 @@ export default class <#= eformComponentDataModelClassName #> extends Component<<
                     if (!setStateInserted) {
                         setStateInserted = true;
 #>
-            this.setState({
+            if(this.mounted) this.setState({
 <#    
                     }
 #>
@@ -687,7 +688,7 @@ export default class <#= eformComponentDataModelClassName #> extends Component<<
                     if (!setStateInserted) {
                         setStateInserted = true;
 #>
-            this.setState({
+            if(this.mounted) this.setState({
 <#    
                     }
 #>
@@ -698,7 +699,7 @@ export default class <#= eformComponentDataModelClassName #> extends Component<<
                     if (!setStateInserted) {
                         setStateInserted = true;
 #>
-            this.setState({
+            if(this.mounted) this.setState({
 <#    
                     }
 #>
@@ -709,7 +710,7 @@ export default class <#= eformComponentDataModelClassName #> extends Component<<
                     if (!setStateInserted) {
                         setStateInserted = true;
 #>
-            this.setState({
+            if(this.mounted) this.setState({
 <#    
                     }
 #>
@@ -1858,7 +1859,7 @@ export default class <#= eformComponentDataModelClassName #> extends Component<<
 #>
             if (hasNoVal) {
                 this.<#= GetExpressionForControlList(modelViewUIFormPropertySerializable, Model, TypeaheadSufix) #> = [];
-                this.setState({ <#= GetExpressionForControlList(modelViewUIFormPropertySerializable, Model, TypeaheadSufix) #>: [] });
+                if(this.mounted) this.setState({ <#= GetExpressionForControlList(modelViewUIFormPropertySerializable, Model, TypeaheadSufix) #>: [] });
                 return;
             }
 <#
@@ -1947,11 +1948,11 @@ export default class <#= eformComponentDataModelClassName #> extends Component<<
                 if (isndef) {
                     this.<#= GetExpressionForControlList(modelViewUIFormPropertySerializable, Model, TypeaheadSufix) #> = [];
                 }
-                this.setState({ <#= GetExpressionForControlList(modelViewUIFormPropertySerializable, Model, TypeaheadSufix) #>: this.<#= GetExpressionForControlList(modelViewUIFormPropertySerializable, Model, TypeaheadSufix) #> });
+                if(this.mounted) this.setState({ <#= GetExpressionForControlList(modelViewUIFormPropertySerializable, Model, TypeaheadSufix) #>: this.<#= GetExpressionForControlList(modelViewUIFormPropertySerializable, Model, TypeaheadSufix) #> });
              },
              async (error: any) => {
                 this.<#= GetExpressionForControlList(modelViewUIFormPropertySerializable, Model, TypeaheadSufix) #> = [];
-                this.setState({ <#= GetExpressionForControlList(modelViewUIFormPropertySerializable, Model, TypeaheadSufix) #>: [] });
+                if(this.mounted) this.setState({ <#= GetExpressionForControlList(modelViewUIFormPropertySerializable, Model, TypeaheadSufix) #>: [] });
                 this.context.showError('http', error)
              });
         }
@@ -2437,7 +2438,7 @@ export default class <#= eformComponentDataModelClassName #> extends Component<<
                                 } // foreach(ModelViewUIFormPropertySerializable directMasterProp in directMasters) {
                         } // if (directMasters.Count > 0) {
 #>
-            this.setState({ <#= GetTypeScriptPropertyNameWithSufix(modelViewUIFormPropertySerializable, Model, OpenModalSufix) #>: true, <#= GetTypeScriptPropertyNameWithSufix(modelViewUIFormPropertySerializable, Model, HiddenFilterModalSufix) #>: flt });
+            if(this.mounted) this.setState({ <#= GetTypeScriptPropertyNameWithSufix(modelViewUIFormPropertySerializable, Model, OpenModalSufix) #>: true, <#= GetTypeScriptPropertyNameWithSufix(modelViewUIFormPropertySerializable, Model, HiddenFilterModalSufix) #>: flt });
         }
 <#    
                     }
@@ -2448,7 +2449,7 @@ export default class <#= eformComponentDataModelClassName #> extends Component<<
 <# //////////////////////////// end SearchButtonClick()-generator
 #>
     async <#= GetTypeScriptPropertyNameWithSufix(modelViewUIFormPropertySerializable, Model, SearchCloseSufix) #>(rslt: boolean,  slctdItms?: Array<any>) {
-        this.setState({ <#= GetTypeScriptPropertyNameWithSufix(modelViewUIFormPropertySerializable, Model, OpenModalSufix) #>: false });
+        if(this.mounted) this.setState({ <#= GetTypeScriptPropertyNameWithSufix(modelViewUIFormPropertySerializable, Model, OpenModalSufix) #>: false });
         if(!rslt) return;
         if (slctdItms) {
             if(slctdItms.length < 1) return;
@@ -2587,8 +2588,8 @@ export default class <#= eformComponentDataModelClassName #> extends Component<<
 <#
                         } else {
 #>
-        this.setState({ <#= GetTypeScriptPropertyNameWithSufix(modelViewUIFormPropertySerializable, Model, ComboSufix) #>: { Errors: this.<#= GetTypeScriptPropertyNameWithSufix(modelViewUIFormPropertySerializable, Model, ComboSufix) #>.Errors, Invalid: this.<#= GetTypeScriptPropertyNameWithSufix(modelViewUIFormPropertySerializable, Model, ComboSufix) #>.InvalidEx, Disabled: this.<#= GetTypeScriptPropertyNameWithSufix(modelViewUIFormPropertySerializable, Model, ComboSufix) #>.Disabled, Value: this.<#= GetTypeScriptPropertyNameWithSufix(modelViewUIFormPropertySerializable, Model, ComboSufix) #>.Value } });
-        this.setState({ <#= GetTypeScriptPropertyNameEx(modelViewUIFormPropertySerializable, Model) #>: { Errors: this.<#= GetTypeScriptPropertyNameEx(modelViewUIFormPropertySerializable, Model) #>.Errors, Invalid: this.<#= GetTypeScriptPropertyNameEx(modelViewUIFormPropertySerializable, Model) #>.InvalidEx, Disabled: this.<#= GetTypeScriptPropertyNameEx(modelViewUIFormPropertySerializable, Model) #>.Disabled, Value: this.<#= GetTypeScriptPropertyNameEx(modelViewUIFormPropertySerializable, Model) #>.Value } });
+        if(this.mounted) this.setState({ <#= GetTypeScriptPropertyNameWithSufix(modelViewUIFormPropertySerializable, Model, ComboSufix) #>: { Errors: this.<#= GetTypeScriptPropertyNameWithSufix(modelViewUIFormPropertySerializable, Model, ComboSufix) #>.Errors, Invalid: this.<#= GetTypeScriptPropertyNameWithSufix(modelViewUIFormPropertySerializable, Model, ComboSufix) #>.InvalidEx, Disabled: this.<#= GetTypeScriptPropertyNameWithSufix(modelViewUIFormPropertySerializable, Model, ComboSufix) #>.Disabled, Value: this.<#= GetTypeScriptPropertyNameWithSufix(modelViewUIFormPropertySerializable, Model, ComboSufix) #>.Value } });
+        if(this.mounted) this.setState({ <#= GetTypeScriptPropertyNameEx(modelViewUIFormPropertySerializable, Model) #>: { Errors: this.<#= GetTypeScriptPropertyNameEx(modelViewUIFormPropertySerializable, Model) #>.Errors, Invalid: this.<#= GetTypeScriptPropertyNameEx(modelViewUIFormPropertySerializable, Model) #>.InvalidEx, Disabled: this.<#= GetTypeScriptPropertyNameEx(modelViewUIFormPropertySerializable, Model) #>.Disabled, Value: this.<#= GetTypeScriptPropertyNameEx(modelViewUIFormPropertySerializable, Model) #>.Value } });
 <#
                         }
 #>
@@ -2609,8 +2610,8 @@ export default class <#= eformComponentDataModelClassName #> extends Component<<
 <#
                     } else {
 #>
-        this.setState({<#=  GetTypeScriptPropertyNameWithSufix(modelViewUIFormPropertySerializable, Model, TypeaheadSufix) #>: { Errors: this.<#= GetTypeScriptPropertyNameWithSufix(modelViewUIFormPropertySerializable, Model, TypeaheadSufix) #>.Errors, Invalid: this.<#= GetTypeScriptPropertyNameWithSufix(modelViewUIFormPropertySerializable, Model, TypeaheadSufix) #>.InvalidEx, Disabled: this.<#= GetTypeScriptPropertyNameWithSufix(modelViewUIFormPropertySerializable, Model, TypeaheadSufix) #>.Disabled, Value: this.<#= GetTypeScriptPropertyNameWithSufix(modelViewUIFormPropertySerializable, Model, TypeaheadSufix) #>.Value } });
-        this.setState({ <#= GetTypeScriptPropertyNameEx(modelViewUIFormPropertySerializable, Model) #>: { Errors: this.<#= GetTypeScriptPropertyNameEx(modelViewUIFormPropertySerializable, Model) #>.Errors, Invalid: this.<#= GetTypeScriptPropertyNameEx(modelViewUIFormPropertySerializable, Model) #>.InvalidEx, Disabled: this.<#= GetTypeScriptPropertyNameEx(modelViewUIFormPropertySerializable, Model) #>.Disabled, Value: this.<#= GetTypeScriptPropertyNameEx(modelViewUIFormPropertySerializable, Model) #>.Value } });
+        if(this.mounted) this.setState({<#=  GetTypeScriptPropertyNameWithSufix(modelViewUIFormPropertySerializable, Model, TypeaheadSufix) #>: { Errors: this.<#= GetTypeScriptPropertyNameWithSufix(modelViewUIFormPropertySerializable, Model, TypeaheadSufix) #>.Errors, Invalid: this.<#= GetTypeScriptPropertyNameWithSufix(modelViewUIFormPropertySerializable, Model, TypeaheadSufix) #>.InvalidEx, Disabled: this.<#= GetTypeScriptPropertyNameWithSufix(modelViewUIFormPropertySerializable, Model, TypeaheadSufix) #>.Disabled, Value: this.<#= GetTypeScriptPropertyNameWithSufix(modelViewUIFormPropertySerializable, Model, TypeaheadSufix) #>.Value } });
+        if(this.mounted) this.setState({ <#= GetTypeScriptPropertyNameEx(modelViewUIFormPropertySerializable, Model) #>: { Errors: this.<#= GetTypeScriptPropertyNameEx(modelViewUIFormPropertySerializable, Model) #>.Errors, Invalid: this.<#= GetTypeScriptPropertyNameEx(modelViewUIFormPropertySerializable, Model) #>.InvalidEx, Disabled: this.<#= GetTypeScriptPropertyNameEx(modelViewUIFormPropertySerializable, Model) #>.Disabled, Value: this.<#= GetTypeScriptPropertyNameEx(modelViewUIFormPropertySerializable, Model) #>.Value } });
 <#
                     }
 #>
@@ -2675,7 +2676,7 @@ export default class <#= eformComponentDataModelClassName #> extends Component<<
     <#= GetExpressionForBaseOnChangedMethodWithSufix(modelViewUIFormPropertySerializable, Model, CheckBoxSufix) #>(event: any, checked: boolean) {
         this.<#= GetTypeScriptPropertyNameEx(modelViewUIFormPropertySerializable, Model) #>.Value = checked;
         this.<#= GetTypeScriptPropertyNameEx(modelViewUIFormPropertySerializable, Model) #>.Touched = true;
-        this.setState({<#= GetTypeScriptPropertyNameEx(modelViewUIFormPropertySerializable, Model) #>: { Errors: this.<#= GetTypeScriptPropertyNameEx(modelViewUIFormPropertySerializable, Model) #>.Errors, Invalid: this.<#= GetTypeScriptPropertyNameEx(modelViewUIFormPropertySerializable, Model) #>.InvalidEx, Disabled: this.<#= GetTypeScriptPropertyNameEx(modelViewUIFormPropertySerializable, Model) #>.Disabled, Value: this.<#= GetTypeScriptPropertyNameEx(modelViewUIFormPropertySerializable, Model) #>.Value } });
+        if(this.mounted) this.setState({<#= GetTypeScriptPropertyNameEx(modelViewUIFormPropertySerializable, Model) #>: { Errors: this.<#= GetTypeScriptPropertyNameEx(modelViewUIFormPropertySerializable, Model) #>.Errors, Invalid: this.<#= GetTypeScriptPropertyNameEx(modelViewUIFormPropertySerializable, Model) #>.InvalidEx, Disabled: this.<#= GetTypeScriptPropertyNameEx(modelViewUIFormPropertySerializable, Model) #>.Disabled, Value: this.<#= GetTypeScriptPropertyNameEx(modelViewUIFormPropertySerializable, Model) #>.Value } });
    }
 <#
                         checkBoxNotAdded = false;
@@ -2687,7 +2688,7 @@ export default class <#= eformComponentDataModelClassName #> extends Component<<
     <#= GetExpressionForBaseOnChangedMethodWithSufix(modelViewUIFormPropertySerializable, Model, NoSufix) #>(dateVal: any) {
         this.<#= GetTypeScriptPropertyNameEx(modelViewUIFormPropertySerializable, Model) #>.Value = dateVal;
         this.<#= GetTypeScriptPropertyNameEx(modelViewUIFormPropertySerializable, Model) #>.Touched = true;
-        this.setState({<#= GetTypeScriptPropertyNameEx(modelViewUIFormPropertySerializable, Model) #>: { Errors: this.<#= GetTypeScriptPropertyNameEx(modelViewUIFormPropertySerializable, Model) #>.Errors, Invalid: this.<#= GetTypeScriptPropertyNameEx(modelViewUIFormPropertySerializable, Model) #>.InvalidEx, Disabled: this.<#= GetTypeScriptPropertyNameEx(modelViewUIFormPropertySerializable, Model) #>.Disabled, Value: this.<#= GetTypeScriptPropertyNameEx(modelViewUIFormPropertySerializable, Model) #>.Value } });
+        if(this.mounted) this.setState({<#= GetTypeScriptPropertyNameEx(modelViewUIFormPropertySerializable, Model) #>: { Errors: this.<#= GetTypeScriptPropertyNameEx(modelViewUIFormPropertySerializable, Model) #>.Errors, Invalid: this.<#= GetTypeScriptPropertyNameEx(modelViewUIFormPropertySerializable, Model) #>.InvalidEx, Disabled: this.<#= GetTypeScriptPropertyNameEx(modelViewUIFormPropertySerializable, Model) #>.Disabled, Value: this.<#= GetTypeScriptPropertyNameEx(modelViewUIFormPropertySerializable, Model) #>.Value } });
    } 
 <#
                             } else {
@@ -2695,7 +2696,7 @@ export default class <#= eformComponentDataModelClassName #> extends Component<<
     <#= GetExpressionForBaseOnChangedMethodWithSufix(modelViewUIFormPropertySerializable, Model, NoSufix) #>(event: any) {
         this.<#= GetTypeScriptPropertyNameEx(modelViewUIFormPropertySerializable, Model) #>.Value = event.target.value;
         this.<#= GetTypeScriptPropertyNameEx(modelViewUIFormPropertySerializable, Model) #>.Touched = true;
-        this.setState({<#= GetTypeScriptPropertyNameEx(modelViewUIFormPropertySerializable, Model) #>: { Errors: this.<#= GetTypeScriptPropertyNameEx(modelViewUIFormPropertySerializable, Model) #>.Errors, Invalid: this.<#= GetTypeScriptPropertyNameEx(modelViewUIFormPropertySerializable, Model) #>.InvalidEx, Disabled: this.<#= GetTypeScriptPropertyNameEx(modelViewUIFormPropertySerializable, Model) #>.Disabled, Value: this.<#= GetTypeScriptPropertyNameEx(modelViewUIFormPropertySerializable, Model) #>.Value } });
+        if(this.mounted) this.setState({<#= GetTypeScriptPropertyNameEx(modelViewUIFormPropertySerializable, Model) #>: { Errors: this.<#= GetTypeScriptPropertyNameEx(modelViewUIFormPropertySerializable, Model) #>.Errors, Invalid: this.<#= GetTypeScriptPropertyNameEx(modelViewUIFormPropertySerializable, Model) #>.InvalidEx, Disabled: this.<#= GetTypeScriptPropertyNameEx(modelViewUIFormPropertySerializable, Model) #>.Disabled, Value: this.<#= GetTypeScriptPropertyNameEx(modelViewUIFormPropertySerializable, Model) #>.Value } });
    } 
 <#
                             }

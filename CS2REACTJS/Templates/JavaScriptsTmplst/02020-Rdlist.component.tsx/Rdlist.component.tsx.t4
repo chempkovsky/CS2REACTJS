@@ -135,6 +135,7 @@ const  <#= edlgComponentDataModelClassName #> = lazy(() => import('<#= GetFolder
 
 export default class <#= rdlistComponentDataModelClassName #> extends Component<<#= rdlistPropsDataModelClassName #>, <#= rdlistStateDataModelClassName #>> {
     static contextType = <#= appGlblSettingsContextClassName #>;
+    public mounted: boolean = true;
     constructor(props: <#= rdlistPropsDataModelClassName #>) {
         super(props);
         const <#= PermMaskPropName #>: number = 15;
@@ -484,12 +485,12 @@ export default class <#= rdlistComponentDataModelClassName #> extends Component<
     <#= OnRowMenuItemMethodName #>(v: <#= webServiceFilterEventDataModelClassName #>) {
         if(v) {
             if(v.id === '<#= ActionParamUpdateMode #>') {
-                this.setState({ shwDlg: true,
+                if(this.mounted) this.setState({ shwDlg: true,
                                 <#= EformModePropName #>: <#= eformModeEnumName #>.<#= GetInputTypeToEnumName(2) #>,
                                 <#= FormControlModelPropName #>: v.value as <#= GetInterfaceName(Model) #>,
                                 <#= CaptionPropName #>: 'Update Item' });
             } else if(v.id === '<#= ActionParamDeleteMode #>') {
-                this.setState({ shwDlg: true,
+                if(this.mounted) this.setState({ shwDlg: true,
                                 <#= EformModePropName #>: <#= eformModeEnumName #>.<#= GetInputTypeToEnumName(3) #>,
                                 <#= FormControlModelPropName #>: v.value as <#= GetInterfaceName(Model) #>,
                                 <#= CaptionPropName #>: 'Delete Item' });
@@ -545,7 +546,7 @@ export default class <#= rdlistComponentDataModelClassName #> extends Component<
         if(v) {
             if(v.id === '<#= ActionParamAddMode #>') {
                // add item 
-                this.setState({ shwDlg: true,
+                if(this.mounted) this.setState({ shwDlg: true,
                                 <#= EformModePropName #>: <#= eformModeEnumName #>.<#= GetInputTypeToEnumName(1) #>,
                                 <#= FormControlModelPropName #>: null,
                                 <#= CaptionPropName #>: 'Add Item' });
@@ -612,11 +613,11 @@ export default class <#= rdlistComponentDataModelClassName #> extends Component<
         const <#= PermMaskPropName #>: number = this.context.getViewModelMask('<#= Model.ViewName #>');
         const pmaskChng: boolean = <#= PermMaskPropName #> !== this.state.<#= PermMaskPropName #>;
         if(pmaskChng) {
-            this.setState({ <#= PermMaskPropName #>: <#= PermMaskPropName #> });
+            if(this.mounted) this.setState({ <#= PermMaskPropName #>: <#= PermMaskPropName #> });
 
             let ctableMenuItems = this.state.<#= TableMenuItemsPropName #>.slice();
             ctableMenuItems[0].enabled = (<#= CanAddPropName #> && ((<#= PermMaskPropName #> & 8) === 8));
-            this.setState({ <#= TableMenuItemsPropName #>: ctableMenuItems });
+            if(this.mounted) this.setState({ <#= TableMenuItemsPropName #>: ctableMenuItems });
         }
         const ks: Array<string> = Object.keys(this.state.<#= DetailPermMasksPropName #>);
         let dvchng: boolean = false;
@@ -636,7 +637,7 @@ export default class <#= rdlistComponentDataModelClassName #> extends Component<
                 for (let s of ks) {
                     cp[s] = this.context.getViewModelMask(s);
                 }
-                this.setState({ <#= DetailPermMasksPropName #>: cp });
+                if(this.mounted) this.setState({ <#= DetailPermMasksPropName #>: cp });
                 for (let r of crowMenuItems) {
                     if(r.data) {
                         if(r.data.<#= ViewNameParamName #>) {
@@ -646,7 +647,7 @@ export default class <#= rdlistComponentDataModelClassName #> extends Component<
                 }
             
             }
-            this.setState({ <#= RowMenuItemsPropName #>: crowMenuItems });
+            if(this.mounted) this.setState({ <#= RowMenuItemsPropName #>: crowMenuItems });
         }
     }
     componentDidMount() {
@@ -671,11 +672,14 @@ export default class <#= rdlistComponentDataModelClassName #> extends Component<
         }
         // this.onPermMask();
     }
+    componentWillUnmount() {
+        this.mounted = false;
+    }
     <#= OnCloseMethodName #>(rslt: boolean,  slctdItms?: <#= GetInterfaceName(Model) #>|null): void {
         if(rslt) {
-            this.setState({ shwDlg: false }, () => { this.<#= AfterCloseMethodName #>(rslt,  slctdItms) });
+            if(this.mounted) this.setState({ shwDlg: false }, () => { this.<#= AfterCloseMethodName #>(rslt,  slctdItms) });
         } else { 
-            this.setState({ shwDlg: false });
+            if(this.mounted) this.setState({ shwDlg: false });
         }
     }
     onPostNav() {
@@ -746,7 +750,7 @@ export default class <#= rdlistComponentDataModelClassName #> extends Component<
             this.props.<#= ApplyFilterMethodName #>(sender);
         }
         if(this.state.<#= PostNavAppliedPropName #>) return;
-        this.setState({ <#= PostNavAppliedPropName #>: true }, this.onPostNav);
+        if(this.mounted) this.setState({ <#= PostNavAppliedPropName #>: true }, this.onPostNav);
     }
     onNavError(): void {
         let msg = {

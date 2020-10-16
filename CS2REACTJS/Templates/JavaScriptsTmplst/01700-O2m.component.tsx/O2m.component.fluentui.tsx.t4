@@ -103,6 +103,7 @@ const scheme = getTheme()
 
 export default class <#= o2mComponentDataModelClassName #>  extends Component<<#= o2mPropsDataModelClassName #>, <#= o2mStateDataModelClassName #>> {
     static contextType = <#= appGlblSettingsContextClassName #>;
+    public mounted: boolean = true;
     constructor(props: <#= o2mPropsDataModelClassName #>) {
         super(props);
         this.state = {
@@ -189,7 +190,7 @@ export default class <#= o2mComponentDataModelClassName #>  extends Component<<#
 //
 // error: no detail views were detected 
 //
-        this.setState({<#= DetailViewNamePropName #>: <#= DetailViewNamePropName #>, <#= MasterRowPropName #>: <#= MasterRowPropName #>, <#= DetailHiddenFilterPropName #>: [] });
+        if(this.mounted) this.setState({<#= DetailViewNamePropName #>: <#= DetailViewNamePropName #>, <#= MasterRowPropName #>: <#= MasterRowPropName #>, <#= DetailHiddenFilterPropName #>: [] });
         return;
 <#        
     } else {
@@ -262,22 +263,22 @@ export default class <#= o2mComponentDataModelClassName #>  extends Component<<#
             }
 #>
             }
-            this.setState({<#= DetailViewNamePropName #>: <#= DetailViewNamePropName #>, <#= MasterRowPropName #>: <#= MasterRowPropName #>, <#= DetailHiddenFilterPropName #>: newFlt});
+            if(this.mounted) this.setState({<#= DetailViewNamePropName #>: <#= DetailViewNamePropName #>, <#= MasterRowPropName #>: <#= MasterRowPropName #>, <#= DetailHiddenFilterPropName #>: newFlt});
             return;
         }
 <#
     }
 #>
-        this.setState({<#= DetailViewNamePropName #>: <#= DetailViewNamePropName #>, <#= MasterRowPropName #>: <#= MasterRowPropName #>, <#= DetailHiddenFilterPropName #>: [] });
+        if(this.mounted) this.setState({<#= DetailViewNamePropName #>: <#= DetailViewNamePropName #>, <#= MasterRowPropName #>: <#= MasterRowPropName #>, <#= DetailHiddenFilterPropName #>: [] });
     }
     <#= SelectedRowPropName #>(row: <#= GetInterfaceName(Model) #> | null): void {
         if(this.props.<#= SelectedRowPropName #>) this.props.<#= SelectedRowPropName #>(row);
         this.<#= SelectedDetailRowPropName #>(null);
         if(row) {
-            // this.setState({<#= MasterRowPropName #>: row, <#= DetailHiddenFilterPropName #>:[]},this.defineHiddenDetailFilter);
+            // if(this.mounted) this.setState({<#= MasterRowPropName #>: row, <#= DetailHiddenFilterPropName #>:[]},this.defineHiddenDetailFilter);
             this.defineHiddenDetailFilter(this.state.<#= DetailViewNamePropName #>, row);
         } else {
-            this.setState({<#= MasterRowPropName #>: null, <#= DetailHiddenFilterPropName #>:[]});
+            if(this.mounted) this.setState({<#= MasterRowPropName #>: null, <#= DetailHiddenFilterPropName #>:[]});
         }
     }
     onDetaiComboChanged(ev: React.FormEvent<IComboBox>, option?: IComboBoxOption) {
@@ -299,6 +300,9 @@ export default class <#= o2mComponentDataModelClassName #>  extends Component<<#
             }
             this.props.<#= SelectedDetailRowPropName #>(vwNm, row);
         }
+    }
+    componentWillUnmount() {
+        this.mounted = false;
     }
 
     render () {

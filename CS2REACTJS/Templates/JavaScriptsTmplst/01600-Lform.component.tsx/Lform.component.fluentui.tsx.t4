@@ -108,6 +108,7 @@ const scheme = getTheme();
 
 export default class <#= lformComponentDataModelClassName #> extends Component<<#= lformPropsDataModelClassName #>, <#= lformStateDataModelClassName #>> {
     static contextType = <#= appGlblSettingsContextClassName #>;
+    public mounted: boolean = true;
     constructor(props: <#= lformPropsDataModelClassName #>) {
         super(props);
         const <#= PermMaskPropName #>: number = 15;
@@ -188,12 +189,12 @@ export default class <#= lformComponentDataModelClassName #> extends Component<<
     <#= OnRowMenuItemMethodName #>(v: <#= webServiceFilterEventDataModelClassName #>) {
         if(v) {
             if(v.id === '<#= ActionParamUpdateMode #>') {
-                this.setState({ shwDlg: true,
+                if(this.mounted) this.setState({ shwDlg: true,
                                 <#= EformModePropName #>: <#= eformModeEnumName #>.<#= GetInputTypeToEnumName(2) #>,
                                 <#= FormControlModelPropName #>: v.value as <#= GetInterfaceName(Model) #>,
                                 <#= CaptionPropName #>: 'Update Item' });
             } else if(v.id === '<#= ActionParamDeleteMode #>') {
-                this.setState({ shwDlg: true,
+                if(this.mounted) this.setState({ shwDlg: true,
                                 <#= EformModePropName #>: <#= eformModeEnumName #>.<#= GetInputTypeToEnumName(3) #>,
                                 <#= FormControlModelPropName #>: v.value as <#= GetInterfaceName(Model) #>,
                                 <#= CaptionPropName #>: 'Delete Item' });
@@ -208,7 +209,7 @@ export default class <#= lformComponentDataModelClassName #> extends Component<<
         if(v) {
             if(v.id === '<#= ActionParamAddMode #>') {
                // add item 
-                this.setState({ shwDlg: true,
+                if(this.mounted) this.setState({ shwDlg: true,
                                 <#= EformModePropName #>: <#= eformModeEnumName #>.<#= GetInputTypeToEnumName(1) #>,
                                 <#= FormControlModelPropName #>: null,
                                 <#= CaptionPropName #>: 'Add Item' });
@@ -230,13 +231,13 @@ export default class <#= lformComponentDataModelClassName #> extends Component<<
                             ds = this.state.ref.current.state.dataSource.slice(0);
                         }
                         ds.splice(0, 0, slctdItms);
-                        this.state.ref.current.setState({ dataSource: ds });
+                        if(this.mounted) this.state.ref.current.setState({ dataSource: ds });
                         let isNDef: boolean = (typeof this.state.ref.current.state.<#= currentRowPropName #> === 'undefined');
                         isNDef = isNDef ? isNDef : (this.state.ref.current.state.<#= currentRowPropName #> === null);
                         if(isNDef) this.state.ref.current.onSelectRow(slctdItms);
                    } else if(this.state.<#= EformModePropName #> === <#= eformModeEnumName #>.<#= GetInputTypeToEnumName(2) #>) {
                         <#= viewServiceClassName #>.src2dest(slctdItms, this.state.<#= FormControlModelPropName #> as <#= GetInterfaceName(Model) #>);
-                        this.state.ref.current.setState({ dataSource: this.state.ref.current.state.dataSource });
+                        if(this.mounted) this.state.ref.current.setState({ dataSource: this.state.ref.current.state.dataSource });
                     } else {
                         let ds: Array<<#= GetInterfaceName(Model) #>> = this.state.ref.current.state.dataSource;
                         let i: number = ds.indexOf(this.state.<#= FormControlModelPropName #> as <#= GetInterfaceName(Model) #>);
@@ -251,7 +252,7 @@ export default class <#= lformComponentDataModelClassName #> extends Component<<
                                 }
                             }
                             ds.splice(i, 1);
-                            this.state.ref.current.setState({ dataSource: ds });
+                            if(this.mounted) this.state.ref.current.setState({ dataSource: ds });
                         }
                     }
                 }
@@ -261,7 +262,7 @@ export default class <#= lformComponentDataModelClassName #> extends Component<<
     onPermMask() {
         const <#= PermMaskPropName #>: number = this.context.getViewModelMask('<#= Model.ViewName #>');
         if(<#= PermMaskPropName #> !== this.state.<#= PermMaskPropName #>) {
-            this.setState({ <#= PermMaskPropName #>: <#= PermMaskPropName #> });
+            if(this.mounted) this.setState({ <#= PermMaskPropName #>: <#= PermMaskPropName #> });
             let crowMenuItems: Array<<#= webServiceFilterMenuDataModelClassName #>> = [];
             if(this.props.<#= RowMenuItemsPropName #>) crowMenuItems = this.props.<#= RowMenuItemsPropName #>;
             let ctableMenuItems: Array<<#= webServiceFilterMenuDataModelClassName #>> = [];
@@ -272,11 +273,11 @@ export default class <#= lformComponentDataModelClassName #> extends Component<<
             if(this.props.<#= CanUpdPropName #>) <#= CanUpdPropName #> = this.props.<#= CanUpdPropName #>;
             let <#= CanDelPropName #> = false;
             if(this.props.<#= CanDelPropName #>) <#= CanDelPropName #> = this.props.<#= CanDelPropName #>;
-            this.setState({ <#= RowMenuItemsPropName #>:
+            if(this.mounted) this.setState({ <#= RowMenuItemsPropName #>:
                 [{id: '<#= ActionParamUpdateMode #>', caption: 'Modify Item', iconName: 'edit', iconColor: scheme.semanticColors.menuIcon, enabled: (<#= CanUpdPropName #> && ((<#= PermMaskPropName #> & 4) === 4))},
                  {id: '<#= ActionParamDeleteMode #>', caption: 'Delete Item', iconName: 'Delete', iconColor: scheme.semanticColors.errorIcon, enabled: (<#= CanDelPropName #> && ((<#= PermMaskPropName #> & 2) === 2))},
                  ...crowMenuItems] });
-            this.setState({ <#= TableMenuItemsPropName #>: 
+            if(this.mounted) this.setState({ <#= TableMenuItemsPropName #>: 
                 [{id: '<#= ActionParamAddMode #>', caption: 'Add Item', iconName: 'create', iconColor: scheme.semanticColors.menuIcon, enabled: (<#= CanAddPropName #> && ((<#= PermMaskPropName #> & 8) === 8))},
                  ...ctableMenuItems] });
         }
@@ -287,12 +288,15 @@ export default class <#= lformComponentDataModelClassName #> extends Component<<
     componentDidUpdate() {
         this.onPermMask();
     }
+    componentWillUnmount() {
+        this.mounted = false;
+    }
 
     <#= OnCloseMethodName #>(rslt: boolean,  slctdItms?: <#= GetInterfaceName(Model) #>|null): void {
         if(rslt) {
-            this.setState({ shwDlg: false }, () => { this.<#= AfterCloseMethodName #>(rslt,  slctdItms) });
+            if(this.mounted) this.setState({ shwDlg: false }, () => { this.<#= AfterCloseMethodName #>(rslt,  slctdItms) });
         } else { 
-            this.setState({ shwDlg: false });
+            if(this.mounted) this.setState({ shwDlg: false });
         }
     }
 

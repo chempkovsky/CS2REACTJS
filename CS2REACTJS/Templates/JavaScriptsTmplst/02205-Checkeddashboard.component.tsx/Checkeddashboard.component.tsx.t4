@@ -403,8 +403,11 @@ export default class <#= checkeddashboardComponentDataModelClassName #> extends 
     componentDidUpdate() {
         if (this.state.inQuery) this.onFilter();
     }
+    componentWillUnmount() {
+        this.mounted = false;
+    }
     onApplyFilterClicked(r: Array<<#= webServiceFilterRsltDataModelClassName #>>): void {
-        this.setState( { currentFilter: r, inQuery: true } );
+        if(this.mounted) this.setState( { currentFilter: r, inQuery: true } );
     }
 
 
@@ -465,25 +468,25 @@ export default class <#= checkeddashboardComponentDataModelClassName #> extends 
                     }
                 }
                 let rsltEx: Array<<#= GetPermInterfaceName(Model) #>> = <#= checkeddashboardComponentDataModelClassName #>.updatePermissions(rslt, this.state.<#= PermissionsPropName #>);
-                this.setState( { inQuery: false, dataSource: rsltEx, matPaginatorLen: pl, matPaginatorCurrentPage: pg } );
+                if(this.mounted) this.setState( { inQuery: false, dataSource: rsltEx, matPaginatorLen: pl, matPaginatorCurrentPage: pg } );
             },
             (error: any) => {
-                this.setState( { inQuery: false } );
+                if(this.mounted) this.setState( { inQuery: false } );
                 this.context.<#= ShowErrorMethodName #>('http', error)
             });
     }
 
     handleChangeRowsPerPage = (event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,) => {
-        this.setState( { matPaginatorCurrentPage: 0, inQuery: true,  matPaginatorPageSize: parseInt(event.target.value, 10) } );
+        if(this.mounted) this.setState( { matPaginatorCurrentPage: 0, inQuery: true,  matPaginatorPageSize: parseInt(event.target.value, 10) } );
     };
     handleChangePage = (event: React.MouseEvent<HTMLButtonElement> | null, newPage: number) => {
-        this.setState( { inQuery: true,  matPaginatorCurrentPage: newPage } );
+        if(this.mounted) this.setState( { inQuery: true,  matPaginatorCurrentPage: newPage } );
     };
     onSort(clNm: string) {
         let dr = 'asc';
         if(this.state.currentSortColumn === clNm) 
             if(this.state.currentSortdirection === dr) dr = 'desc';
-        this.setState( { inQuery: true,  currentSortdirection: dr, currentSortColumn: clNm} );
+        if(this.mounted) this.setState( { inQuery: true,  currentSortdirection: dr, currentSortColumn: clNm} );
     }
 
     <#= onCheckedMethodName #>(v: React.ChangeEvent<HTMLInputElement>, newVal: boolean, dashboardPk: number) {
