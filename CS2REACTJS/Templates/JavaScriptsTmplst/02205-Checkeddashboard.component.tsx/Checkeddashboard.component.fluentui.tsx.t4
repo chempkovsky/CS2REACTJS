@@ -158,6 +158,7 @@ const scheme = getTheme();
 
 export default class <#= checkeddashboardComponentDataModelClassName #> extends Component<<#= checkeddashboardPropsDataModelClassName #>, <#= checkeddashboardStateDataModelClassName #>> {
     static contextType = <#= appGlblSettingsContextClassName #>;
+    public mounted: boolean = true;
     visuallyHidden = {
       border: 0,
       clip: 'rect(0 0 0 0)',
