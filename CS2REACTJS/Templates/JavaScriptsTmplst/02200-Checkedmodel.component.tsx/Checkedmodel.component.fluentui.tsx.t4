@@ -133,7 +133,7 @@
 #>
 
 import React, { Component,CSSProperties } from 'react';
-import {  ProgressIndicator, Checkbox, getTheme }  from '@fluentui/react';
+import {  ProgressIndicator, Checkbox, getTheme, Stack }  from '@fluentui/react';
 
 import <#= checkedmodelPropsDataModelClassName #>  from '<#= GetFolderName(Model, checkedmodelPropsDataModelFolder, checkedmodelComponentDataModelFolder)#>';
 import <#= checkedmodelStateDataModelClassName #>, { <#= GetPermInterfaceName(Model) #> }  from '<#= GetFolderName(Model, checkedmodelStateDataModelFolder, checkedmodelComponentDataModelFolder)#>';
@@ -572,15 +572,17 @@ export default class <#= checkedmodelComponentDataModelClassName #> extends Comp
                                             return (<<#= tablebodyCellDataModelClassName #> key={c}>{row[c]}</<#= tablebodyCellDataModelClassName #>>)
                                         })
                                     }
-                                    <<#= tablebodyCellDataModelClassName #> className="stickylastclss" style={{whiteSpace: 'nowrap'}}>
-                                        <Checkbox label='Add' checked={ row.<#= addPrmPropName #> } disabled={ this.props.<#= IsDisabledPropName #> } 
-                                                  onChange={ (event, checked)=>this.<#= onCheckedMethodName #>(event, checked, row.modelPk, 8) }/>
-                                        <Checkbox label='Upd' checked={ row.<#= updPrmPropName #> } disabled={ this.props.<#= IsDisabledPropName #> } 
-                                                  onChange={ (event, checked)=>this.<#= onCheckedMethodName #>(event, checked, row.modelPk, 4) }/>
-                                        <Checkbox label='Del' checked={ row.<#= delPrmPropName #> } disabled={ this.props.<#= IsDisabledPropName #> } 
-                                                  onChange={ (event, checked)=>this.<#= onCheckedMethodName #>(event, checked, row.modelPk, 2) }/>
-                                        <Checkbox label='Sel' checked={ row.<#= selPrmPropName #> } disabled={ this.props.<#= IsDisabledPropName #> } 
-                                                  onChange={ (event, checked)=>this.<#= onCheckedMethodName #>(event, checked, row.modelPk, 1) }/>
+                                    <<#= tablebodyCellDataModelClassName #> className="stickylastclss" >
+                                        <Stack tokens={{childrenGap: 16}} horizontal>
+                                            <Checkbox label='Add' checked={ row.<#= addPrmPropName #> } disabled={ this.props.<#= IsDisabledPropName #> } 
+                                                      onChange={ (event, checked)=>this.<#= onCheckedMethodName #>(event, checked, row.modelPk, 8) }/>
+                                            <Checkbox label='Upd' checked={ row.<#= updPrmPropName #> } disabled={ this.props.<#= IsDisabledPropName #> } 
+                                                      onChange={ (event, checked)=>this.<#= onCheckedMethodName #>(event, checked, row.modelPk, 4) }/>
+                                            <Checkbox label='Del' checked={ row.<#= delPrmPropName #> } disabled={ this.props.<#= IsDisabledPropName #> } 
+                                                      onChange={ (event, checked)=>this.<#= onCheckedMethodName #>(event, checked, row.modelPk, 2) }/>
+                                            <Checkbox label='Sel' checked={ row.<#= selPrmPropName #> } disabled={ this.props.<#= IsDisabledPropName #> } 
+                                                      onChange={ (event, checked)=>this.<#= onCheckedMethodName #>(event, checked, row.modelPk, 1) }/>
+                                        </Stack>
                                     </<#= tablebodyCellDataModelClassName #>>
                                 </tr>
                             ))}                    
