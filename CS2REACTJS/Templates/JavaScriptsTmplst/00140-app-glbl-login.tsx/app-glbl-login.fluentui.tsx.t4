@@ -125,6 +125,18 @@ export default class <#= appGlblLoginDataModelClassName #> extends React.Compone
             (respdata: any ) => {
                 this.context.UserName = this.username.Value;
                 this.context.<#= setAuthInfoMethodName #>(respdata);
+/*
+                AspnetusermaskViewService.getcurrusermasks(this.context)
+                .then((res: any) => res.json())
+                .then(
+                    (respdata: any ) => {
+                        this.context.perms = AspnetusermaskViewService.src2array(respdata);
+                    },
+                    (error: any) => {
+                        this.context.showError('http', error);
+                    }
+                );
+*/
                 this.<#= onCancel #>()
             },
             (error: any) => {

@@ -74,6 +74,9 @@ class <#= appGlblLogoutDataModelClassName #> extends React.Component<any>  {
                 if(respdata.ok) {
                     this.context.UserName = null;
                     this.context.<#= setAuthInfoMethodName #>(null);
+
+                    this.context.perms = [0,0,0,0,  0,0,0,0,  0,0,0,0,  0,0,0,0,  0,0,0,0];
+
                     this.<#= onCancel #>()
                 } else {
                    let msg = {
