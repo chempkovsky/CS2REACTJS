@@ -669,7 +669,7 @@ export default class <#= rdlistComponentDataModelClassName #> extends Component<
             this.onNavError();
             return;
         }
-        this.onPermMask();
+        // this.onPermMask();
     }
     <#= OnCloseMethodName #>(rslt: boolean,  slctdItms?: <#= GetInterfaceName(Model) #>|null): void {
         if(rslt) {
