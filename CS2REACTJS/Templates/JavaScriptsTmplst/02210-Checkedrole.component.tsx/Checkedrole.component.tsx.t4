@@ -287,11 +287,16 @@ export default class <#= checkedroleComponentDataModelClassName #>  extends Comp
     }
     onCloseDialog(rslt: boolean) {
         if(rslt) {
-            if(this.state.eref.current) {
-                if(this.mounted) this.setState({<#= OpenMssgDlgPropName #>: false});
-                if(this.mounted) this.setState({openMssgDlg: false}) 
-            } else {
-                if(this.mounted) this.setState({<#= OpenMssgDlgPropName #>: false}, this.onNewRow);
+            if(this.mounted) {
+                this.setState({<#= OpenMssgDlgPropName #>: false});
+                let runOnNewRow: boolean = true;
+                if(this.state.eref) {
+                    if(this.state.eref.current) {
+                        runOnNewRow = false;
+                        this.state.eref.current.doSubmit();
+                    }
+                }
+                if(runOnNewRow) this.onNewRow();
             }
         } else {
             if(this.mounted) this.setState({<#= OpenMssgDlgPropName #>: false}, this.onNewRow);

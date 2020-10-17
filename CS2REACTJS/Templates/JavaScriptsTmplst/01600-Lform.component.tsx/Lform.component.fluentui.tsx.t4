@@ -278,7 +278,7 @@ export default class <#= lformComponentDataModelClassName #> extends Component<<
                  {id: '<#= ActionParamDeleteMode #>', caption: 'Delete Item', iconName: 'Delete', iconColor: scheme.semanticColors.errorIcon, enabled: (<#= CanDelPropName #> && ((<#= PermMaskPropName #> & 2) === 2))},
                  ...crowMenuItems] });
             if(this.mounted) this.setState({ <#= TableMenuItemsPropName #>: 
-                [{id: '<#= ActionParamAddMode #>', caption: 'Add Item', iconName: 'create', iconColor: scheme.semanticColors.menuIcon, enabled: (<#= CanAddPropName #> && ((<#= PermMaskPropName #> & 8) === 8))},
+                [{id: '<#= ActionParamAddMode #>', caption: 'Add Item', iconName: 'Add', iconColor: scheme.semanticColors.menuIcon, enabled: (<#= CanAddPropName #> && ((<#= PermMaskPropName #> & 8) === 8))},
                  ...ctableMenuItems] });
         }
     }
