@@ -1,7 +1,9 @@
 # CS2Reactjs
 ## Free Open Source tool
 
-
+## Hands on Lab
+- Goto wiki to get practical skills
+https://github.com/chempkovsky/CS2REACTJS/wiki
 
 ### Table of content
 #### [000 SUMMARY](#00-SUMMARY) 
