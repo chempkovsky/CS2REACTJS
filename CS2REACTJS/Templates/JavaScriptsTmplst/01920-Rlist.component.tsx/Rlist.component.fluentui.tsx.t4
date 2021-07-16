@@ -2125,7 +2125,7 @@ export default class <#= rlistComponentDataModelClassName #> extends Component<<
         if (propForSel == null) {
             return "NoName";
         }
-        return GetTypeScriptPropertyName(propForSel, model);
+        return GetTypeScriptPropertyName(propForSel, mv);
     }
     bool IsDateInput(ModelViewUIFormPropertySerializable prop, ModelViewSerializable model) {
         if((prop == null) || (model == null)) return false;
