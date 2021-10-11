@@ -338,6 +338,31 @@ namespace CS2REACTJS.ViewModel
                             SelectedItem = _SelectedTreeViewItem;
                             FAPIAttributePropertyVisibility = Visibility.Visible;
                         }
+
+
+                        else if (_SelectedTreeViewItem is ModelViewAttributeSerializable)
+                        {
+                            SelectedItem = _SelectedTreeViewItem;
+                            AttributeVisibility = Visibility.Visible;
+                        }
+                        else if (_SelectedTreeViewItem is ModelViewAttributePropertySerializable)
+                        {
+                            SelectedItem = _SelectedTreeViewItem;
+                            AttributePropertyVisibility = Visibility.Visible;
+                        }
+
+
+                        else if (_SelectedTreeViewItem is ModelViewFAPIAttributeSerializable)
+                        {
+                            SelectedItem = _SelectedTreeViewItem;
+                            AttributeVisibility = Visibility.Visible;
+                        }
+                        else if (_SelectedTreeViewItem is ModelViewFAPIAttributePropertySerializable)
+                        {
+                            SelectedItem = _SelectedTreeViewItem;
+                            AttributePropertyVisibility = Visibility.Visible;
+                        }
+
                         else if (_SelectedTreeViewItem is ModelViewUIFormProperty)
                         {
                             ModelViewUIFormProperty modelViewUIFormProperty = _SelectedTreeViewItem as ModelViewUIFormProperty;
@@ -1107,7 +1132,7 @@ namespace CS2REACTJS.ViewModel
                     if (SelectedModel.AllProperties.Count > 0)
                     {
                         IsViewHasAllRequiredProperties = true;
-                        foreach (ModelViewKeyPropertySerializable prop in SelectedModel.AllProperties)
+                        foreach (ModelViewEntityPropertySerializable prop in SelectedModel.AllProperties)
                         {
                             if (!prop.IsRequired) continue;
                             if(SelectedModel.PrimaryKeyProperties.Any(p => p.OriginalPropertyName == prop.OriginalPropertyName)) continue;
