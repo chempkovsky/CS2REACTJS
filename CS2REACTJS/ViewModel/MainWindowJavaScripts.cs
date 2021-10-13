@@ -414,7 +414,8 @@ namespace CS2REACTJS.ViewModel
                             (CreateWebApiUC.DataContext as CreateWebApiViewModel).SerializableDbContext,
                             (CreateWebApiUC.DataContext as CreateWebApiViewModel).GetSelectedModelCommonShallowCopy(
                                 (SelectFolderUC.DataContext as SelectFolderViewModel).T4SelectedFolder,
-                                (SelectFolderUC.DataContext as SelectFolderViewModel).FileName
+                                (SelectFolderUC.DataContext as SelectFolderViewModel).FileName,
+                                (T4EditorUC.DataContext as T4EditorViewModel).T4SelectedTemplate
                                 ),
                                 (InvitationUC.DataContext as InvitationViewModel).DefaultProjectNameSpace
                             );

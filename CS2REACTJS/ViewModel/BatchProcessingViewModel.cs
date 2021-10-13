@@ -275,14 +275,14 @@ namespace CS2REACTJS.ViewModel
                             BatchSettingsHelper.GetSelectedModelCommonShallowCopy(currentSerializableModel,
                                                                     UIFormProperties, UIListProperties,
                                                                     DestinationProjectName, DefaultProjectNameSpace, DestinationFolder, batchItem.DestinationFolder,
-                                                                    batchItem.GeneratorType, FileName);
+                                                                    batchItem.GeneratorType, FileName, batchItem.GeneratorSript);
                     } else
                     {
                         ShallowCopy =
                             BatchSettingsHelper.GetSelectedModelCommonShallowCopy(currentSerializableModel,
                                                                     null, null,
                                                                     DestinationProjectName, DefaultProjectNameSpace, DestinationFolder, batchItem.DestinationFolder,
-                                                                    batchItem.GeneratorType, FileName);
+                                                                    batchItem.GeneratorType, FileName, batchItem.GeneratorSript);
                     }
                     sb.AppendLine("        Batch Item: Generating Code");
                     GeneratorBatchStep generatorBatchStep = BatchSettingsHelper.DoGenerateViewModel(Dte, TextTemplating, tmpltPath, SerializableDbContext, ShallowCopy, DefaultProjectNameSpace);
@@ -296,7 +296,7 @@ namespace CS2REACTJS.ViewModel
                                         DestinationProjectRootFolder,
                                         DestinationFolder,
                                         batchItem.DestinationFolder,
-                                        FileName, generatorBatchStep.FileExtension,
+                                        FileName, generatorBatchStep.FileExtension, batchItem.GeneratorSript,
                                         generatorBatchStep.GenerateText);
                     currentSerializableModel.CommonStaffs =  ShallowCopy.CommonStaffs;
                     sb.AppendLine("Batch Item Processing finished");
