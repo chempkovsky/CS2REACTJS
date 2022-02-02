@@ -50,7 +50,7 @@ namespace CS2REACTJS.Helpers
                     (parameterSyntax.Type.Kind() != SyntaxKind.QualifiedName)) continue;
                 string parameterTypeName = parameterSyntax.Type.ToString();
                 if (string.IsNullOrEmpty(parameterTypeName)) continue;
-                if ((!parameterTypeName.Contains(parameterType1)) && (!parameterTypeName.Contains(parameterType1))) continue;
+                if ((!parameterTypeName.Contains(parameterType1)) && (!parameterTypeName.Contains(parameterType2))) continue;
                 parameterName = parameterSyntax.Identifier.ValueText;
                 return methodDeclaration;
             }
